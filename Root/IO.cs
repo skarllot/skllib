@@ -4,6 +4,7 @@ using DllImport = System.Runtime.InteropServices.DllImportAttribute;
 using SIO = System.IO;
 using StringList = System.Collections.Generic.List<string>;
 using Int32List = System.Collections.Generic.List<int>;
+using Generics = System.Collections.Generic;
 
 namespace Root.IO
 {
@@ -359,7 +360,7 @@ namespace Root.IO
 		#region Methods
 
 		/// <summary>
-		/// Reads a value into specifield key.
+		/// Reads the value into specifield key [Deprecated].
 		/// </summary>
 		/// <param name="section">The section where key is found.</param>
 		/// <param name="key">The key name.</param>
@@ -367,7 +368,22 @@ namespace Root.IO
 		/// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
 		/// <exception cref="Exception">section or key was not found.</exception>
 		/// <exception cref="SIO.FileLoadException">The key has a invalid value.</exception>
+		[Obsolete("ReadKey is deprecated, use ReadValue instead.", true)]
 		public string ReadKey(string section, string key)
+		{
+			return this.ReadValue(section, key);
+		}
+		
+		/// <summary>
+		/// Reads the value into specifield key.
+		/// </summary>
+		/// <param name="section">The section where key is found.</param>
+		/// <param name="key">The key name.</param>
+		/// <returns>Value stored into key.</returns>
+		/// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
+		/// <exception cref="Exception">section or key was not found.</exception>
+		/// <exception cref="SIO.FileLoadException">The key has a invalid value.</exception>
+		public string ReadValue(string section, string key)
 		{
 			if (section == null)
 				throw new ArgumentNullException("section", resExceptions.ArgumentNull.Replace("%var", "section"));
@@ -390,6 +406,59 @@ namespace Root.IO
 			return str.Substring(dIdx + 1);
 		}
 
+		/// <summary>
+		/// Reads all sections name.
+		/// </summary>
+		/// <returns>All sections name read.</returns>
+		public string[] ReadSectionsName()
+		{
+			string[] sects = new string[base._sectionBuffer.Count];
+
+			for (int i = 0; i < base._sectionBuffer.Count; i++)
+			{
+				sects[i] = base._buffer[base._sectionBuffer[i]];
+			}
+
+			return sects;
+		}
+
+		/// <summary>
+		/// Reads all keys and values into specifield section.
+		/// </summary>
+		/// <param name="section">The section where keys are found.</param>
+		/// <returns>All keys and values stored into section.</returns>
+		public Generics.KeyValuePair<string, string>[] ReadKeysValues(string section)
+		{
+			int idx = 0, count = 0;
+			if (!base.FindRange(section, out idx, out count))
+				throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
+
+			if (count == 0)
+				return new Generics.KeyValuePair<string, string>[0];
+			Generics.KeyValuePair<string, string>[] ret =
+				new Generics.KeyValuePair<string, string>[count];
+
+			string[] keyValue;
+			for (int i = 0; i < count; i++)
+			{
+				idx++;
+				keyValue = base._buffer[idx].Split('=');
+				
+				ret[i] = new Generics.KeyValuePair<string, string>(
+					keyValue[0], keyValue[1]);
+			}
+
+			return ret;
+		}
+
+		/// <summary>
+		/// Clears any buffered data and reloads them again.
+		/// </summary>
+		public void ReloadFile()
+		{
+			base.ReadFile();
+		}
+		
 		#endregion
 	}
 
