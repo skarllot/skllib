@@ -200,7 +200,10 @@ namespace Root.IO
 			if (mode == SIO.FileMode.CreateNew && exists)
 				throw new SIO.IOException(resExceptions.FileExists.Replace("%var", _fileName));
 			else if ((mode == SIO.FileMode.Create || mode == SIO.FileMode.Truncate) && exists)
+			{
 				SIO.File.Delete(_fileName);
+				SIO.File.CreateText(_fileName).Close();
+			}
 			else if (mode == SIO.FileMode.Open && !exists)
 				throw new SIO.FileNotFoundException(resExceptions.FileNotFound.Replace("%var", _fileName), _fileName);
 
@@ -243,8 +246,13 @@ namespace Root.IO
 				System.IO.FileShare.Read);
 			SIO.StreamWriter writer = new System.IO.StreamWriter(fs);
 
-			foreach (string item in _buffer)
-				writer.WriteLine(item);
+			for (int i = 0; i < _buffer.Count; i++)
+			{
+				if (i != 0 && _sectionBuffer.Contains(i))
+					writer.WriteLine();		// blank line before a section.
+				
+				writer.WriteLine(_buffer[i]);
+			}
 
 			writer.Close();
 		}
@@ -417,6 +425,7 @@ namespace Root.IO
 			for (int i = 0; i < base._sectionBuffer.Count; i++)
 			{
 				sects[i] = base._buffer[base._sectionBuffer[i]];
+				sects[i] = sects[i].Substring(1, sects[i].Length - 2);
 			}
 
 			return sects;
@@ -439,7 +448,7 @@ namespace Root.IO
 				new Generics.KeyValuePair<string, string>[count];
 
 			string[] keyValue;
-			for (int i = 0; i < count; i++)
+			for (int i = 0; i < count - 1; i++)
 			{
 				idx++;
 				keyValue = base._buffer[idx].Split('=');
