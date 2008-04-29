@@ -1331,6 +1331,26 @@ namespace Root
 		#region Methods
 
 		/// <summary>
+		/// Get value represented by this instance in pixels.
+		/// </summary>
+		/// <param name="dpi">DPI (Dots Per Inch) resolution.</param>
+		/// <returns>The value in pixels in a specific resolution.</returns>
+		public decimal GetPixelsByDpi(decimal dpi)
+		{
+			return this.Inches * dpi;
+		}
+		
+		/// <summary>
+		/// Get value represented by this instance in pixels.
+		/// </summary>
+		/// <param name="ppm">PPM (Points Per Millimeter) resolution.</param>
+		/// <returns>The value in pixels in a specific resolution.</returns>
+		public decimal GetPixelsByPpm(decimal ppm)
+		{
+			return this.Millimeters * ppm;
+		}
+		
+		/// <summary>
 		/// Gets the value represented by this instance in the specified SI unit.
 		/// </summary>
 		/// <param name="unit">Specifies a SI unit.</param>
