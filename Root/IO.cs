@@ -87,7 +87,8 @@ namespace Root.IO
 			int end = count + start;
 			for (int i = start + 1; i < end; i++)
 			{
-				if (_buffer[i].Contains(key))
+				if (_buffer[i].IndexOf(key) == 0
+				    && _buffer[i].IndexOf('=') == key.Length)
 					return i;
 			}
 			return -1;
@@ -156,7 +157,7 @@ namespace Root.IO
 	/// <summary>
 	/// Provides methods to write into configuration files.
 	/// </summary>
-	public sealed class ConfigFileWriter : ConfigFileBase
+	public class ConfigFileWriter : ConfigFileBase
 	{
 		#region Constructors
 
@@ -342,7 +343,7 @@ namespace Root.IO
 	/// <summary>
 	/// Provides methods to read configuration files.
 	/// </summary>
-	public sealed class ConfigFileReader : ConfigFileBase
+	public class ConfigFileReader : ConfigFileBase
 	{
 		#region Constructors
 
