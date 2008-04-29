@@ -46,6 +46,7 @@
     <Compile Include="Formatting.cs" />
     <Compile Include="Globalization.cs" />
     <Compile Include="IO.cs" />
+    <Compile Include="Net.cs" />
     <Compile Include="Numbers.cs" />
     <Compile Include="Performance.cs" />
     <Compile Include="resExceptions.Designer.cs">
