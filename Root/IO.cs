@@ -57,7 +57,7 @@ namespace Root.IO
 					continue;
 				else if (str.ToString(0, 1) == "[" && str.ToString(str.Length - 1, 1) == "]")
 				{
-					if (!Strings.IsAlphabeticAndNumeric(str.ToString(1, str.Length - 1)))
+					if (!Strings.IsAlphabeticAndNumeric(str.ToString(1, str.Length - 2)))
 						goto error;
 					else
 						continue;

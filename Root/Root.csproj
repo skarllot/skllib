@@ -47,6 +47,7 @@
     <Compile Include="Globalization.cs" />
     <Compile Include="IO.cs" />
     <Compile Include="Numbers.cs" />
+    <Compile Include="Performance.cs" />
     <Compile Include="resExceptions.Designer.cs">
       <DependentUpon>resExceptions.resx</DependentUpon>
     </Compile>

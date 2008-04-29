@@ -3,6 +3,9 @@ using System.Globalization;
 using Serialization = System.Runtime.Serialization;
 using stringb = System.Text.StringBuilder;
 
+/// <summary>
+/// Namespace where are located basic code.
+/// </summary>
 namespace Root
 {
 	/// <summary>

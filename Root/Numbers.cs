@@ -1,6 +1,9 @@
 using System;
 using System.Globalization;
 
+/// <summary>
+/// Namespace where are located formatting classes.
+/// </summary>
 namespace Root.Formatting
 {
 	/// <summary>
