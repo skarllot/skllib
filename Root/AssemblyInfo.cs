@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GodoySoft")]
 [assembly: AssemblyProduct("Root.dll")]
-[assembly: AssemblyCopyright("Copyright (c) 2005-2007 GodoySoft")]
+[assembly: AssemblyCopyright("Copyright (c) 2005-2008 GodoySoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

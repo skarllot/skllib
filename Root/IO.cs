@@ -15,12 +15,46 @@ namespace Root.IO
 	{
 		#region Fields
 
-		protected internal string _fileName;
-		protected internal StringList _buffer;
-		protected internal Int32List _sectionBuffer;
+		/// <summary>
+		/// Stores a String array where each item is a line from config file.
+		/// </summary>
+		protected StringList _buffer;
+		/// <summary>
+		/// Character encoding to read and write config file.
+		/// </summary>
+		private System.Text.Encoding _encoding;
+		/// <summary>
+		/// Stores config file name.
+		/// </summary>
+		protected string _fileName;
+		/// <summary>
+		/// Stores a Int32 array where each item is a index to a section in config file.
+		/// </summary>
+		protected Int32List _sectionBuffer;
 
 		#endregion
 
+		#region Constructors
+		
+		protected ConfigFileBase(string fileName)
+			: this(fileName, System.Text.Encoding.UTF8)
+		{
+			
+		}
+		
+		protected ConfigFileBase(string fileName, System.Text.Encoding encoding)
+		{
+			if (fileName == null)
+				throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
+			
+			this._encoding = System.Text.Encoding.UTF8;
+			this._fileName = fileName;
+			
+			this.SetBasicInfo(this._fileName);
+		}
+		
+		#endregion
+		
 		#region Properties
 
 		/// <summary>
@@ -82,10 +116,17 @@ namespace Root.IO
 			return false;
 		}
 
-		protected internal int FindKey(string key, int start, int count)
+		/// <summary>
+		/// Search a key in current config file.
+		/// </summary>
+		/// <param name="key">Key name to search.</param>
+		/// <param name="start">Line number to start search.</param>
+		/// <param name="count">How many lines to search.</param>
+		/// <returns>Line number where key is found; otherwise returns -1.</returns>
+		protected int FindKey(string key, int start, int count)
 		{
 			int end = count + start;
-			for (int i = start + 1; i < end; i++)
+			for (int i = start; i < end; i++)
 			{
 				if (_buffer[i].IndexOf(key) == 0
 				    && _buffer[i].IndexOf('=') == key.Length)
@@ -94,7 +135,14 @@ namespace Root.IO
 			return -1;
 		}
 
-		protected internal bool FindRange(string section, out int index, out int count)
+		/// <summary>
+		/// Search a section in current config file.
+		/// </summary>
+		/// <param name="section">Section name to search.</param>
+		/// <param name="index">Line number where is found section.</param>
+		/// <param name="count">Line count from section.</param>
+		/// <returns>True whether section is found; otherwise false.</returns>
+		protected bool FindRange(string section, out int index, out int count)
 		{
 			string sec = "[" + section + "]";
 			count = 0;
@@ -115,11 +163,14 @@ namespace Root.IO
 			return false;
 		}
 
-		protected internal void ReadFile()
+		/// <summary>
+		/// 
+		/// </summary>
+		protected void ReadFile()
 		{
 			SIO.FileStream fs = new System.IO.FileStream(_fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read,
 				System.IO.FileShare.Read);
-			SIO.StreamReader reader = new System.IO.StreamReader(fs);
+			SIO.StreamReader reader = new System.IO.StreamReader(fs, this._encoding, true);
 
 			_buffer = new StringList();
 			_sectionBuffer = new Int32List();
@@ -142,7 +193,7 @@ namespace Root.IO
 			reader.Close();
 		}
 
-		protected internal void SetBasicInfo(string fileName)
+		protected void SetBasicInfo(string fileName)
 		{
 			_fileName = SIO.Path.GetFullPath(fileName);
 
@@ -276,7 +327,7 @@ namespace Root.IO
 			if (!FindRange(section, out index, out count))
 				throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
 
-			int keyIndex = FindKey(key, index, count);
+			int keyIndex = FindKey(key, index + 1, count);
 			if (keyIndex == -1)
 				throw new Exception(resExceptions.KeyNotFound.Replace("%var", key));
 
@@ -324,7 +375,7 @@ namespace Root.IO
 				return;
 			}
 
-			int keyIndex = FindKey(key, index, count);
+			int keyIndex = FindKey(key, index + 1, count);
 			if (keyIndex == -1)
 			{
 				_buffer.Insert(index + count, key + "=" + value);
@@ -403,7 +454,7 @@ namespace Root.IO
 			if (!FindRange(section, out index, out count))
 				throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
 
-			int keyIndex = FindKey(key, index, count);
+			int keyIndex = FindKey(key, index + 1, count);
 			if (keyIndex == -1)
 				throw new Exception(resExceptions.KeyNotFound.Replace("%var", key));
 
