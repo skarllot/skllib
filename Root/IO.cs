@@ -36,12 +36,20 @@ namespace Root.IO
 
 		#region Constructors
 		
+		/// <summary>
+		/// Initializes a new ConfigFileBase.
+		/// </summary>
+		/// <param name="fileName">The file name to handle configurations.</param>
 		protected ConfigFileBase(string fileName)
 			: this(fileName, System.Text.Encoding.UTF8)
 		{
-			
 		}
 		
+		/// <summary>
+		/// Initializes a new ConfigFileBase.
+		/// </summary>
+		/// <param name="fileName">The file name to handle configurations.</param>
+		/// <param name="encoding">Encoding of configuration file.</param>
 		protected ConfigFileBase(string fileName, System.Text.Encoding encoding)
 		{
 			if (fileName == null)
@@ -144,13 +152,13 @@ namespace Root.IO
 		/// <returns>True whether section is found; otherwise false.</returns>
 		protected bool FindRange(string section, out int index, out int count)
 		{
-			string sec = "[" + section + "]";
+			section = "[" + section + "]";
 			count = 0;
 			index = -1;
 
 			for (int i = 0; i < _sectionBuffer.Count; i++)
 			{
-				if (_buffer[_sectionBuffer[i]] == sec)
+				if (_buffer[_sectionBuffer[i]] == section)
 				{
 					index = _sectionBuffer[i];
 					if (i + 1 == _sectionBuffer.Count)
@@ -164,7 +172,7 @@ namespace Root.IO
 		}
 
 		/// <summary>
-		/// 
+		/// Reads the file and fills all buffers.
 		/// </summary>
 		protected void ReadFile()
 		{
@@ -193,6 +201,10 @@ namespace Root.IO
 			reader.Close();
 		}
 
+		/// <summary>
+		/// Sets full path for file name and verifies directory existence.
+		/// </summary>
+		/// <param name="fileName">The configuration file.</param>
 		protected void SetBasicInfo(string fileName)
 		{
 			_fileName = SIO.Path.GetFullPath(fileName);
@@ -219,16 +231,16 @@ namespace Root.IO
 		/// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
 		/// <exception cref="SIO.DirectoryNotFoundException">The specifield directory was not found.</exception>
 		public ConfigFileWriter(string fileName)
+			: base(fileName)
 		{
-			if (fileName == null)
-				throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
-
-			SetBasicInfo(fileName);
-
 			if (SIO.File.Exists(_fileName))
 				ReadFile();
 		}
 
+		public ConfigFileWriter(string fileName, System.Text.Encoding encoding)
+		{
+		}
+		
 		/// <summary>
 		/// Initilizes a new ConfigFileWriter object pointed to specified file name.
 		/// </summary>
@@ -241,12 +253,8 @@ namespace Root.IO
 		/// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="FileMode.Open"/> flag and the
 		/// specifield file already was not found.</exception>
 		public ConfigFileWriter(string fileName, SIO.FileMode mode)
+			: base(fileName)
 		{
-			if (fileName == null)
-				throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
-
-			SetBasicInfo(fileName);
-
 			bool exists = SIO.File.Exists(_fileName);
 
 			if (mode == SIO.FileMode.CreateNew && exists)
@@ -271,6 +279,7 @@ namespace Root.IO
 		/// Clears entire section, including all entries within the section.
 		/// </summary>
 		/// <param name="section">The section name.</param>
+		/// <param name="remSection">Specifies whether should remove the section itself.</param>
 		/// <exception cref="ArgumentNullException">section parameter is a null reference.</exception>
 		public void ClearSection(string section, bool remSection)
 		{
@@ -297,6 +306,7 @@ namespace Root.IO
 			SIO.FileStream fs = new System.IO.FileStream(_fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write,
 				System.IO.FileShare.Read);
 			SIO.StreamWriter writer = new System.IO.StreamWriter(fs);
+			writer.AutoFlush = true;
 
 			for (int i = 0; i < _buffer.Count; i++)
 			{
@@ -307,6 +317,7 @@ namespace Root.IO
 			}
 
 			writer.Close();
+			writer.Dispose();
 		}
 
 		/// <summary>
@@ -405,6 +416,7 @@ namespace Root.IO
 		/// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
 		/// <exception cref="SIO.FileNotFoundException">The specifield file was not found.</exception>
 		public ConfigFileReader(string fileName)
+			: base(fileName)
 		{
 			if (fileName == null)
 				throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
