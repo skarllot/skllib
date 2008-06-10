@@ -16,13 +16,18 @@ namespace Root.IO
 		#region Fields
 
 		/// <summary>
+		/// Stores the default encoding used by this class.
+		/// </summary>
+		protected static readonly System.Text.Encoding DefaultEncoding;
+		
+		/// <summary>
 		/// Stores a String array where each item is a line from config file.
 		/// </summary>
 		protected StringList _buffer;
 		/// <summary>
 		/// Character encoding to read and write config file.
 		/// </summary>
-		private System.Text.Encoding _encoding;
+		protected System.Text.Encoding _encoding;
 		/// <summary>
 		/// Stores config file name.
 		/// </summary>
@@ -37,11 +42,19 @@ namespace Root.IO
 		#region Constructors
 		
 		/// <summary>
+		/// Initializes static fields.
+		/// </summary>
+		static ConfigFileBase()
+		{
+			DefaultEncoding = System.Text.Encoding.UTF8;
+		}
+		
+		/// <summary>
 		/// Initializes a new ConfigFileBase.
 		/// </summary>
 		/// <param name="fileName">The file name to handle configurations.</param>
 		protected ConfigFileBase(string fileName)
-			: this(fileName, System.Text.Encoding.UTF8)
+			: this(fileName, DefaultEncoding)
 		{
 		}
 		
@@ -55,7 +68,7 @@ namespace Root.IO
 			if (fileName == null)
 				throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
 			
-			this._encoding = System.Text.Encoding.UTF8;
+			this._encoding = encoding;
 			this._fileName = fileName;
 			
 			this.SetBasicInfo(this._fileName);
@@ -238,6 +251,7 @@ namespace Root.IO
 		}
 
 		public ConfigFileWriter(string fileName, System.Text.Encoding encoding)
+			: this(fileName, SIO.FileMode.Create, ConfigFileBase.DefaultEncoding)
 		{
 		}
 		
@@ -253,7 +267,23 @@ namespace Root.IO
 		/// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="FileMode.Open"/> flag and the
 		/// specifield file already was not found.</exception>
 		public ConfigFileWriter(string fileName, SIO.FileMode mode)
-			: base(fileName)
+			: this(fileName, mode, ConfigFileBase.DefaultEncoding)
+		{
+		}
+		
+		/// <summary>
+		/// Initilizes a new ConfigFileWriter object pointed to specified file name.
+		/// </summary>
+		/// <param name="fileName">The file name to writes configurations.</param>
+		/// <param name="mode">Specifies how the specified file should be open.</param>
+		/// <exception cref="ArgumentNullException">fileName is a null reference.</exception>
+		/// <exception cref="SIO.DirectoryNotFoundException">The specifield directory was not found.</exception>
+		/// <exception cref="SIO.IOException">Was specifield <see cref="FileMode.CreateNew"/> flag and the
+		/// specifield file already exists.</exception>
+		/// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="FileMode.Open"/> flag and the
+		/// specifield file already was not found.</exception>
+		public ConfigFileWriter(string fileName, SIO.FileMode mode, System.Text.Encoding encoding)
+			: base(fileName, encoding)
 		{
 			bool exists = SIO.File.Exists(_fileName);
 
@@ -262,7 +292,10 @@ namespace Root.IO
 			else if ((mode == SIO.FileMode.Create || mode == SIO.FileMode.Truncate) && exists)
 			{
 				SIO.File.Delete(_fileName);
-				SIO.File.CreateText(_fileName).Close();
+				SIO.StreamWriter sw = new SIO.StreamWriter(_fileName, false, _encoding);
+				sw.Close();
+				sw.Dispose();
+				exists = false;
 			}
 			else if (mode == SIO.FileMode.Open && !exists)
 				throw new SIO.FileNotFoundException(resExceptions.FileNotFound.Replace("%var", _fileName), _fileName);
@@ -305,7 +338,7 @@ namespace Root.IO
 		{
 			SIO.FileStream fs = new System.IO.FileStream(_fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write,
 				System.IO.FileShare.Read);
-			SIO.StreamWriter writer = new System.IO.StreamWriter(fs);
+			SIO.StreamWriter writer = new System.IO.StreamWriter(fs, _encoding);
 			writer.AutoFlush = true;
 
 			for (int i = 0; i < _buffer.Count; i++)
