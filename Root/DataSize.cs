@@ -19,6 +19,8 @@
 //
 
 using System;
+using System.Globalization;
+using Serialization = System.Runtime.Serialization;
 
 namespace Root
 {

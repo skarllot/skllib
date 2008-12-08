@@ -19,6 +19,7 @@
 //
 
 using System;
+using Serialization = System.Runtime.Serialization;
 
 namespace Root
 {
@@ -474,6 +475,7 @@ namespace Root
 		[ObsoleteAttribute("Should use GetPixelsByDpi(float dpi) instead.", true)]
 		public decimal GetPixelsByDpi(decimal dpi)
 		{
+            throw new NotImplementedException();
 		}
 				
 		/// <summary>
@@ -483,12 +485,13 @@ namespace Root
 		/// <returns>The value in pixels in a specific resolution.</returns>
 		public decimal GetPixelsByDpi(float dpi)
 		{
-			return this.Inches * dpi;
+			return this.Inches * (decimal)dpi;
 		}
 
-        [ObsoleteAttribute("Should use GetPixelsByDpi(float dpi) instead.", true)]
+        [ObsoleteAttribute("Should use GetPixelsByPpm(float ppm) instead.", true)]
         public decimal GetPixelsByPpm(decimal ppm)
         {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -498,7 +501,7 @@ namespace Root
 		/// <returns>The value in pixels in a specific resolution.</returns>
 		public decimal GetPixelsByPpm(float ppm)
 		{
-			return this.Millimeters * ppm;
+			return this.Millimeters * (decimal)ppm;
 		}
 		
 		/// <summary>
@@ -512,7 +515,7 @@ namespace Root
 		}
 
 		/// <summary>
-		/// Gets the value represented by this instance in the specified Imperial unit.
+		/// Gets the value represented by this instance in the specified imperial unit.
 		/// </summary>
 		/// <param name="unit">Specifies a Imperial unit.</param>
 		/// <returns>The value represented by this instance in the specified unit.</returns>
@@ -521,7 +524,35 @@ namespace Root
 			return GetImperial(unit);
 		}
 
-		private void SetSI(decimal value, SILengthUnit unit)
+        /// <summary>
+        /// Sets the value represented by this instance in the specified SI unit.
+        /// </summary>
+        /// <param name="unit">
+        /// The SI unit from value.
+        /// </param>
+        /// <param name="value">
+        /// The value to set.
+        /// </param>
+        public void SetValue(SILengthUnit unit, decimal value)
+        {
+            SetSI(value, unit);
+        }
+
+        /// <summary>
+        /// Sets the value represented by this instance in the specified imperial unit.
+        /// </summary>
+        /// <param name="unit">
+        /// The imperial unit from value.
+        /// </param>
+        /// <param name="value">
+        /// The value to set.
+        /// </param>
+        public void SetValue(ImperialLengthUnit unit, decimal value)
+        {
+            SetImperial(value, unit);
+        }
+
+        private void SetSI(decimal value, SILengthUnit unit)
 		{
 			_val = value * ((decimal)unit / (decimal)DefaultSIUnit);
 			_usVal = _val / 0.9144m;

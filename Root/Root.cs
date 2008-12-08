@@ -19,8 +19,6 @@
 //
 
 using System;
-using System.Globalization;
-using Serialization = System.Runtime.Serialization;
 using stringb = System.Text.StringBuilder;
 
 /// <summary>
