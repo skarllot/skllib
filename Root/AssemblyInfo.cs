@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Root 0.1.36")]
+[assembly: AssemblyTitle("Root 0.2.0")]
 [assembly: AssemblyDescription("Class library to ease common programming tasks.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GodoySoft")]
@@ -15,4 +15,4 @@ using System.Runtime.InteropServices;
 
 // Latest release: 0.1.35.0
 // Major.Minor.Maintenance.Revision
-[assembly: AssemblyVersion("0.2.0.29")]
+[assembly: AssemblyVersion("0.2.0.30")]

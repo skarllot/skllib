@@ -1,4 +1,4 @@
-// IWriteProtected.cs
+// WriteNumber.cs
 //
 //  Copyright (C) 2008 Fabrício Godoy
 //
@@ -20,38 +20,32 @@
 
 using System;
 
-namespace Root
+namespace Root.Globalization
 {
     /// <summary>
-    /// Defines methods that supports read-only instances.
+    /// Stores how writes a number.
     /// </summary>
-    /// <typeparam name="T">Type of current instance.</typeparam>
-    public interface IWriteProtected<T>
+    public struct WriteNumber
     {
-        #region Property
-        
         /// <summary>
-        /// Gets a value indicating whether this instance is read-only.
+        /// A value.
         /// </summary>
-        bool IsReadOnly
-        { get;}
-
-        #endregion
-        
-        #region Methods
-        
-        /// <summary>
-        /// Returns a read-only type-specific wrapper.
-        /// </summary>
-        /// <returns>A read-only type-specific wrapper around this instance.</returns>
-        T ReadOnly();
+        public long value;
 
         /// <summary>
-        /// Creates a shallow copy of the type-specific.
+        /// How <c>value</c> is written.
         /// </summary>
-        /// <returns>A new type-specific, not write protected, copied around this instance.</returns>
-        T Clone();
-        
-        #endregion
+        public string write;
+
+        /// <summary>
+        /// Initializes the WriteNumber struct with loaded values.
+        /// </summary>
+        /// <param name="v">A value.</param>
+        /// <param name="w">How <c>v</c> is written.</param>
+        public WriteNumber(long v, string w)
+        {
+            value = v;
+            write = w;
+        }
     }
 }

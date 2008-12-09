@@ -23,56 +23,56 @@ using System;
 namespace Root
 {
     /// <summary>
-	/// Defines methods to masking support.
-	/// </summary>
-	/// <remarks>
-	/// The IMaskeable interface contains three members, which are intented to support
-	/// masking.
-	/// </remarks>
-	public interface IMaskeable
-	{
-		#region Properties
-		
-		/// <summary>
-		/// Provides a <see cref="String"/> to use as mask.
-		/// </summary>
-		/// <remarks>
-		/// <para>The masker classes uses a mask to filter user-typed <see cref="Char"/> and to
-		/// verify a automatic-typed <see cref="Char"/>.</para>
-		/// <para>To indicate a automatic-typed <see cref="Char"/>, uses "!" before of a
-		/// <see cref="Char"/>.</para>
-		/// <para>The Mask <see cref="String"/> need return true when used in <see cref="IsMatch"/> method,
-		/// masker classes ignores "!" to match the Mask <see cref="String"/>.</para>
-		/// </remarks>
-		string Mask
-		{ get; set; }
+    /// Defines methods to masking support.
+    /// </summary>
+    /// <remarks>
+    /// The IMaskeable interface contains three members, which are intented to support
+    /// masking.
+    /// </remarks>
+    public interface IMaskeable
+    {
+        #region Properties
+        
+        /// <summary>
+        /// Provides a <see cref="String"/> to use as mask.
+        /// </summary>
+        /// <remarks>
+        /// <para>The masker classes uses a mask to filter user-typed <see cref="Char"/> and to
+        /// verify a automatic-typed <see cref="Char"/>.</para>
+        /// <para>To indicate a automatic-typed <see cref="Char"/>, uses "!" before of a
+        /// <see cref="Char"/>.</para>
+        /// <para>The Mask <see cref="String"/> need return true when used in <see cref="IsMatch"/> method,
+        /// masker classes ignores "!" to match the Mask <see cref="String"/>.</para>
+        /// </remarks>
+        string Mask
+        { get; set; }
 
-		/// <summary>
-		/// Gets a value indicating whether this instance is read-only.
-		/// </summary>
-		/// <remarks>
-		/// <para>Masker classes uses this property to verify whether this instance is read-only.</para>
-		/// <para>No read-only instances can generate problems to masker classes, thus, the masker
-		/// class only accept read-only instances.</para>
-		/// </remarks>
-		bool IsReadOnly
-		{ get; }
-		
-		#endregion
+        /// <summary>
+        /// Gets a value indicating whether this instance is read-only.
+        /// </summary>
+        /// <remarks>
+        /// <para>Masker classes uses this property to verify whether this instance is read-only.</para>
+        /// <para>No read-only instances can generate problems to masker classes, thus, the masker
+        /// class only accept read-only instances.</para>
+        /// </remarks>
+        bool IsReadOnly
+        { get; }
+        
+        #endregion
 
-		#region Method
-		
-		/// <summary>
-		/// Indicates whether this instance finds a match in the input string.
-		/// </summary>
-		/// <param name="input">The string to search for a match.</param>
-		/// <returns>true if this instance finds a match; otherwise, false.</returns>
-		/// <remarks>
-		/// <para>Masker classes uses this method to verify whether a user-typed <see cref="String"/> is
-		/// match with Mask.</para>
-		/// </remarks>
-		bool IsMatch(string input);
-		
-		#endregion
-	}
+        #region Method
+        
+        /// <summary>
+        /// Indicates whether this instance finds a match in the input string.
+        /// </summary>
+        /// <param name="input">The string to search for a match.</param>
+        /// <returns>true if this instance finds a match; otherwise, false.</returns>
+        /// <remarks>
+        /// <para>Masker classes uses this method to verify whether a user-typed <see cref="String"/> is
+        /// match with Mask.</para>
+        /// </remarks>
+        bool IsMatch(string input);
+        
+        #endregion
+    }
 }

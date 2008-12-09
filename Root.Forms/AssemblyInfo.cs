@@ -15,4 +15,4 @@ using System.Runtime.InteropServices;
 
 // Latest release: 0.1.6.0
 // Major.Minor.Maintenance.Revision
-[assembly: AssemblyVersion("0.1.7.27")]
+[assembly: AssemblyVersion("0.1.7.30")]

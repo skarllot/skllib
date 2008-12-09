@@ -1,0 +1,7 @@
+2008-12-09	Fabrício Godoy <skarllot@gmail.com>
+	* Root/*, Root.Forms/*:
+	Files reordering and licensing additions.
+
+	* Root/IO/*:
+	Modifications to use desired encoding, fixes issue 3.
+

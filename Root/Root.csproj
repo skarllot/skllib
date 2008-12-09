@@ -56,12 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Cryptography.cs" />
-    <Compile Include="Formatting.cs" />
-    <Compile Include="Globalization.cs" />
-    <Compile Include="IO.cs" />
-    <Compile Include="Numbers.cs" />
-    <Compile Include="Performance.cs" />
     <Compile Include="resExceptions.Designer.cs">
       <DependentUpon>resExceptions.resx</DependentUpon>
     </Compile>
@@ -76,5 +70,20 @@
     <Compile Include="IMaskeable.cs" />
     <Compile Include="IWriteProtected.cs" />
     <Compile Include="DataSize.cs" />
+    <Compile Include="Security\Cryptography\Simple.cs" />
+    <Compile Include="Formatting\FormatStringBase.cs" />
+    <Compile Include="Formatting\GrammarRules.cs" />
+    <Compile Include="Formatting\PostalCode.cs" />
+    <Compile Include="Formatting\Telephones.cs" />
+    <Compile Include="Globalization\NumberWriteInfo.cs" />
+    <Compile Include="Globalization\WriteNumber.cs" />
+    <Compile Include="IO\ConfigFileBase.cs" />
+    <Compile Include="IO\ConfigFileWriter.cs" />
+    <Compile Include="IO\ConfigFileReader.cs" />
+    <Compile Include="Formatting\Numbers.cs" />
+    <Compile Include="Performance\Strings.cs" />
+    <Compile Include="LockedMultiAccess.cs" />
+    <Compile Include="OSInformation.cs" />
+    <Compile Include="Telephone.cs" />
   </ItemGroup>
 </Project>
