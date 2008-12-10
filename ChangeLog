@@ -1,3 +1,17 @@
+2008-12-10  Fabrício Godoy <skarllot@gmail.com>
+	* Root/Performance/Process.cs
+	(TrimMemoryUsage):
+	Allows memory usage trimming from a process, fixes issue 4.
+
+	* Root/resExceptions.resx, resExceptions.pt.resx,
+	resExceptions.Designer.cs
+	(NeedWin2000OrBetter):
+	Added exception message to Root.Performance.Process.TrimMemoryUsage
+	method.
+
+	* ChangeLog:
+	Formatting small fixes.
+
 2008-12-09	Fabrício Godoy <skarllot@gmail.com>
 	* ChangeLog:
 	Added missing messages.
@@ -8,7 +22,7 @@
 	Added a file to store all change messages.
 
 	* Root/IO/ConfigFileBase.cs, Root/IO.ConfigFileReader.cs,
-Root/IO.ConfigFileWriter.cs:
+	Root/IO.ConfigFileWriter.cs:
 	Modifications to use desired encoding, fixes issue 3.
 
 	* Root/*, Root.Forms/*:
@@ -61,8 +75,7 @@ Root/IO.ConfigFileWriter.cs:
 
 2008-04-28	Fabrício Godoy <skarllot@gmail.com>
 	* Root/Root.cs
-	(LenghtSize)(GetPixelsByDpi),
-	(LenghtSize)(GetPixelsByPpm):
+	(LenghtSize)(GetPixelsByDpi), (LenghtSize)(GetPixelsByPpm):
 	Modified to be able get pixels in a specific resolution.
 
 2008-04-28	Fabrício Godoy <skarllot@gmail.com>
@@ -72,8 +85,7 @@ Root/IO.ConfigFileWriter.cs:
 	* Root/IO.cs
 	(ConfigFileBase)(FindKey):
 	Fixed to find a key only in a exact match.
-	(ConfigFileReader),
-	(ConfigFileWriter):
+	(ConfigFileReader), (ConfigFileWriter):
 	Changed to allow heritage.
 
 2008-04-28	Fabrício Godoy <skarllot@gmail.com>

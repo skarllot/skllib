@@ -204,4 +204,7 @@
   <data name="ArgumentNull" xml:space="preserve">
     <value>%var is a null reference.</value>
   </data>
+  <data name="NeedWin2000OrBetter" xml:space="preserve">
+    <value>The method {0} only works on Microsoft Windows 2000 or better.</value>
+  </data>
 </root>

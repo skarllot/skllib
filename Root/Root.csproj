@@ -85,5 +85,6 @@
     <Compile Include="LockedMultiAccess.cs" />
     <Compile Include="OSInformation.cs" />
     <Compile Include="Telephone.cs" />
+    <Compile Include="Performance\Process.cs" />
   </ItemGroup>
 </Project>

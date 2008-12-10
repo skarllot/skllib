@@ -320,5 +320,14 @@ namespace Root {
                 return ResourceManager.GetString("UnsupportedNumber_byNumberWriteInfo", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The method {0} only works on Microsoft Windows 2000 or better..
+        /// </summary>
+        public static string NeedWin2000OrBetter {
+            get {
+                return ResourceManager.GetString("NeedWin2000OrBetter", resourceCulture);
+            }
+        }
     }
 }
