@@ -1,3 +1,11 @@
+2008-12-11  Fabrício Godoy <skarllot@gmail.com>
+	* Root/Performance/Process.cs
+	(TrimMemoryUsage):
+	Fixed exception message.
+
+	* Root/Swap.cs:
+	A static class that allows variables swapping, fixes issue 5.
+
 2008-12-10  Fabrício Godoy <skarllot@gmail.com>
 	* Root/Performance/Process.cs
 	(TrimMemoryUsage):

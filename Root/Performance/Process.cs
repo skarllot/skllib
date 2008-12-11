@@ -51,7 +51,8 @@ namespace Root.Performance
         public static void TrimMemoryUsage(System.Diagnostics.Process process)
         {
             if (!OSInformation.IsWindows2000 && !OSInformation.IsPostWindows2000)
-                throw new PlatformNotSupportedException(resExceptions.NeedWin2000OrBetter);
+                throw new PlatformNotSupportedException(string.Format(
+                    resExceptions.NeedWin2000OrBetter, "Root.Performance.Process.TrimMemoryUsage"));
             
             IntPtr hProcess = process.Handle;
             SetProcessWorkingSetSize(hProcess, (IntPtr)(-1), (IntPtr)(-1));
