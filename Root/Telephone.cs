@@ -158,9 +158,11 @@ namespace Root
         /// Alphabetic mnemonic system used to telephone numbers.
         /// </summary>
         /// <remarks>
-        /// Another oddity of NANP telephone numbering is the popularity of alphabetic dialing. On most US and Canadian telephones,
-        /// three letters appear on each number button from 2 through 9. This accommodates 24 letters. Historically, the letters Q
-        /// and Z were omitted, though on some modern telephones, they are added.
+        /// An oddity of NANP telephone numbering is the popularity of
+        /// alphabetic dialing. On most US and Canadian telephones, three
+        /// letters appear on each number button from 2 through 9. This
+        /// accommodates 24 letters. Historically, the letters Q and Z were
+        /// omitted, though on some modern telephones, they are added.
         /// </remarks>
         public enum AlphabeticMnemonicSystem
         {

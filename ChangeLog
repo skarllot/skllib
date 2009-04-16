@@ -1,3 +1,27 @@
+2009-04-16  Fabrício Godoy <skarllot@gmail.com>
+	* ., Root, Root.Forms:
+	Added file ignore rules.
+
+	* Root.sln, Root.vs2005.sln, Root.vs2008.sln:
+	Created solution files targeting Visual Studio 2005 and 2008.
+
+	* Root/Root.csproj, Root/resExceptions.Designer.cs,
+	Root.Forms/Root.Forms.csproj, Root.Forms/resExceptions.Designer.cs:
+	Updated to new version.
+
+	* Root/AssemblyInfo.cs, Root/DataSize.cs,
+	Root/Formatting/FormatStringBase.cs, Root/Formatting/GrammarRules.cs,
+	Root/Formatting/Numbers.cs, Root/Formatting/PostalCode.cs,
+	Root/Formatting/Telephones.cs, Root/Globalization/NumberWriteInfo.cs,
+	Root/Globalization/WriteNumber.cs, Root/IMaskeable.cs,
+	Root/IO/ConfigFileBase.cs, Root/IO/ConfigFileReader.cs,
+	Root/IO/ConfigFileWriter.cs, Root/IWriteProtected.cs, Root/LengthSize.cs,
+	Root/LockedMultiAccess.cs, Root/OSInformation.cs,
+	Root/Performance/Strings.cs, Root/Root.cs,
+	Root/Security/Cryptography/Simple.cs, Root/Strings.cs, Root/Telephone.cs,
+	Root.Forms/AssemblyInfo.cs, Root.Forms/Masks.cs:
+	Fixed line endings inconsistency.
+
 2008-12-11  Fabrício Godoy <skarllot@gmail.com>
 	* Root/Performance/Process.cs
 	(TrimMemoryUsage):
