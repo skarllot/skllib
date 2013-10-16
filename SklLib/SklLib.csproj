@@ -74,6 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DocumentationFile>bin\Release\SklLib.xml</DocumentationFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\SklLib.xml</DocumentationFile>
@@ -88,13 +89,15 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="resExceptions.Designer.cs">
       <DependentUpon>resExceptions.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="SklLib.cs" />
     <Compile Include="Strings.cs" />
     <EmbeddedResource Include="resExceptions.pt.resx">
     </EmbeddedResource>
     <EmbeddedResource Include="resExceptions.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resExceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="LengthSize.cs" />

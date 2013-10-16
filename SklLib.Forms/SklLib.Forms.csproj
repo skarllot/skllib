@@ -59,6 +59,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <DocumentationFile>bin\Release\SklLib.Forms.xml</DocumentationFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DocumentationFile>bin\Debug\SklLib.Forms.xml</DocumentationFile>
@@ -79,7 +80,7 @@
     </Compile>
     <EmbeddedResource Include="resExceptions.pt.resx" />
     <EmbeddedResource Include="resExceptions.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resExceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>

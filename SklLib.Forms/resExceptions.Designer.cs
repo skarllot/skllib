@@ -22,7 +22,7 @@ namespace SklLib.Forms {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class resExceptions {
+    public class resExceptions {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace SklLib.Forms {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SklLib.Forms.resExceptions", typeof(resExceptions).Assembly);
@@ -51,7 +51,7 @@ namespace SklLib.Forms {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace SklLib.Forms {
         /// <summary>
         ///   Looks up a localized string similar to %var is a null reference..
         /// </summary>
-        internal static string ArgumentNull {
+        public static string ArgumentNull {
             get {
                 return ResourceManager.GetString("ArgumentNull", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace SklLib.Forms {
         /// <summary>
         ///   Looks up a localized string similar to %var argument not is read-only..
         /// </summary>
-        internal static string MustReadOnlyArg {
+        public static string MustReadOnlyArg {
             get {
                 return ResourceManager.GetString("MustReadOnlyArg", resourceCulture);
             }
