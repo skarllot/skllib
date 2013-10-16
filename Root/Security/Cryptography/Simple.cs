@@ -21,7 +21,7 @@
 using System;
 using System.Security.Cryptography;
 
-namespace Root.Security.Cryptography
+namespace SklLib.Security.Cryptography
 {
     /// <summary>
     /// Provides methods to make more easily works with cryptography.

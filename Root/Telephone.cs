@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Stores a complete telephone number; includes country code, area code and

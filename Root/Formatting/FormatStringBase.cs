@@ -21,7 +21,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace Root.Formatting
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Provides base methods to format any <see cref="String"/>.

@@ -22,7 +22,7 @@ using System;
 using System.Globalization;
 using System.Collections.Generic;
 
-namespace Root.Globalization
+namespace SklLib.Globalization
 {
     /// <summary>
     /// Defines how numeric values are written, depending on the culture.

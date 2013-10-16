@@ -2,11 +2,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Root 0.2.0")]
+[assembly: AssemblyTitle("SklLib 0.2.0")]
 [assembly: AssemblyDescription("Class library to ease common programming tasks.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GodoySoft")]
-[assembly: AssemblyProduct("Root.dll")]
+[assembly: AssemblyProduct("SklLib.dll")]
 [assembly: AssemblyCopyright("Copyright (c) 2005-2008 GodoySoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

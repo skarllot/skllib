@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Root.Forms {
+namespace SklLib.Forms {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Root.Forms {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Root.Forms.resExceptions", typeof(resExceptions).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SklLib.Forms.resExceptions", typeof(resExceptions).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Root.Globalization
+namespace SklLib.Globalization
 {
     /// <summary>
     /// Stores how writes a number.

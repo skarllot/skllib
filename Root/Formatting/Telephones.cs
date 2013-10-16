@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Root.Formatting
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Provides methods to format Telephones.

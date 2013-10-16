@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Stores a object protected by multiaccess.

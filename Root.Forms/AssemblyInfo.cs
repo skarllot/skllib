@@ -2,11 +2,11 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Root.Forms 0.1.7")]
+[assembly: AssemblyTitle("SklLib.Forms 0.1.7")]
 [assembly: AssemblyDescription("Class library to ease common programming tasks.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GodoySoft")]
-[assembly: AssemblyProduct("Root.Forms.dll")]
+[assembly: AssemblyProduct("SklLib.Forms.dll")]
 [assembly: AssemblyCopyright("Copyright (c) 2005-2006 GodoySoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

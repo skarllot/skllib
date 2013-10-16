@@ -22,7 +22,7 @@ using System;
 using System.Globalization;
 using stringb = System.Text.StringBuilder;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Provides methods for manipulating, searching and validating <see cref="String"/>.
@@ -112,7 +112,7 @@ namespace Root
         /// The following console application example show how to use AdditionalChars method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         /// 
         /// class Program
         /// {
@@ -317,7 +317,7 @@ namespace Root
         /// The following console application example show how to use EliminateAccents method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         ///
         /// class Program
         /// {
@@ -382,7 +382,7 @@ namespace Root
         /// The following console application example show how to use IsAlphabetic method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         ///
         /// class Program
         /// {
@@ -486,7 +486,7 @@ namespace Root
         /// The following console application example show how to use IsLetterOnly method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         ///
         /// class Program
         /// {
@@ -539,7 +539,7 @@ namespace Root
         /// The following console application example show how to use IsNumeric method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         ///
         /// class Program
         /// {
@@ -585,7 +585,7 @@ namespace Root
         /// The following console application example show how to use IsNumeric method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         /// using System.Globalization;
         ///
         /// class Program
@@ -652,7 +652,7 @@ namespace Root
         /// The following console application example show how to use IsNumeric method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         ///
         /// class Program
         /// {
@@ -709,7 +709,7 @@ namespace Root
         /// The following console application example show how to use IsNumeric method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         ///
         /// class Program
         /// {

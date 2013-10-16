@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using Serialization = System.Runtime.Serialization;
 
-namespace Root.Formatting
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Provides methods to apply grammar rules to strings.

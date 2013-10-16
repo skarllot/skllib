@@ -24,7 +24,7 @@ using SIO = System.IO;
 using StringList = System.Collections.Generic.List<string>;
 using Int32List = System.Collections.Generic.List<int>;
 
-namespace Root.IO
+namespace SklLib.IO
 {
     /// <summary>
     /// Provides base methods to work with configuration files.

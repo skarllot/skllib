@@ -24,7 +24,7 @@ using System;
 /// Namespace where are located classes to high performance,
 /// but can be dangerous.
 /// </summary>
-namespace Root.Performance
+namespace SklLib.Performance
 {
     /// <summary>
     /// <para>Perform fatest operations with Strings.</para>

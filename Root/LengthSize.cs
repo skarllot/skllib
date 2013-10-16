@@ -21,7 +21,7 @@
 using System;
 using Serialization = System.Runtime.Serialization;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Represents a size of length, and ables a conversion between measures.

@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Provides basic information from current operating system.

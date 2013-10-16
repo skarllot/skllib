@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Root.Performance
+namespace SklLib.Performance
 {
     
     /// <summary>
@@ -52,7 +52,7 @@ namespace Root.Performance
         {
             if (!OSInformation.IsWindows2000 && !OSInformation.IsPostWindows2000)
                 throw new PlatformNotSupportedException(string.Format(
-                    resExceptions.NeedWin2000OrBetter, "Root.Performance.Process.TrimMemoryUsage"));
+                    resExceptions.NeedWin2000OrBetter, "SklLib.Performance.Process.TrimMemoryUsage"));
             
             IntPtr hProcess = process.Handle;
             SetProcessWorkingSetSize(hProcess, (IntPtr)(-1), (IntPtr)(-1));

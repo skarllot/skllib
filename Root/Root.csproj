@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
-    <RootNamespace>Root</RootNamespace>
+    <RootNamespace>SklLib</RootNamespace>
     <AssemblyName>Root</AssemblyName>
     <DocumentationFile>bin\Release\Root.xml</DocumentationFile>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>

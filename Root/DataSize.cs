@@ -22,7 +22,7 @@ using System;
 using System.Globalization;
 using Serialization = System.Runtime.Serialization;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Represents a data size, based on bytes multiples.
@@ -344,7 +344,7 @@ namespace Root
         /// The following console application example show how to use DataSize.ToString method.
         /// <code>
         /// using System;
-        /// using Root;
+        /// using SklLib;
         /// 
         /// class Program
         /// {
@@ -402,7 +402,7 @@ namespace Root
         /// <code>
         /// using System;
         /// using System.Globalization;
-        /// using Root;
+        /// using SklLib;
         /// 
         /// class Program
         /// {

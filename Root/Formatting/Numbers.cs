@@ -24,7 +24,7 @@ using System.Globalization;
 /// <summary>
 /// Namespace where are located formatting classes.
 /// </summary>
-namespace Root.Formatting
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Provides methods to format numbers.

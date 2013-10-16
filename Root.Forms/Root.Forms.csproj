@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
-    <RootNamespace>Root.Forms</RootNamespace>
+    <RootNamespace>SklLib.Forms</RootNamespace>
     <AssemblyName>Root.Forms</AssemblyName>
     <DocumentationFile>bin\Release\Root.Forms.xml</DocumentationFile>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>

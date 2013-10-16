@@ -21,7 +21,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace Root.Forms
+namespace SklLib.Forms
 {
 	/// <summary>
 	/// Provides input restrictions to TextBoxBases and ComboBoxes.
@@ -30,7 +30,7 @@ namespace Root.Forms
 	{
 		#region Fields
 
-		Root.IMaskeable _type;
+		SklLib.IMaskeable _type;
 		string _mask;
 		Strings.IndexedChar[] _autoChars;
 		System.Text.StringBuilder _tempMask;
@@ -46,7 +46,7 @@ namespace Root.Forms
 		/// Initializes a new instance and defines type of restriction.
 		/// </summary>
 		/// <param name="type">Type of restriction.</param>
-		public Masks(Root.IMaskeable type)
+		public Masks(SklLib.IMaskeable type)
 		{
 			if (type == null)
 				throw new ArgumentException(resExceptions.ArgumentNull.Replace("%var", "type"));

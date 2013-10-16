@@ -21,7 +21,7 @@
 using System;
 using SIO = System.IO;
 
-namespace Root.IO
+namespace SklLib.IO
 {
     /// <summary>
     /// Provides methods to write into configuration files.

@@ -1,4 +1,4 @@
-// Root.cs
+// SklLib.cs
 //
 //  Copyright (C) 2008 Fabrício Godoy
 //
@@ -24,7 +24,7 @@ using stringb = System.Text.StringBuilder;
 /// <summary>
 /// Namespace where are located basic code.
 /// </summary>
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Represents a generic function that returns a type-specific.

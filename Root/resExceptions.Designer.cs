@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Root {
+namespace SklLib {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Root {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Root.resExceptions", typeof(resExceptions).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SklLib.resExceptions", typeof(resExceptions).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

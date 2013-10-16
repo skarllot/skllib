@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Root.Formatting
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Provides methods to format Postal Codes.
@@ -34,14 +34,14 @@ namespace Root.Formatting
     /// method. To create a PostalCode for the culture of the current thread, use the
     /// <see cref="CurrentInfo"/> property. Use the PostalCode constructor for a writable version.</para>
     /// <para>This class implements the ICloneable interface to enable duplication of PostalCode objects.
-    /// It also implements IMaskeable indicating that this class can be used by Root.Windows.Forms.Mask
+    /// It also implements IMaskeable indicating that this class can be used by SklLib.Windows.Forms.Mask
     /// class.</para>
     /// </remarks>
     /// <example>
     /// The following console application example show how to use PostalCode class.
     /// <code>
     /// using System;
-    /// using Root.Formatting;
+    /// using SklLib.Formatting;
     /// 
     /// class Program
     /// {

@@ -22,7 +22,7 @@ using System;
 using Generics = System.Collections.Generic;
 using SIO = System.IO;
 
-namespace Root.IO
+namespace SklLib.IO
 {
     /// <summary>
     /// Provides methods to read configuration files.

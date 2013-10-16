@@ -20,7 +20,7 @@
 
 using System;
 
-namespace Root
+namespace SklLib
 {
     /// <summary>
     /// Defines methods to masking support.
