@@ -8,9 +8,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README = README
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Root.Forms", "Root.Forms\Root.Forms.csproj", "{1469D762-3A70-4D4D-812D-29B656D78268}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SklLib.Forms", "SklLib.Forms\SklLib.Forms.csproj", "{1469D762-3A70-4D4D-812D-29B656D78268}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Root", "Root\Root.csproj", "{9F7E3C8B-264E-4E7E-B9DE-7845E7232520}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SklLib", "SklLib\SklLib.csproj", "{9F7E3C8B-264E-4E7E-B9DE-7845E7232520}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

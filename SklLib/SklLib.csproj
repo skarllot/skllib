@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <OutputType>Library</OutputType>
     <RootNamespace>SklLib</RootNamespace>
-    <AssemblyName>Root</AssemblyName>
+    <AssemblyName>SklLib</AssemblyName>
     <DocumentationFile>bin\Release\Root.xml</DocumentationFile>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
@@ -72,6 +72,12 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DocumentationFile>bin\Release\SklLib.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\SklLib.xml</DocumentationFile>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
   <ItemGroup>
     <Reference Include="System" />
@@ -81,17 +87,15 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="resExceptions.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>resExceptions.resx</DependentUpon>
     </Compile>
-    <Compile Include="Root.cs" />
+    <Compile Include="SklLib.cs" />
     <Compile Include="Strings.cs" />
     <EmbeddedResource Include="resExceptions.pt.resx">
     </EmbeddedResource>
     <EmbeddedResource Include="resExceptions.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>resExceptions1.Designer.cs</LastGenOutput>
+      <LastGenOutput>resExceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="LengthSize.cs" />
     <Compile Include="IMaskeable.cs" />
