@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SklLib.Forms</RootNamespace>
     <AssemblyName>SklLib.Forms</AssemblyName>
-    <DocumentationFile>bin\Release\Root.Forms.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\SklLib.Forms.xml</DocumentationFile>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
     <WarningLevel>4</WarningLevel>
@@ -32,8 +32,8 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputType>Library</OutputType>
-    <AssemblyName>Root.Forms</AssemblyName>
-    <RootNamespace>Root.Forms</RootNamespace>
+    <AssemblyName>SklLib.Forms</AssemblyName>
+    <RootNamespace>SklLib.Forms</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -45,8 +45,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
     <OutputType>Library</OutputType>
-    <AssemblyName>Root.Forms</AssemblyName>
-    <RootNamespace>Root.Forms</RootNamespace>
+    <AssemblyName>SklLib.Forms</AssemblyName>
+    <RootNamespace>SklLib.Forms</RootNamespace>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>

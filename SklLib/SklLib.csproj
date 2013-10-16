@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SklLib</RootNamespace>
     <AssemblyName>SklLib</AssemblyName>
-    <DocumentationFile>bin\Release\Root.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\SklLib.xml</DocumentationFile>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>
     <WarningLevel>4</WarningLevel>
@@ -47,8 +47,8 @@
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <OutputType>Library</OutputType>
-    <AssemblyName>Root</AssemblyName>
-    <RootNamespace>Root</RootNamespace>
+    <AssemblyName>SklLib</AssemblyName>
+    <RootNamespace>SklLib</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -60,8 +60,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
     <OutputType>Library</OutputType>
-    <AssemblyName>Root</AssemblyName>
-    <RootNamespace>Root</RootNamespace>
+    <AssemblyName>SklLib</AssemblyName>
+    <RootNamespace>SklLib</RootNamespace>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
