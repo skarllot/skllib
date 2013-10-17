@@ -1,6 +1,6 @@
 // ConfigFileBase.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008-2013 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -71,6 +71,7 @@ namespace SklLib.IO
         /// Initializes a new ConfigFileBase.
         /// </summary>
         /// <param name="fileName">The file name to handle configurations.</param>
+        /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
         protected ConfigFileBase(string fileName)
             : this(fileName, DefaultEncoding)
         {
@@ -81,6 +82,7 @@ namespace SklLib.IO
         /// </summary>
         /// <param name="fileName">The file name to handle configurations.</param>
         /// <param name="encoding">Encoding of configuration file.</param>
+        /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
         protected ConfigFileBase(string fileName, System.Text.Encoding encoding)
         {
             if (fileName == null)

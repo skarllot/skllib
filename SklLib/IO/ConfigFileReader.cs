@@ -1,6 +1,6 @@
 // ConfigFileReader.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008-2013 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -38,12 +38,12 @@ namespace SklLib.IO
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
         /// <exception cref="SIO.FileNotFoundException">The specifield file was not found.</exception>
         public ConfigFileReader(string fileName)
-            : base(fileName)
+            : this(fileName, ConfigFileBase.DefaultEncoding)
         {
         }
 
         /// <summary>
-        /// Initilizes a new ConfigFileReader object pointed to specified file name.
+        /// Initilizes a new ConfigFileReader object pointed to specified file name and encoding.
         /// </summary>
         /// <param name="fileName">The file name to reads configurations.</param>
         /// <param name="encoding">Encoding of configuration file.</param>
@@ -52,12 +52,9 @@ namespace SklLib.IO
         public ConfigFileReader(string fileName, System.Text.Encoding encoding)
             : base(fileName, encoding)
         {
-            if (fileName == null)
-                throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
             if (!SIO.File.Exists(fileName))
                 throw new SIO.FileNotFoundException(resExceptions.FileNotFound.Replace("%var", fileName), fileName);
 
-            SetBasicInfo(fileName);
             ReadFile();
         }
 
@@ -72,7 +69,8 @@ namespace SklLib.IO
         /// <param name="key">The key name.</param>
         /// <returns>Value stored into key.</returns>
         /// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
-        /// <exception cref="Exception">section or key was not found.</exception>
+        /// <exception cref="SectionNotFoundException">section was not found.</exception>
+        /// <exception cref="KeyNotFoundException">key was not found.</exception>
         /// <exception cref="SIO.FileLoadException">The key has a invalid value.</exception>
         public string ReadValue(string section, string key)
         {
@@ -83,11 +81,11 @@ namespace SklLib.IO
 
             int index, count;
             if (!FindRange(section, out index, out count))
-                throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
+                throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
 
             int keyIndex = FindKey(key, index + 1, count);
             if (keyIndex == -1)
-                throw new Exception(resExceptions.KeyNotFound.Replace("%var", key));
+                throw new KeyNotFoundException(resExceptions.KeyNotFound.Replace("%var", key));
 
             string str = _buffer[keyIndex];
             int dIdx = str.IndexOf('=');
@@ -119,11 +117,16 @@ namespace SklLib.IO
         /// </summary>
         /// <param name="section">The section where keys are found.</param>
         /// <returns>All keys and values stored into section.</returns>
+        /// <exception cref="ArgumentNullException">section parameter is a null reference.</exception>
+        /// <exception cref="SectionNotFoundException">section was not found.</exception>
         public Generics.KeyValuePair<string, string>[] ReadKeysValues(string section)
         {
+            if (section == null)
+                throw new ArgumentNullException("section", resExceptions.ArgumentNull.Replace("%var", "section"));
+
             int idx = 0, count = 0;
             if (!base.FindRange(section, out idx, out count))
-                throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
+                throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
 
             if (count == 0)
                 return new Generics.KeyValuePair<string, string>[0];

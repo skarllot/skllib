@@ -1,6 +1,6 @@
 // ConfigFileWriter.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008-2013 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -41,6 +41,11 @@ namespace SklLib.IO
         {
         }
 
+        /// <summary>
+        /// Initilizes a new ConfigFileWriter object pointed to specified file name and encoding.
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="encoding"></param>
         public ConfigFileWriter(string fileName, System.Text.Encoding encoding)
             : base(fileName, encoding)
         {
@@ -107,6 +112,7 @@ namespace SklLib.IO
         /// <param name="section">The section name.</param>
         /// <param name="remSection">Specifies whether should remove the section itself.</param>
         /// <exception cref="ArgumentNullException">section parameter is a null reference.</exception>
+        /// <exception cref="SectionNotFoundException">section was not found.</exception>
         public void ClearSection(string section, bool remSection)
         {
             if (section == null)
@@ -114,7 +120,7 @@ namespace SklLib.IO
 
             int index, count;
             if (!FindRange(section, out index, out count))
-                throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
+                throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
 
             _buffer.RemoveRange(index, count);
 
@@ -152,7 +158,8 @@ namespace SklLib.IO
         /// <param name="section">The section name where key is found.</param>
         /// <param name="key">The key name.</param>
         /// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
-        /// <exception cref="Exception">section or key was not found.</exception>
+        /// <exception cref="SectionNotFoundException">section was not found.</exception>
+        /// <exception cref="KeyNotFoundException">key was not found.</exception>
         public void DeleteKey(string section, string key)
         {
             if (section == null)
@@ -162,11 +169,11 @@ namespace SklLib.IO
 
             int index, count;
             if (!FindRange(section, out index, out count))
-                throw new Exception(resExceptions.SectionNotFound.Replace("%var", section));
+                throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
 
             int keyIndex = FindKey(key, index + 1, count);
             if (keyIndex == -1)
-                throw new Exception(resExceptions.KeyNotFound.Replace("%var", key));
+                throw new KeyNotFoundException(resExceptions.KeyNotFound.Replace("%var", key));
 
             _buffer.RemoveAt(keyIndex);
 
