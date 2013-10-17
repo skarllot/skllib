@@ -26,7 +26,7 @@ namespace SklLib.IO
     /// Exception that is thrown when the section specified for accessing a
     /// configuration file does not match any section in the file.
     /// </summary>
-    class SectionNotFoundException : Exception
+    public class SectionNotFoundException : Exception
     {
         #region Constructors
 

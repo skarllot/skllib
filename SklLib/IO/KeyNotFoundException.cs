@@ -26,7 +26,7 @@ namespace SklLib.IO
     /// Exception that is thrown when the key specified for accessing a
     /// configuration file does not match any key in the section.
     /// </summary>
-    class KeyNotFoundException : Exception
+    public class KeyNotFoundException : Exception
     {
         #region Constructors
 
