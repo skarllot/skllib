@@ -1,6 +1,6 @@
 // SklLib.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008-2013 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,16 @@ namespace SklLib
     /// <typeparam name="T">Any type-specific.</typeparam>
     /// <returns>Specified type-specific.</returns>
     public delegate T GetType<T>();
+
+    /// <summary>
+    /// Represents a generic function that returns a type-specific and receives
+    /// another type-specific.
+    /// </summary>
+    /// <typeparam name="Ret">Any type-specific to return.</typeparam>
+    /// <typeparam name="P1">Any type-specific to receive.</typeparam>
+    /// <param name="param1">First parameter.</param>
+    /// <returns>Specified type-specific.</returns>
+    public delegate Ret GetType<Ret, P1>(P1 param1);
 
     /// <summary>
     /// Byte multiples.

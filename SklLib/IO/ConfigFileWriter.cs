@@ -135,17 +135,26 @@ namespace SklLib.IO
         /// </summary>
         public void WriteChanges()
         {
-            SIO.FileStream fs = new System.IO.FileStream(_fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write,
-                System.IO.FileShare.Read);
+            SIO.FileStream fs = new System.IO.FileStream(_fileName, System.IO.FileMode.Create,
+                System.IO.FileAccess.Write, System.IO.FileShare.Read);
             SIO.StreamWriter writer = new System.IO.StreamWriter(fs, _encoding);
             writer.AutoFlush = true;
 
-            for (int i = 0; i < _buffer.Count; i++)
+            bool first = true;
+            foreach (string[] item in _buffer)
             {
-                if (i != 0 && _sectionBuffer.Contains(i))
-                    writer.WriteLine();        // blank line before a section.
-                
-                writer.WriteLine(_buffer[i]);
+                // Is section
+                if (item.Length == 1)
+                {
+                    if (!first)
+                        writer.WriteLine();     // blank line before a section.
+                    writer.WriteLine(_secPrefix + item[0] + _secSuffix);
+                }
+                else // Is key/value
+                {
+                    writer.WriteLine(item[0] + _keyValueSep + item[1]);
+                }
+                first = false;
             }
 
             writer.Close();
@@ -208,29 +217,28 @@ namespace SklLib.IO
             if (Strings.HasControlChar(value))
                 throw new ArgumentException(resExceptions.InvalidChar_Value.Replace("%var", value));
 
-            string keyLine = key + "=" + value;
-
             int index, count;
             // Section not found, then creates new
             if (!FindRange(section, out index, out count))
             {
                 _sectionBuffer.Add(_buffer.Count);
-                _buffer.Add("[" + section + "]");
-                _buffer.Add(keyLine);
-                return;
-            }
-
-            int keyIndex = FindKey(key, index + 1, count);
-            if (keyIndex == -1)
-            {
-                _buffer.Insert(index + count, key + "=" + value);
-
-                int bIdx = _sectionBuffer.IndexOf(index);
-                for (int i = bIdx + 1; i < _sectionBuffer.Count; i++)
-                    _sectionBuffer[i] += 1;
+                _buffer.Add(new string[] { section });
+                _buffer.Add(new string[] { key, value });
             }
             else
-                _buffer[keyIndex] = key + "=" + value;
+            {
+                int keyIndex = FindKey(key, index + 1, count);
+                if (keyIndex == -1)
+                {
+                    _buffer.Insert(index + count, new string[] { key, value });
+
+                    int bIdx = _sectionBuffer.IndexOf(index);
+                    for (int i = bIdx + 1; i < _sectionBuffer.Count; i++)
+                        _sectionBuffer[i] += 1;
+                }
+                else
+                    _buffer[keyIndex][1] = value;
+            }
         }
 
         #endregion

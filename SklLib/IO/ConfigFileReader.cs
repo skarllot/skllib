@@ -79,20 +79,11 @@ namespace SklLib.IO
             if (key == null)
                 throw new ArgumentNullException("key", resExceptions.ArgumentNull.Replace("%var", "key"));
 
-            int index, count;
-            if (!FindRange(section, out index, out count))
-                throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
-
-            int keyIndex = FindKey(key, index + 1, count);
+            int keyIndex = FindKey(section, key);
             if (keyIndex == -1)
                 throw new KeyNotFoundException(resExceptions.KeyNotFound.Replace("%var", key));
 
-            string str = _buffer[keyIndex];
-            int dIdx = str.IndexOf('=');
-            if (dIdx == -1 || dIdx == str.Length - 1)
-                throw new SIO.FileLoadException(resExceptions.InvalidFile.Replace("%var", _fileName), _fileName);
-
-            return str.Substring(dIdx + 1);
+            return _buffer[keyIndex][1];
         }
 
         /// <summary>
@@ -101,13 +92,11 @@ namespace SklLib.IO
         /// <returns>All sections name read.</returns>
         public string[] ReadSectionsName()
         {
-            string[] sects = new string[base._sectionBuffer.Count];
+            int len = _sectionBuffer.Count;
+            string[] sects = new string[len];
 
-            for (int i = 0; i < base._sectionBuffer.Count; i++)
-            {
-                sects[i] = base._buffer[base._sectionBuffer[i]];
-                sects[i] = sects[i].Substring(1, sects[i].Length - 2);
-            }
+            for (int i = 0; i < len; i++)
+                sects[i] = _buffer[_sectionBuffer[i]][0];
 
             return sects;
         }
@@ -133,14 +122,11 @@ namespace SklLib.IO
             Generics.KeyValuePair<string, string>[] ret =
                 new Generics.KeyValuePair<string, string>[count];
 
-            string[] keyValue;
             for (int i = 0; i < count - 1; i++)
             {
                 idx++;
-                keyValue = base._buffer[idx].Split('=');
-                
                 ret[i] = new Generics.KeyValuePair<string, string>(
-                    keyValue[0], keyValue[1]);
+                    _buffer[idx][0], _buffer[idx][1]);
             }
 
             return ret;
