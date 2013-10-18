@@ -64,8 +64,8 @@ namespace SklLib
         /// <summary>
         /// Determines whether two specified instances of Telephone are equal.
         /// </summary>
-        /// <param name="l">A Telephone.</param>
-        /// <param name="m">A Telephone.</param>
+        /// <param name="tel1">A Telephone.</param>
+        /// <param name="tel2">A Telephone.</param>
         /// <returns>true if tel1 and tel2 represent the same telephone value; otherwise, false.</returns>
         public static bool operator ==(Telephone tel1, Telephone tel2)
         {
@@ -75,8 +75,8 @@ namespace SklLib
         /// <summary>
         /// Determines whether two specified instances of Telephone are not equal.
         /// </summary>
-        /// <param name="l">A Telephone.</param>
-        /// <param name="m">A Telephone.</param>
+        /// <param name="tel1">A Telephone.</param>
+        /// <param name="tel2">A Telephone.</param>
         /// <returns>true if tel1 and tel2 do not represent the same telephone value; otherwise, false</returns>
         public static bool operator !=(Telephone tel1, Telephone tel2)
         {

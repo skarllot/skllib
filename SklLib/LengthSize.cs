@@ -35,7 +35,13 @@ namespace SklLib
         private decimal _usVal;
         private bool _isImperial;
 
+        /// <summary>
+        /// Defines the default SI lenght unit as meter.
+        /// </summary>
         public const SILengthUnit DefaultSIUnit = SILengthUnit.Meter;
+        /// <summary>
+        /// Defines the default imperial unit as yard.
+        /// </summary>
         public const ImperialLengthUnit DefaultImperialUnit = ImperialLengthUnit.Yard;
 
         #endregion

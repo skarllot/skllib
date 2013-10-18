@@ -440,7 +440,7 @@ namespace SklLib
         /// <summary>
         /// Indicates whether the <see cref="String"/> contains only letters, spaces and numeric chars.
         /// </summary>
-        /// <param name="s"><A <see cref="String"/>./param>
+        /// <param name="s">A <see cref="String"/>.</param>
         /// <param name="decimalNumber">Indicates whether the can be a decimal number.</param>
         /// <returns>true if <c>s</c> is an letter- and space-only and/or numeric String; otherwise, false.</returns>
         public static bool IsAlphabeticAndNumeric(string s, bool decimalNumber)
