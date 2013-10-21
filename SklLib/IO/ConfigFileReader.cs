@@ -139,6 +139,35 @@ namespace SklLib.IO
         {
             base.ReadFile();
         }
+
+        /// <summary>
+        /// Read the value into specifield key.
+        /// </summary>
+        /// <param name="section">The section where key is found.</param>
+        /// <param name="key">The key name.</param>
+        /// <param name="value">Value stored into requested key and section.</param>
+        /// <returns>True is the value was successfully ready; otherwise, false.</returns>
+        /// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
+        /// <exception cref="SectionNotFoundException">section was not found.</exception>
+        /// <exception cref="KeyNotFoundException">key was not found.</exception>
+        /// <exception cref="SIO.FileLoadException">The key has a invalid value.</exception>
+        public bool TryReadValue(string section, string key, out string value)
+        {
+            value = null;
+            if (section == null || key == null)
+                return false;
+
+            int index, count;
+            if (!FindRange(section, out index, out count))
+                return false;
+
+            int keyIndex = FindKey(key, index, count);
+            if (keyIndex == -1)
+                return false;
+
+            value = _buffer[keyIndex][1];
+            return true;
+        }
         
         #endregion
     }
