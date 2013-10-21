@@ -71,7 +71,6 @@ namespace SklLib.IO
         /// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
         /// <exception cref="SectionNotFoundException">section was not found.</exception>
         /// <exception cref="KeyNotFoundException">key was not found.</exception>
-        /// <exception cref="SIO.FileLoadException">The key has a invalid value.</exception>
         public string ReadValue(string section, string key)
         {
             if (section == null)
@@ -147,10 +146,6 @@ namespace SklLib.IO
         /// <param name="key">The key name.</param>
         /// <param name="value">Value stored into requested key and section.</param>
         /// <returns>True is the value was successfully ready; otherwise, false.</returns>
-        /// <exception cref="ArgumentNullException">section or key parameter is a null reference.</exception>
-        /// <exception cref="SectionNotFoundException">section was not found.</exception>
-        /// <exception cref="KeyNotFoundException">key was not found.</exception>
-        /// <exception cref="SIO.FileLoadException">The key has a invalid value.</exception>
         public bool TryReadValue(string section, string key, out string value)
         {
             value = null;
