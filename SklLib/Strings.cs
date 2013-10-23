@@ -818,6 +818,36 @@ namespace SklLib
             return baseStr.ToString();
         }
 
+        /// <summary>
+        /// Splits specified String into chunks of specified size.
+        /// </summary>
+        /// <param name="s">A <see cref="String"/>.</param>
+        /// <param name="chunkSize">The chunk size.</param>
+        /// <returns>An String array from specified String.</returns>
+        /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>chunkSize</c> is less than zero.</exception>
+        public static string[] Split(string s, int chunkSize)
+        {
+            if (s == null)
+                throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
+            if (chunkSize < 0)
+                throw new ArgumentOutOfRangeException(resExceptions.LessThanZero.Replace("%var", "chunkSize"));
+
+            if (chunkSize == 0 || chunkSize >= s.Length)
+                return new string[] { s };
+
+            string[] result = new string[(int)Math.Ceiling(s.Length / (double)chunkSize)];
+            for (int i = 0; i < result.Length; i++)
+            {
+                if (i != result.Length - 1)
+                    result[i] = s.Substring(i * chunkSize, chunkSize);
+                else
+                    result[i] = s.Substring(i * chunkSize);
+            }
+
+            return result;
+        }
+
         // Eliminates accent of a byte character.
         // aByte = A Byte character (Unicode).
         private static void ChangeByte(ref byte aByte)
