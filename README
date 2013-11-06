@@ -1,8 +1,5 @@
-RootLibrary by Fabrício Godoy <skarllot@gmail.com>
+skllib by Fabrício Godoy <skarllot@gmail.com>
 
-Root library is a library to ease common programming tasks.
+SklLib library is a library to ease common programming tasks.
 
-http://rootlibrary.googlecode.com
-
-To get development release go to following site:
-http://rootlibrary.googlecode.com/svn/trunk
+https://github.com/skarllot/skllib
