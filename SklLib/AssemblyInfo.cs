@@ -14,5 +14,5 @@ using System.Runtime.InteropServices;
 
 // Latest release: 0.2.0.43
 // Major.Minor.Maintenance.Revision
-[assembly: AssemblyVersion("0.2.1.44")]
-[assembly: AssemblyFileVersionAttribute("0.2.1.44")]
+[assembly: AssemblyVersion("0.2.1.45")]
+[assembly: AssemblyFileVersionAttribute("0.2.1.45")]

@@ -255,7 +255,7 @@ namespace SklLib.IO
                         !idMatcher.IsMatch(section))
                         return finalize(false);
 
-                    _buffer.Add(new string[] { section.ToLower() });
+                    _buffer.Add(new string[] { section });
                     _sectionBuffer.Add(idx);
                 }
                 else
@@ -272,7 +272,7 @@ namespace SklLib.IO
                         !idMatcher.IsMatch(key))
                         return finalize(false);
 
-                    _buffer.Add(new string[] { key.ToLower(), value });
+                    _buffer.Add(new string[] { key, value });
                 }
                 idx++;
             }
@@ -294,7 +294,7 @@ namespace SklLib.IO
             for (int i = start; i < end; i++)
             {
                 if (_buffer[i].Length == 2
-                    && _buffer[i][0] == key)
+                    && _buffer[i][0].ToLower() == key)
                     return i;
             }
             return -1;
@@ -309,8 +309,6 @@ namespace SklLib.IO
         /// <exception cref="SectionNotFoundException">section was not found.</exception>
         protected int FindKey(string section, string key)
         {
-            section = section.ToLower();
-            key = key.ToLower();
             int index, count;
             if (!FindRange(section, out index, out count))
                 throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
@@ -333,7 +331,7 @@ namespace SklLib.IO
 
             for (int i = 0; i < _sectionBuffer.Count; i++)
             {
-                if (_buffer[_sectionBuffer[i]][0] == section)
+                if (_buffer[_sectionBuffer[i]][0].ToLower() == section)
                 {
                     index = _sectionBuffer[i];
                     if (i + 1 == _sectionBuffer.Count)

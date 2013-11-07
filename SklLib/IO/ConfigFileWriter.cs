@@ -222,8 +222,8 @@ namespace SklLib.IO
             if (!FindRange(section, out index, out count))
             {
                 _sectionBuffer.Add(_buffer.Count);
-                _buffer.Add(new string[] { section.ToLower() });
-                _buffer.Add(new string[] { key.ToLower(), value });
+                _buffer.Add(new string[] { section });
+                _buffer.Add(new string[] { key, value });
             }
             else
             {
@@ -231,7 +231,7 @@ namespace SklLib.IO
                 // Key not found, then creates new
                 if (keyIndex == -1)
                 {
-                    _buffer.Insert(index + count, new string[] { key.ToLower(), value });
+                    _buffer.Insert(index + count, new string[] { key, value });
 
                     int bIdx = _sectionBuffer.IndexOf(index);
                     for (int i = bIdx + 1; i < _sectionBuffer.Count; i++)
