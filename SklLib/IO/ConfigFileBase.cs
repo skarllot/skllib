@@ -23,6 +23,7 @@ using stringb = System.Text.StringBuilder;
 using SIO = System.IO;
 using StrArrList = System.Collections.Generic.List<string[]>;
 using Int32List = System.Collections.Generic.List<int>;
+using System.Text.RegularExpressions;
 
 namespace SklLib.IO
 {
@@ -48,6 +49,11 @@ namespace SklLib.IO
         protected static readonly System.Text.Encoding DefaultEncoding;
 
         /// <summary>
+        /// Defines the default regex rule to identifiers.
+        /// </summary>
+        protected const string DEFAULT_ID_RULE = @"^[A-Za-z]+[A-Za-z0-9_]*$";
+
+        /// <summary>
         /// Stores the default separator between key and value.
         /// </summary>
         protected const string DEFAULT_KEY_VALUE_SEP = "=";
@@ -61,6 +67,11 @@ namespace SklLib.IO
         /// Stores the default suffix that identifies sections.
         /// </summary>
         protected const string DEFAULT_SEC_SUFFIX = "]";
+
+        /// <summary>
+        /// Regex matcher to identifiers.
+        /// </summary>
+        protected static Regex idMatcher;
         
         /// <summary>
         /// Stores a String array where each item is a line from config file.
@@ -109,6 +120,7 @@ namespace SklLib.IO
         static ConfigFileBase()
         {
             DefaultEncoding = System.Text.Encoding.UTF8;
+            idMatcher = new Regex(DEFAULT_ID_RULE, RegexOptions.Compiled);
         }
         
         /// <summary>
@@ -170,31 +182,6 @@ namespace SklLib.IO
         #endregion
 
         #region Methods
-        
-        /// <summary>
-        /// Check whether indicated file is valid configuration file.
-        /// </summary>
-        /// <param name="fileName">File to check validty.</param>
-        /// <returns>True if fileName is a valid cofiguration file; otherwise, false.</returns>
-        /// <exception cref="SIO.FileNotFoundException">The indicated file was not found.</exception>
-        [Obsolete("Method IsValidFile is no longer static.", true)]
-        public static bool IsValidFile(string fileName)
-        {
-            throw new NotImplementedException("Method IsValidFile is no longer static.");
-        }
-
-        /// <summary>
-        /// Check whether indicated file is valid configuration file.
-        /// </summary>
-        /// <param name="fileName">File to check validty.</param>
-        /// <param name="encoding">Encoding to read file.</param>
-        /// <returns>True if fileName is a valid cofiguration file; otherwise, false.</returns>
-        /// <exception cref="SIO.FileNotFoundException">The indicated file was not found.</exception>
-        [Obsolete("Method IsValidFile is no longer static.", true)]
-        public static bool IsValidFile(string fileName, System.Text.Encoding encoding)
-        {
-            throw new NotImplementedException("Method IsValidFile is no longer static.");
-        }
 
         /// <summary>
         /// Check whether current file is valid configuration file.
@@ -265,10 +252,10 @@ namespace SklLib.IO
                         section = section.Trim();
 
                     if (section.Length == 0 ||
-                        !Strings.IsAlphabeticAndNumeric(section))
+                        !idMatcher.IsMatch(section))
                         return finalize(false);
 
-                    _buffer.Add(new string[] { section });
+                    _buffer.Add(new string[] { section.ToLower() });
                     _sectionBuffer.Add(idx);
                 }
                 else
@@ -282,10 +269,10 @@ namespace SklLib.IO
                     }
 
                     if (key.Length == 0 ||
-                        !Strings.IsAlphabeticAndNumeric(key))
+                        !idMatcher.IsMatch(key))
                         return finalize(false);
 
-                    _buffer.Add(new string[] { key, value });
+                    _buffer.Add(new string[] { key.ToLower(), value });
                 }
                 idx++;
             }
@@ -302,6 +289,7 @@ namespace SklLib.IO
         /// <returns>Item index where key is found; otherwise returns -1.</returns>
         protected int FindKey(string key, int start, int count)
         {
+            key = key.ToLower();
             int end = count + start;
             for (int i = start; i < end; i++)
             {
@@ -321,6 +309,8 @@ namespace SklLib.IO
         /// <exception cref="SectionNotFoundException">section was not found.</exception>
         protected int FindKey(string section, string key)
         {
+            section = section.ToLower();
+            key = key.ToLower();
             int index, count;
             if (!FindRange(section, out index, out count))
                 throw new SectionNotFoundException(resExceptions.SectionNotFound.Replace("%var", section));
@@ -337,6 +327,7 @@ namespace SklLib.IO
         /// <returns>True whether section is found; otherwise false.</returns>
         protected bool FindRange(string section, out int index, out int count)
         {
+            section = section.ToLower();
             count = 0;
             index = -1;
 

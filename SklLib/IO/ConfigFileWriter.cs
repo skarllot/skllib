@@ -208,10 +208,10 @@ namespace SklLib.IO
             if (value == null)
                 throw new ArgumentNullException("value", resExceptions.ArgumentNull.Replace("%var", "value"));
 
-            if (!Strings.IsAlphabeticAndNumeric(section))
+            if (!idMatcher.IsMatch(section))
                 throw new ArgumentException(resExceptions.InvalidChar_Section.Replace("%var", section));
 
-            if (!Strings.IsAlphabeticAndNumeric(key))
+            if (!idMatcher.IsMatch(key))
                 throw new ArgumentException(resExceptions.InvalidChar_Key.Replace("%var", key));
 
             if (Strings.HasControlChar(value))
@@ -222,15 +222,16 @@ namespace SklLib.IO
             if (!FindRange(section, out index, out count))
             {
                 _sectionBuffer.Add(_buffer.Count);
-                _buffer.Add(new string[] { section });
-                _buffer.Add(new string[] { key, value });
+                _buffer.Add(new string[] { section.ToLower() });
+                _buffer.Add(new string[] { key.ToLower(), value });
             }
             else
             {
                 int keyIndex = FindKey(key, index + 1, count);
+                // Key not found, then creates new
                 if (keyIndex == -1)
                 {
-                    _buffer.Insert(index + count, new string[] { key, value });
+                    _buffer.Insert(index + count, new string[] { key.ToLower(), value });
 
                     int bIdx = _sectionBuffer.IndexOf(index);
                     for (int i = bIdx + 1; i < _sectionBuffer.Count; i++)
