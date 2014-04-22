@@ -1,6 +1,6 @@
 // SklLib.cs
 //
-//  Copyright (C) 2008-2013 Fabrício Godoy
+//  Copyright (C) 2008-2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -112,81 +112,6 @@ namespace SklLib
         /// </summary>
         Kilometer = 1000000
     };
-
-    /// <summary>
-    /// Identifies a operating System version.
-    /// </summary>
-    public enum OSVersion
-    {
-        /// <summary>
-        /// Unidentifield Windows Version
-        /// </summary>
-        Unidentifield,
-        /// <summary>
-        /// Windows Compact Edition oldest than 3.x
-        /// </summary>
-        WindowsCEOld,
-        /// <summary>
-        /// Windows Compact Edition 3.x
-        /// </summary>
-        WindowsCE3,
-        /// <summary>
-        /// Windows Compact Edition 4.x
-        /// </summary>
-        WindowsCE4,
-        /// <summary>
-        /// Windows Compact Edition 5.x
-        /// </summary>
-        WindowsCE5,
-        /// <summary>
-        /// Windows Compact Edition 6.x
-        /// </summary>
-        WindowsCE6,
-        /// <summary>
-        /// Windows Compact Edition newest than 6.x
-        /// </summary>
-        WindowsCENew,
-        /// <summary>
-        /// Windows 95
-        /// </summary>
-        Windows95,
-        /// <summary>
-        /// Windows 98
-        /// </summary>
-        Windows98,
-        /// <summary>
-        /// Windows 98 Second Edition
-        /// </summary>
-        Windows98SE,
-        /// <summary>
-        /// Windows Millenium Edition
-        /// </summary>
-        WindowsME,
-        /// <summary>
-        /// Windows NT 4.x
-        /// </summary>
-        WindowsNT4,
-        /// <summary>
-        /// Windows 2000
-        /// </summary>
-        Windows2000,
-        /// <summary>
-        /// Windows XP
-        /// </summary>
-        WindowsXP,
-        /// <summary>
-        /// Windows Server 2003
-        /// </summary>
-        WindowsServer2003,
-        /// <summary>
-        /// Windows Vista
-        /// </summary>
-        WindowsVista,
-        /// <summary>
-        /// Windows newest than Vista
-        /// </summary>
-        WindowsNew
-    }
 
     /// <summary>
     /// Imperial linear units.

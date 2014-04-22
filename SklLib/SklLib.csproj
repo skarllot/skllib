@@ -87,6 +87,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Environment\AssemblyInfo.cs" />
+    <Compile Include="Environment\OSNTClientVersion.cs" />
+    <Compile Include="Environment\OSNTVersion.cs" />
+    <Compile Include="Environment\OSServerVersion.cs" />
+    <Compile Include="Environment\OSOldVersion.cs" />
     <Compile Include="IO\KeyNotFoundException.cs" />
     <Compile Include="IO\SectionNotFoundException.cs" />
     <Compile Include="resExceptions.Designer.cs">
@@ -119,7 +124,7 @@
     <Compile Include="Formatting\Numbers.cs" />
     <Compile Include="Performance\Strings.cs" />
     <Compile Include="LockedMultiAccess.cs" />
-    <Compile Include="OSInformation.cs" />
+    <Compile Include="Environment\OSInformation.cs" />
     <Compile Include="Telephone.cs" />
     <Compile Include="Performance\Process.cs" />
     <Compile Include="Swap.cs" />

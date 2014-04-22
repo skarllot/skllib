@@ -1,6 +1,6 @@
 // Process.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
 //
 //
 
+using SklLib.Environment;
 using System;
 
 namespace SklLib.Performance
