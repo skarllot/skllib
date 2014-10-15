@@ -23,7 +23,7 @@ namespace SklLib.IO
     /// <summary>
     /// Provides base methods to implement a class to represent a configuration file reader.
     /// </summary>
-    abstract class ConfigReaderBase : IValidatable
+    public abstract class ConfigReaderBase : IValidatable
     {
         #region Fields
 
