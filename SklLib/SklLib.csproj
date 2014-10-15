@@ -92,6 +92,8 @@
     <Compile Include="Environment\OSNTVersion.cs" />
     <Compile Include="Environment\OSServerVersion.cs" />
     <Compile Include="Environment\OSOldVersion.cs" />
+    <Compile Include="IO\ConfigReaderBase.cs" />
+    <Compile Include="IO\IValidatable.cs" />
     <Compile Include="IO\KeyNotFoundException.cs" />
     <Compile Include="IO\SectionNotFoundException.cs" />
     <Compile Include="resExceptions.Designer.cs">
