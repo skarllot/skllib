@@ -87,6 +87,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Diagnostics\EventId.cs" />
+    <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Environment\AssemblyInfo.cs" />
     <Compile Include="Environment\OSNTClientVersion.cs" />
     <Compile Include="Environment\OSNTVersion.cs" />
