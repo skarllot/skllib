@@ -1,6 +1,6 @@
 ﻿// EventId.cs
 //
-// Copyright (C) 2013 Fabrício Godoy
+// Copyright (C) 2014 Fabrício Godoy
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -20,17 +20,65 @@ using System;
 
 namespace SklLib.Diagnostics
 {
-    public enum EventId : int
+    /// <summary>
+    /// Defines identification values to logging events.
+    /// </summary>
+    public class EventId : EnumClass<ushort>
     {
+        // ---------------------------
         // Service related codes (0-9)
-        ServiceStateChanged = 0,
-        ServiceInsufficientWaitTime = 1,
-        EventLogCreated = 2,
+        // ---------------------------
+        /// <summary>
+        /// Evend ID used when service was started or stopped (0).
+        /// </summary>
+        public static readonly EventId ServiceStateChanged = new EventId(0);
+        /// <summary>
+        /// Event ID used when service running time is bigger than loop wait time (1).
+        /// </summary>
+        public static readonly EventId ServiceInsufficientWaitTime = new EventId(1);
+        /// <summary>
+        /// Event ID used when a new source of event log is created (2).
+        /// </summary>
+        public static readonly EventId EventLogCreated = new EventId(2);
 
+
+        // ----------------------------------------
         // Configuration file related codes (10-29)
-        ConfigFileNotFound = 10,
+        // ----------------------------------------
+        /// <summary>
+        /// Event ID used when a configuration file is not found (10).
+        /// </summary>
+        public static readonly EventId ConfigFileNotFound = new EventId(10);
+        /// <summary>
+        /// Event ID used when has a error to load a configuration file (11).
+        /// </summary>
+        public static readonly EventId ConfigFileLoadError = new EventId(11);
+        /// <summary>
+        /// Event ID used when has a error to reload a configuration file (12).
+        /// </summary>
+        public static readonly EventId ConfigFileReloadError = new EventId(12);
+        /// <summary>
+        /// Event ID used when a configuration file was reloaded successfully (13).
+        /// </summary>
+        public static readonly EventId ConfigFileReloaded = new EventId(13);
 
-        // Unhandled error code (65535)
-        UnexpectedError = UInt16.MaxValue
+
+        // -------------------------------
+        // Unhandled related codes (65535)
+        // -------------------------------
+        /// <summary>
+        /// Unhandled error code (65535).
+        /// </summary>
+        public static readonly EventId UnexpectedError = new EventId(UInt16.MaxValue);
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of EventId with specified value.
+        /// </summary>
+        /// <param name="value">Value represented by this instance.</param>
+        protected EventId(ushort value) : base(value) { }
+
+        #endregion
     }
 }

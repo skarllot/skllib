@@ -1,6 +1,6 @@
 ﻿// Logger.cs
 //
-// Copyright (C) 2013 Fabrício Godoy
+// Copyright (C) 2014 Fabrício Godoy
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -21,10 +21,16 @@ using System.Diagnostics;
 
 namespace SklLib.Diagnostics
 {
+    /// <summary>
+    /// Provides methods to handle Windows native logging.
+    /// </summary>
     public class Logger
     {
         #region Fields
 
+        /// <summary>
+        /// Defines how much characters can be handled by EventLog.
+        /// </summary>
         const int EVENT_LOG_MAX_LENGTH = 15000;
         EventLog eventLog;
 
@@ -32,16 +38,28 @@ namespace SklLib.Diagnostics
 
         #region Constructors
 
-        public Logger(string source, string log)
+        /// <summary>
+        /// Initializes a new instance of Logger class based on specified source and log name.
+        /// </summary>
+        /// <param name="source">The source of event log entries.</param>
+        /// <param name="logName">The name of the log.</param>
+        /// <exception cref="Exception">Throws when failed to create event log.</exception>
+        public Logger(string source, string logName)
         {
-            eventLog = CreateEventlog(source, log);
+            eventLog = CreateEventlog(source, logName);
         }
 
         #endregion
 
         #region Methods
 
-        public void WriteEntry(string message, EventLogEntryType type, int eventId)
+        /// <summary>
+        /// Writes a new log entry with specified message.
+        /// </summary>
+        /// <param name="message">The message to write to log entry.</param>
+        /// <param name="type">The event type.</param>
+        /// <param name="eventId">The application-unique identifier to log type.</param>
+        public void WriteEntry(string message, EventLogEntryType type, EventId eventId)
         {
             string[] msgArr;
             if (message.Length > EVENT_LOG_MAX_LENGTH) {
@@ -54,7 +72,7 @@ namespace SklLib.Diagnostics
                 eventLog.WriteEntry(item, type, eventId);
         }
 
-        private static EventLog CreateEventlog(string source, string log)
+        private static EventLog CreateEventlog(string source, string logName)
         {
             EventLog result = null;
 
@@ -62,7 +80,7 @@ namespace SklLib.Diagnostics
                 // PS> Remove-EventLog <logname>
                 if (EventLog.SourceExists(source)) {
                     result = new EventLog { Source = source };
-                    if (result.Log != log) {
+                    if (result.Log != logName) {
                         EventLog.DeleteEventSource(source);
                         result.Dispose();
                         result = null;
@@ -70,15 +88,15 @@ namespace SklLib.Diagnostics
                 }
 
                 if (!EventLog.SourceExists(source)) {
-                    EventLog.CreateEventSource(source, log);
-                    result = new EventLog { Source = source, Log = log };
+                    EventLog.CreateEventSource(source, logName);
+                    result = new EventLog { Source = source, Log = logName };
                     result.WriteEntry("Event Log created",
-                        EventLogEntryType.Information, (int)EventId.EventLogCreated);
+                        EventLogEntryType.Information, EventId.EventLogCreated);
                 }
             }
             catch (Exception e) {
                 throw new Exception(string.Format(
-                    "Error creating EventLog (Source: {0} and Log: {1})", source, log), e);
+                    "Error creating EventLog (Source: {0} and Log: {1})", source, logName), e);
             }
 
             return result;
