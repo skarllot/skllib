@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("SklLib 0.3")]
+[assembly: AssemblyTitle("SklLib 0.3.1")]
 [assembly: AssemblyDescription("Class library to ease common programming tasks.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Skarllot")]
@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
-// Latest release: 0.2.1.45
+// Latest release: 0.3.0.42
 // Major.Minor.Maintenance.Revision
-[assembly: AssemblyVersion("0.3.0.42")]
-[assembly: AssemblyFileVersionAttribute("0.3.0.42")]
+[assembly: AssemblyVersion("0.3.1.43")]
+[assembly: AssemblyFileVersionAttribute("0.3.1.43")]

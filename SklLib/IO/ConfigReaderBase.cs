@@ -37,12 +37,21 @@ namespace SklLib.IO
 
         #region Properties
 
+        /// <summary>
+        /// Gets the file name backed by this instance.
+        /// </summary>
         public string FileName { get { return filename; } }
 
         #endregion
 
         #region Methods
 
+        /// <summary>
+        /// Gets the specified key from specified section converted to boolean.
+        /// </summary>
+        /// <param name="section">The configuration file section.</param>
+        /// <param name="key">The configuration file key.</param>
+        /// <returns>The key value as boolean.</returns>
         protected bool GetBoolean(string section, string key)
         {
             bool result;
@@ -54,6 +63,12 @@ namespace SklLib.IO
             return result;
         }
 
+        /// <summary>
+        /// Gets the specified key from specified section converted to integer.
+        /// </summary>
+        /// <param name="section">The configuration file section.</param>
+        /// <param name="key">The configuration file key.</param>
+        /// <returns>The key value as integer.</returns>
         protected int GetInteger(string section, string key)
         {
             int result;
@@ -65,6 +80,12 @@ namespace SklLib.IO
             return result;
         }
 
+        /// <summary>
+        /// Gets the specified key from specified section as string.
+        /// </summary>
+        /// <param name="section">The configuration file section.</param>
+        /// <param name="key">The configuration file key.</param>
+        /// <returns>The key value as string.</returns>
         protected string GetString(string section, string key)
         {
             string val;
@@ -72,11 +93,24 @@ namespace SklLib.IO
             return val;
         }
 
+        /// <summary>
+        /// Gets the specified key from specified section converted to string array.
+        /// </summary>
+        /// <param name="section">The configuration file section.</param>
+        /// <param name="key">The configuration file key.</param>
+        /// <returns>The key value as string array.</returns>
         protected string[] GetCsvString(string section, string key)
         {
             return GetCsvString(section, key, DEFAULT_CSV_SEPARATOR);
         }
 
+        /// <summary>
+        /// Gets the specified key from specified section converted to string array.
+        /// </summary>
+        /// <param name="section">The configuration file section.</param>
+        /// <param name="key">The configuration file key.</param>
+        /// <param name="separator">The character used as separator between array items.</param>
+        /// <returns>The key value as string array.</returns>
         protected string[] GetCsvString(string section, string key, char separator)
         {
             string val;
@@ -87,6 +121,12 @@ namespace SklLib.IO
             return list;
         }
 
+        /// <summary>
+        /// Gets the specified key from specified section converted to TimeSpan.
+        /// </summary>
+        /// <param name="section">The configuration file section.</param>
+        /// <param name="key">The configuration file key.</param>
+        /// <returns>The key value as TimeSpan.</returns>
         protected TimeSpan GetTimeSpan(string section, string key)
         {
             TimeSpan result;
@@ -98,8 +138,15 @@ namespace SklLib.IO
             return result;
         }
 
+        /// <summary>
+        /// Determines whether current instance is valid.
+        /// </summary>
+        /// <returns>True whether is valid; otherwise false.</returns>
         public abstract bool IsValid();
 
+        /// <summary>
+        /// Reads configuration file and populates current instance.
+        /// </summary>
         protected void LoadFile()
         {
             if (cfgreader == null)

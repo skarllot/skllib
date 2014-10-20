@@ -54,12 +54,20 @@ namespace SklLib.Diagnostics
         #region Methods
 
         /// <summary>
+        /// Starts a transaction to write multiple messages to a single log entry.
+        /// </summary>
+        /// <returns>An object to handle a log transaction.</returns>
+        public LogTransaction BeginWriteEntry()
+        {
+            return new LogTransaction(this);
+        }
+
+        /// <summary>
         /// Writes a new log entry with specified message.
         /// </summary>
         /// <param name="message">The message to write to log entry.</param>
-        /// <param name="type">The event type.</param>
-        /// <param name="eventId">The application-unique identifier to log type.</param>
-        public void WriteEntry(string message, EventLogEntryType type, EventId eventId)
+        /// <param name="eventArgs">The event log information data.</param>
+        public void WriteEntry(string message, LogEventArgs eventArgs)
         {
             string[] msgArr;
             if (message.Length > EVENT_LOG_MAX_LENGTH) {
@@ -69,7 +77,7 @@ namespace SklLib.Diagnostics
                 msgArr = new string[] { message };
 
             foreach (string item in msgArr)
-                eventLog.WriteEntry(item, type, eventId);
+                eventLog.WriteEntry(item, eventArgs.EntryType, eventArgs.EventId);
         }
 
         private static EventLog CreateEventlog(string source, string logName)

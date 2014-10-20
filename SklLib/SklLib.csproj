@@ -88,7 +88,9 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Diagnostics\EventId.cs" />
+    <Compile Include="Diagnostics\LogEventArgs.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
+    <Compile Include="Diagnostics\LogTransaction.cs" />
     <Compile Include="Environment\AssemblyInfo.cs" />
     <Compile Include="Environment\OSNTClientVersion.cs" />
     <Compile Include="Environment\OSNTVersion.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="IO\IValidatable.cs" />
     <Compile Include="IO\KeyNotFoundException.cs" />
     <Compile Include="IO\SectionNotFoundException.cs" />
+    <Compile Include="ITransaction.cs" />
     <Compile Include="resExceptions.Designer.cs">
       <DependentUpon>resExceptions.resx</DependentUpon>
       <AutoGen>True</AutoGen>
