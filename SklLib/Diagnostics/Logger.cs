@@ -80,6 +80,17 @@ namespace SklLib.Diagnostics
                 eventLog.WriteEntry(item, eventArgs.EntryType, eventArgs.EventId);
         }
 
+        /// <summary>
+        /// Writes a new log entry with specified message.
+        /// </summary>
+        /// <param name="message">The message to write to log entry.</param>
+        /// <param name="type">The type of event log.</param>
+        /// <param name="eventId">The application-unique identifier to log type.</param>
+        public void WriteEntry(string message, EventLogEntryType type, EventId eventId)
+        {
+            WriteEntry(message, new LogEventArgs(type, eventId));
+        }
+
         private static EventLog CreateEventlog(string source, string logName)
         {
             EventLog result = null;
