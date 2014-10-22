@@ -1,6 +1,6 @@
 // ConfigFileWriter.cs
 //
-//  Copyright (C) 2008-2013 Fabrício Godoy
+//  Copyright (C) 2008-2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -214,7 +214,7 @@ namespace SklLib.IO
             if (!idMatcher.IsMatch(key))
                 throw new ArgumentException(resExceptions.InvalidChar_Key.Replace("%var", key));
 
-            if (Strings.HasControlChar(value))
+            if (value.HasControlChar())
                 throw new ArgumentException(resExceptions.InvalidChar_Value.Replace("%var", value));
 
             int index, count;

@@ -1,6 +1,6 @@
 // Strings.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -39,14 +39,14 @@ namespace SklLib
     {
         /// <summary>
         /// Reports a Array with indexes of the all occurrences of the specified Unicode character
-        /// in indicated string.
+        /// in a string.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <param name="value">A Unicode character to seek.</param>
-        /// <returns>A Array with indexes positions of value if that character is found, or zeroed array
-        /// length if it is not.</returns>
+        /// <returns>A Array with indexes positions of value if that character is found, or empty array
+        /// if it is not.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> is a null reference.</exception>
-        public static int[] AllIndexOf(string str, char value)
+        public static int[] AllIndexOf(this string str, char value)
         {
             int[] result = new int[CountOf(str, value)];
 
@@ -69,14 +69,14 @@ namespace SklLib
 
         /// <summary>
         /// Reports a Array with indexes of the all occurrences of the specified string in
-        /// indicated string.
+        /// a string.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <param name="value">The string to seek.</param>
-        /// <returns>A Array with indexes positions of value if that string is found, or zeroed array length
+        /// <returns>A Array with indexes positions of value if that string is found, or empty array
         /// if it is not.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> or <c>value</c> is a null reference.</exception>
-        public static int[] AllIndexOf(string str, string value)
+        public static int[] AllIndexOf(this string str, string value)
         {
             int[] result = new int[CountOf(str, value)];
 
@@ -98,14 +98,14 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Seeks and stores all of additional characters found in the first <see cref="String"/>,
-        /// that were not found in the second <see cref="String"/>.
+        /// Seeks and stores all of additional characters found in a <see cref="String"/>,
+        /// that were not found in another <see cref="String"/>.
         /// </summary>
         /// <param name="strA">The first <see cref="String"/>.</param>
         /// <param name="strB">The second <see cref="String"/>.</param>
         /// <returns>A <see cref="Array"/> of <see cref="Strings.IndexedChar"/></returns>
         /// <remarks>
-        /// This method seeks which characters that first <see cref="String"/> has, and second
+        /// This method seeks which characters that a <see cref="String"/> has, and another
         /// <see cref="String"/> doesn't have.
         /// </remarks>
         /// <example>
@@ -118,7 +118,7 @@ namespace SklLib
         /// {
         ///     static void Main()
         ///     {
-        ///         Strings.IndexedChar[] indexChr = Strings.AdditionalChars("123#example*", "123example");
+        ///         Strings.IndexedChar[] indexChr = "123#example*".AdditionalChars("123example");
         ///         for (int i = 0; i &lt; indexChr.Length; i++)
         ///             Console.WriteLine("{0}) Char = '{1}' at Index = {2}",
         ///                 i + 1, indexChr[i].character, indexChr[i].index);
@@ -139,15 +139,14 @@ namespace SklLib
         /// 1 |2 |3 |e |x |a |m |p |l |e |* <br/>
         /// 1 |2 |3 |e |x |a |m |p |l |e </pre>
         /// <br></br>
-        /// <para>The first character is '#', because in the second <see cref="String"/>
+        /// <para>The first character is '#', because in another <see cref="String"/>
         /// doesn't have '#' at index 3.</para>
-        /// <para>After, the character at index 3 of first String will removed (123#example* => 123example*).</para>
-        /// <para>Next character not found, in the second <see cref="String"/>, is
-        /// '*' at index 11.</para>
+        /// <para>After, the character at index 3 of current String will removed (123#example* => 123example*).</para>
+        /// <para>Next character not found, in another <see cref="String"/>, is '*' at index 11.</para>
         /// </example>
         /// <exception cref="ArgumentException"><c>strB</c> length is major that <c>strA</c> length.</exception>
         /// <exception cref="ArgumentNullException"><c>strA</c> or <c>strB</c> is null reference.</exception>
-        public static IndexedChar[] AdditionalChars(string strA, string strB)
+        public static IndexedChar[] AdditionalChars(this string strA, string strB)
         {
             if (strA == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "strA"));
@@ -181,12 +180,12 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Counts how many occurrences of number character in indicated string.
+        /// Counts in a string how many occurrences is found of number character.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <returns>Result of number of found occurrences.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> is a null reference.</exception>
-        public static int CountNumericChars(string str)
+        public static int CountNumericChars(this string str)
         {
             if (str == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "str"));
@@ -202,13 +201,13 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Counts how many occurrences of the specified Unicode character in indicated string.
+        /// Counts in a string how many occurrences is found of the specified Unicode character.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <param name="value">A Unicode character to count.</param>
         /// <returns>Result of number of found occurrences.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> is a null reference.</exception>
-        public static int CountOf(string str, char value)
+        public static int CountOf(this string str, char value)
         {
             if (str == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "str"));
@@ -224,13 +223,13 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Counts how many occurrence of the specified string in indicated string.
+        /// Counts in a string how many occurrence is found of the specified string.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <param name="value">The string to count.</param>
         /// <returns>Result of number of found occurrences.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> or <c>value</c> is a null reference.</exception>
-        public static int CountOf(string str, string value)
+        public static int CountOf(this string str, string value)
         {
             if (str == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "str"));
@@ -257,13 +256,13 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Counts how many occurrences in indicated string of each character in a specified array of Unicode characters.
+        /// Counts in a string how many occurrences is found of each character in a specified array of Unicode characters.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <param name="allOf">A Unicode character array containing one or more characters to count.</param>
-        /// <returns>Result of number of all occurrences in indicated string where any character in anyOf was found.</returns>
+        /// <returns>Result of number of found occurrences.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> or <c>allOf</c> is a null reference.</exception>
-        public static int CountOfAll(string str, char[] allOf)
+        public static int CountOfAll(this string str, char[] allOf)
         {
             if (str == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "str"));
@@ -282,14 +281,14 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Counts how many occurrences in indicated string of each string in a specified array of string.
+        /// Counts in a string how many occurrences is found of each string in a specified array of string.
         /// </summary>
         /// <param name="str">String where will be made the search.</param>
         /// <param name="allOf">The string array containing one or more strings to count.</param>
-        /// <returns>Result of number of all occurrences in indicated string where any character in anyOf was found.</returns>
+        /// <returns>Result of number of found occurrences.</returns>
         /// <exception cref="ArgumentNullException"><c>str</c> or <c>allOf</c> is a null reference.</exception>
         /// <exception cref="ArgumentException"><c>str</c> length is major that any <c>allOf element</c> length.</exception>
-        public static int CountOfAll(string str, string[] allOf)
+        public static int CountOfAll(this string str, string[] allOf)
         {
             if (str == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "str"));
@@ -325,8 +324,8 @@ namespace SklLib
         ///        {
         ///            string text1 = "Você, faça estes testes.";
         ///            string text2 = "¿Hará usted estas pruebas?";
-        ///            Console.WriteLine("First example: {0}", Strings.EliminateAccents(text1));
-        ///            Console.WriteLine("Second example: {0}", Strings.EliminateAccents(text2));
+        ///            Console.WriteLine("First example: {0}", text1.EliminateAccents());
+        ///            Console.WriteLine("Second example: {0}", text2.EliminateAccents());
         ///            Console.ReadKey();
         ///        }
         /// }
@@ -337,7 +336,7 @@ namespace SklLib
         /// Second example: ¿Hara usted estas pruebas?
         /// </code>
         /// </example>
-        public static string EliminateAccents(string s)
+        public static string EliminateAccents(this string s)
         {
             if (null == s)
                 return null;
@@ -357,7 +356,7 @@ namespace SklLib
         /// </summary>
         /// <param name="str">A string.</param>
         /// <returns>true if <c>str</c> has any control character; otherwise, false.</returns>
-        public static bool HasControlChar(string str)
+        public static bool HasControlChar(this string str)
         {
             if (str == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
@@ -371,7 +370,7 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> contains only letters and spaces.
+        /// Indicates whether a <see cref="String"/> contains only letters and spaces.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <returns>true if <c>s</c> is an letter- and space-only String; otherwise, false.</returns>
@@ -392,10 +391,10 @@ namespace SklLib
         ///            string text2 = "testing?";
         ///            string text3 = "text3";
         ///            string text4 = "example";
-        ///            Console.WriteLine("First example: {0}", Strings.IsAlphabetic(text1));
-        ///            Console.WriteLine("Second example: {0}", Strings.IsAlphabetic(text2));
-        ///            Console.WriteLine("Third example: {0}", Strings.IsAlphabetic(text3));
-        ///            Console.WriteLine("Fourth example: {0}", Strings.IsAlphabetic(text4));
+        ///            Console.WriteLine("First example: {0}", text1.IsAlphabetic());
+        ///            Console.WriteLine("Second example: {0}", text2.IsAlphabetic());
+        ///            Console.WriteLine("Third example: {0}", text3.IsAlphabetic());
+        ///            Console.WriteLine("Fourth example: {0}", text4.IsAlphabetic());
         ///            Console.ReadKey();
         ///        }
         /// }
@@ -409,7 +408,7 @@ namespace SklLib
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
-        public static bool IsAlphabetic(string s)
+        public static bool IsAlphabetic(this string s)
         {
             if (s == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
@@ -417,45 +416,45 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> contains only letters, spaces and numeric chars.
+        /// Indicates whether a <see cref="String"/> contains only letters, spaces and numeric chars.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <returns>true if <c>s</c> is an letter- and space-only and/or numeric String; otherwise, false.</returns>
-        public static bool IsAlphabeticAndNumeric(string s)
+        public static bool IsAlphabeticAndNumeric(this string s)
         {
             return IsAlphabeticAndNumeric(s, NumberFormatInfo.CurrentInfo, false);
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> contains only letters, spaces and numeric chars.
+        /// Indicates whether a <see cref="String"/> contains only letters, spaces and numeric chars.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <param name="numInfo">Culture specific <see cref="NumberFormatInfo"/>.</param>
         /// <returns>true if <c>s</c> is an letter- and space-only and/or numeric String; otherwise, false.</returns>
-        public static bool IsAlphabeticAndNumeric(string s, NumberFormatInfo numInfo)
+        public static bool IsAlphabeticAndNumeric(this string s, NumberFormatInfo numInfo)
         {
             return IsAlphabeticAndNumeric(s, numInfo, false);
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> contains only letters, spaces and numeric chars.
+        /// Indicates whether a <see cref="String"/> contains only letters, spaces and numeric chars.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
-        /// <param name="decimalNumber">Indicates whether the can be a decimal number.</param>
+        /// <param name="decimalNumber">Indicates whether the number can be decimal.</param>
         /// <returns>true if <c>s</c> is an letter- and space-only and/or numeric String; otherwise, false.</returns>
-        public static bool IsAlphabeticAndNumeric(string s, bool decimalNumber)
+        public static bool IsAlphabeticAndNumeric(this string s, bool decimalNumber)
         {
             return IsAlphabeticAndNumeric(s, NumberFormatInfo.CurrentInfo, decimalNumber);
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> contains only letters, spaces and numeric chars.
+        /// Indicates whether a <see cref="String"/> contains only letters, spaces and numeric chars.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <param name="numInfo">Culture specific <see cref="NumberFormatInfo"/>.</param>
-        /// <param name="decimalNumber">Indicates whether the can be a decimal number.</param>
+        /// <param name="decimalNumber">Indicates whether the number can be decimal.</param>
         /// <returns>true if <c>s</c> is an letter- and space-only and/or numeric String; otherwise, false.</returns>
-        public static bool IsAlphabeticAndNumeric(string s, NumberFormatInfo numInfo, bool decimalNumber)
+        public static bool IsAlphabeticAndNumeric(this string s, NumberFormatInfo numInfo, bool decimalNumber)
         {
             if (s == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
@@ -475,7 +474,7 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> contains only letters.
+        /// Indicates whether a <see cref="String"/> contains only letters.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <returns>true if <c>s</c> is an letter-only String; otherwise, false.</returns>
@@ -496,10 +495,10 @@ namespace SklLib
         ///            string text2 = "testing?";
         ///            string text3 = "text3";
         ///            string text4 = "example";
-        ///            Console.WriteLine("First example: {0}", Strings.IsLetterOnly(text1));
-        ///            Console.WriteLine("Second example: {0}", Strings.IsLetterOnly(text2));
-        ///            Console.WriteLine("Third example: {0}", Strings.IsLetterOnly(text3));
-        ///            Console.WriteLine("Fourth example: {0}", Strings.IsLetterOnly(text4));
+        ///            Console.WriteLine("First example: {0}", text1.IsLetterOnly());
+        ///            Console.WriteLine("Second example: {0}", text2.IsLetterOnly());
+        ///            Console.WriteLine("Third example: {0}", text3.IsLetterOnly());
+        ///            Console.WriteLine("Fourth example: {0}", text4.IsLetterOnly());
         ///            Console.ReadKey();
         ///        }
         /// }
@@ -513,7 +512,7 @@ namespace SklLib
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
-        public static bool IsLetterOnly(string s)
+        public static bool IsLetterOnly(this string s)
         {
             if (s == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
@@ -526,7 +525,7 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> is categorized as a integer number.
+        /// Indicates whether a <see cref="String"/> is categorized as a integer number.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <returns>True if <c>s</c> is numeric; otherwise, false.</returns>
@@ -549,10 +548,10 @@ namespace SklLib
         ///            string text2 = "8.98";
         ///            string text3 = "51687";
         ///            string text4 = "25,598";
-        ///            Console.WriteLine("First example: {0}", Strings.IsNumeric(text1));
-        ///            Console.WriteLine("Second example: {0}", Strings.IsNumeric(text2));
-        ///            Console.WriteLine("Third example: {0}", Strings.IsNumeric(text3));
-        ///            Console.WriteLine("Fourth example: {0}", Strings.IsNumeric(text4));
+        ///            Console.WriteLine("First example: {0}", text1.IsNumeric());
+        ///            Console.WriteLine("Second example: {0}", text2.IsNumeric());
+        ///            Console.WriteLine("Third example: {0}", text3.IsNumeric());
+        ///            Console.WriteLine("Fourth example: {0}", text4.IsNumeric());
         ///            Console.ReadKey();
         ///        }
         ///    }
@@ -566,13 +565,13 @@ namespace SklLib
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
-        public static bool IsNumeric(string s)
+        public static bool IsNumeric(this string s)
         {
             return IsNumeric(s, NumberFormatInfo.CurrentInfo);
         }
 
         /// <summary>
-        /// Indicates whether the <see cref="String"/> is categorized as a integer number.
+        /// Indicates whether a <see cref="String"/> is categorized as a integer number.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <param name="numInfo">Culture specific <see cref="NumberFormatInfo"/>.</param>
@@ -597,10 +596,10 @@ namespace SklLib
         ///            string text2 = "8.98";
         ///            string text3 = "51687";
         ///            string text4 = "25,598";
-        ///            Console.WriteLine("First example: {0}", Strings.IsNumeric(text1, nfi));
-        ///            Console.WriteLine("Second example: {0}", Strings.IsNumeric(text2, nfi));
-        ///            Console.WriteLine("Third example: {0}", Strings.IsNumeric(text3, nfi));
-        ///            Console.WriteLine("Fourth example: {0}", Strings.IsNumeric(text4, nfi));
+        ///            Console.WriteLine("First example: {0}", text1.IsNumeric(nfi));
+        ///            Console.WriteLine("Second example: {0}", text2.IsNumeric(nfi));
+        ///            Console.WriteLine("Third example: {0}", text3.IsNumeric(nfi));
+        ///            Console.WriteLine("Fourth example: {0}", text4.IsNumeric(nfi));
         ///            Console.ReadKey();
         ///        }
         ///    }
@@ -614,7 +613,7 @@ namespace SklLib
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> or <c>numInfo</c> is a null reference.</exception>
-        public static bool IsNumeric(string s, NumberFormatInfo numInfo)
+        public static bool IsNumeric(this string s, NumberFormatInfo numInfo)
         {
             if (s == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
@@ -635,7 +634,7 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Indicates whether the String is categorized as a integer number or
+        /// Indicates whether a String is categorized as a integer number or
         /// a decimal number.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
@@ -663,11 +662,11 @@ namespace SklLib
         ///            string text3 = "51687.547";
         ///            string text4 = "25,598.9";
         ///            string text5 = "87643";
-        ///            Console.WriteLine("First example: {0}", Strings.IsNumeric(text1, true));
-        ///            Console.WriteLine("Second example: {0}", Strings.IsNumeric(text2, true));
-        ///            Console.WriteLine("Third example: {0}", Strings.IsNumeric(text3, true));
-        ///            Console.WriteLine("Fourth example: {0}", Strings.IsNumeric(text4, true));
-        ///            Console.WriteLine("Fifth example: {0}", Strings.IsNumeric(text5, true));
+        ///            Console.WriteLine("First example: {0}", text1.IsNumeric(true));
+        ///            Console.WriteLine("Second example: {0}", text2.IsNumeric(true));
+        ///            Console.WriteLine("Third example: {0}", text3.IsNumeric(true));
+        ///            Console.WriteLine("Fourth example: {0}", text4.IsNumeric(true));
+        ///            Console.WriteLine("Fifth example: {0}", text5.IsNumeric(true));
         ///            Console.ReadKey();
         ///        }
         ///    }
@@ -682,7 +681,7 @@ namespace SklLib
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
-        public static bool IsNumeric(string s, bool decimalNumber)
+        public static bool IsNumeric(this string s, bool decimalNumber)
         {
             NumberFormatInfo numInfo = CultureInfo.CurrentCulture.NumberFormat;
             if (decimalNumber)
@@ -692,7 +691,7 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Indicates whether the String is categorized as a integer number or
+        /// Indicates whether a String is categorized as a integer number or
         /// a decimal number.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
@@ -721,11 +720,11 @@ namespace SklLib
         ///            string text3 = "51687.547";
         ///            string text4 = "25,598.9";
         ///            string text5 = "87643";
-        ///            Console.WriteLine("First example: {0}", Strings.IsNumeric(text1, nfi, true));
-        ///            Console.WriteLine("Second example: {0}", Strings.IsNumeric(text2, nfi, true));
-        ///            Console.WriteLine("Third example: {0}", Strings.IsNumeric(text3, nfi, true));
-        ///            Console.WriteLine("Fourth example: {0}", Strings.IsNumeric(text4, nfi, true));
-        ///            Console.WriteLine("Fifth example: {0}", Strings.IsNumeric(text5, nfi, true));
+        ///            Console.WriteLine("First example: {0}", text1.IsNumeric(nfi, true));
+        ///            Console.WriteLine("Second example: {0}", text2.IsNumeric(nfi, true));
+        ///            Console.WriteLine("Third example: {0}", text3.IsNumeric(nfi, true));
+        ///            Console.WriteLine("Fourth example: {0}", text4.IsNumeric(nfi, true));
+        ///            Console.WriteLine("Fifth example: {0}", text5.IsNumeric(nfi, true));
         ///            Console.ReadKey();
         ///        }
         ///    }
@@ -740,7 +739,7 @@ namespace SklLib
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> or <c>numInfo</c> is a null reference.</exception>
-        public static bool IsNumeric(string s, NumberFormatInfo numInfo, bool decimalNumber)
+        public static bool IsNumeric(this string s, NumberFormatInfo numInfo, bool decimalNumber)
         {
             if (numInfo == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "numInfo"));
@@ -779,7 +778,7 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Repeats specified String to the number of times specified.
+        /// Repeats a String to the number of times specified.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <param name="count">The number of times that <c>s</c> occurs.</param>
@@ -792,14 +791,14 @@ namespace SklLib
         /// method.</para>
         /// <code>
         /// String str = "-=";
-        /// String repeated = RepeatString(str, 10);
+        /// String repeated = str.RepeatString(10);
         /// // The value of repeated String is "-=-=-=-=-=-=-=-=-=-=", "-=" repeated 10 times.
         /// </code>
         /// </example>
         /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><c>count</c> is less than zero, or
         /// <c>s</c> repeated in the specified times, by <c>count</c>, is too big to return.</exception>
-        public static string RepeatString(string s, int count)
+        public static string RepeatString(this string s, int count)
         {
             if (s == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
@@ -819,14 +818,14 @@ namespace SklLib
         }
 
         /// <summary>
-        /// Splits specified String into chunks of specified size.
+        /// Splits a String into chunks of specified size.
         /// </summary>
         /// <param name="s">A <see cref="String"/>.</param>
         /// <param name="chunkSize">The chunk size.</param>
         /// <returns>An String array from specified String.</returns>
         /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
         /// <exception cref="ArgumentOutOfRangeException"><c>chunkSize</c> is less than zero.</exception>
-        public static string[] Split(string s, int chunkSize)
+        public static string[] Split(this string s, int chunkSize)
         {
             if (s == null)
                 throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));

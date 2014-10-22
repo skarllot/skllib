@@ -71,7 +71,7 @@ namespace SklLib.Diagnostics
         {
             string[] msgArr;
             if (message.Length > EVENT_LOG_MAX_LENGTH) {
-                msgArr = SklLib.Strings.Split(message, EVENT_LOG_MAX_LENGTH);
+                msgArr = message.Split(EVENT_LOG_MAX_LENGTH);
             }
             else
                 msgArr = new string[] { message };

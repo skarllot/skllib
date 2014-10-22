@@ -1,6 +1,6 @@
 // Strings.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -37,7 +37,7 @@ namespace SklLib.Performance
         /// rules of the current culture.
         /// </summary>
         /// <param name="str">A Unicode String.</param>
-        public static unsafe void ToUpper(string str)
+        public static unsafe void UnsafeToUpper(this string str)
         {
             fixed (char* pFixed = str)
             {
@@ -55,7 +55,7 @@ namespace SklLib.Performance
         /// The maximum number of characters that can be contained in the memory allocated
         /// by the current instance.
         /// </returns>
-        public static unsafe int GetCapacity(string str)
+        public static unsafe int GetCapacity(this string str)
         {
             fixed (char* p = str)
             {
@@ -73,7 +73,7 @@ namespace SklLib.Performance
         /// This function is redundant, because it accomplishes
         /// the same role as String.Length.
         /// </remarks>
-        public static unsafe int GetLength(string str)
+        public static unsafe int GetLength(this string str)
         {
             fixed (char* p = str)
             {

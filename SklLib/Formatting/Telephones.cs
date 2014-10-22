@@ -1,6 +1,6 @@
 // Telephones.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -111,7 +111,7 @@ namespace SklLib.Formatting
             tel.Expression = @"^\([2-9][0-8]\d\) [2-9]\d{2}-\d{4}$";
             tel.CompactExpression = @"^[2-9][0-8]\d[2-9]\d{6}$";
             tel.Mask = "!(200!)! 200!-0000";
-            tel.RemovableChars = Strings.AdditionalChars("(123) 456-7890", "1234567890");
+            tel.RemovableChars = "(123) 456-7890".AdditionalChars("1234567890");
             tel.isReadOnly = true;
             return tel;
         }
@@ -122,7 +122,7 @@ namespace SklLib.Formatting
             tel.Expression = @"^\(\d{2}\) \d{4}-\d{4}$";
             tel.CompactExpression = @"^\d{10}$";
             tel.Mask = "!(00!)! 0000!-0000";
-            tel.RemovableChars = Strings.AdditionalChars("(12) 3456-7890", "1234567890");
+            tel.RemovableChars = "(12) 3456-7890".AdditionalChars("1234567890");
             tel.isReadOnly = true;
             return tel;
         }
