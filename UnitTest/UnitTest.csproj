@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ExceptionExtension.cs" />
     <Compile Include="Performance\Strings.cs" />
     <Compile Include="resText.Designer.cs">
       <AutoGen>True</AutoGen>
