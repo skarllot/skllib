@@ -40,9 +40,32 @@ namespace SklLib.IO
         /// </summary>
         public string FileName { get { return filename; } }
 
+        /// <summary>
+        /// Gets a list of sections name that is mandatory.
+        /// </summary>
+        protected virtual string[] MandatorySections
+        {
+            get { return new string[0]; }
+        }
+
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Gets a section reader instance from its name.
+        /// </summary>
+        /// <param name="section">The sectio name.</param>
+        /// <returns>A ConfigSectionReaderBase instance.</returns>
+        protected ConfigSectionReaderBase GetSectionByName(string section)
+        {
+            foreach (ConfigSectionReaderBase item in sections) {
+                if (item.SectionName == section)
+                    return item;
+            }
+
+            return null;
+        }
 
         /// <summary>
         /// Gets a new instance ConfigSectionReaderBase class based on section name.
@@ -52,11 +75,29 @@ namespace SklLib.IO
         protected abstract ConfigSectionReaderBase GetSectionReader(string section);
 
         /// <summary>
+        /// Determines whether specified section name exists into current configuration.
+        /// </summary>
+        /// <param name="section">The section name.</param>
+        /// <returns>True whether section is found; otherwise false.</returns>
+        protected bool HasSection(string section)
+        {
+            return GetSectionByName(section) == null ? false : true;
+        }
+
+        /// <summary>
         /// Determines whether current instance is valid.
         /// </summary>
         /// <returns>True whether is valid; otherwise false.</returns>
         public virtual bool IsValid()
         {
+            if (MandatorySections != null
+                && MandatorySections.Length > 0) {
+                foreach (string item in MandatorySections) {
+                    if (!HasSection(item))
+                        return false;
+                }
+            }
+
             foreach (ConfigSectionReaderBase item in sections) {
                 if (!item.IsValid())
                     return false;

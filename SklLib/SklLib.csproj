@@ -98,6 +98,7 @@
     <Compile Include="Environment\OSOldVersion.cs" />
     <Compile Include="EnumClass.cs" />
     <Compile Include="ExceptionExtension.cs" />
+    <Compile Include="IO\ConfigDynamicReaderBase.cs" />
     <Compile Include="IO\ConfigReaderBase.cs" />
     <Compile Include="IO\ConfigSectionReaderBase.cs" />
     <Compile Include="IO\FileInfoExtension.cs" />
