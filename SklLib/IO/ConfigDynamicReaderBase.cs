@@ -63,7 +63,7 @@ namespace SklLib.IO
         /// <summary>
         /// Reads configuration file and populates current instance.
         /// </summary>
-        protected override void LoadFile()
+        public override void LoadFile()
         {
             base.LoadFile();
 

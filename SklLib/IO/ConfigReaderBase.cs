@@ -109,7 +109,7 @@ namespace SklLib.IO
         /// <summary>
         /// Reads configuration file and populates current instance.
         /// </summary>
-        protected virtual void LoadFile()
+        public virtual void LoadFile()
         {
             if (cfgreader == null)
                 cfgreader = new SklLib.IO.ConfigFileReader(filename);
