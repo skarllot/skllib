@@ -27,11 +27,9 @@ namespace SklLib.IO
     {
         #region Fields
 
-        private const char DEFAULT_CSV_SEPARATOR = ';';
-
         protected SklLib.IO.ConfigFileReader cfgreader;
         protected string filename;
-        protected string[] sections;
+        protected ConfigSectionReaderBase[] sections;
 
         #endregion
 
@@ -47,113 +45,41 @@ namespace SklLib.IO
         #region Methods
 
         /// <summary>
-        /// Gets the specified key from specified section converted to boolean.
+        /// Gets a new instance ConfigSectionReaderBase class based on section name.
         /// </summary>
-        /// <param name="section">The configuration file section.</param>
-        /// <param name="key">The configuration file key.</param>
-        /// <returns>The key value as boolean.</returns>
-        protected bool GetBoolean(string section, string key)
-        {
-            bool result;
-            string val;
-            if (!cfgreader.TryReadValue(section, key, out val))
-                return false;
-            if (!bool.TryParse(val, out result))
-                return false;
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the specified key from specified section converted to integer.
-        /// </summary>
-        /// <param name="section">The configuration file section.</param>
-        /// <param name="key">The configuration file key.</param>
-        /// <returns>The key value as integer.</returns>
-        protected int GetInteger(string section, string key)
-        {
-            int result;
-            string val;
-            if (!cfgreader.TryReadValue(section, key, out val))
-                return -1;
-            if (!int.TryParse(val, out result))
-                return -1;
-            return result;
-        }
-
-        /// <summary>
-        /// Gets the specified key from specified section as string.
-        /// </summary>
-        /// <param name="section">The configuration file section.</param>
-        /// <param name="key">The configuration file key.</param>
-        /// <returns>The key value as string.</returns>
-        protected string GetString(string section, string key)
-        {
-            string val;
-            cfgreader.TryReadValue(section, key, out val);
-            return val;
-        }
-
-        /// <summary>
-        /// Gets the specified key from specified section converted to string array.
-        /// </summary>
-        /// <param name="section">The configuration file section.</param>
-        /// <param name="key">The configuration file key.</param>
-        /// <returns>The key value as string array.</returns>
-        protected string[] GetCsvString(string section, string key)
-        {
-            return GetCsvString(section, key, DEFAULT_CSV_SEPARATOR);
-        }
-
-        /// <summary>
-        /// Gets the specified key from specified section converted to string array.
-        /// </summary>
-        /// <param name="section">The configuration file section.</param>
-        /// <param name="key">The configuration file key.</param>
-        /// <param name="separator">The character used as separator between array items.</param>
-        /// <returns>The key value as string array.</returns>
-        protected string[] GetCsvString(string section, string key, char separator)
-        {
-            string val;
-            cfgreader.TryReadValue(section, key, out val);
-            string[] list = new string[0];
-            if (!string.IsNullOrEmpty(val) && !string.IsNullOrEmpty(val.Trim()))
-                list = val.Split(new char[] { separator }, StringSplitOptions.RemoveEmptyEntries);
-            return list;
-        }
-
-        /// <summary>
-        /// Gets the specified key from specified section converted to TimeSpan.
-        /// </summary>
-        /// <param name="section">The configuration file section.</param>
-        /// <param name="key">The configuration file key.</param>
-        /// <returns>The key value as TimeSpan.</returns>
-        protected TimeSpan GetTimeSpan(string section, string key)
-        {
-            TimeSpan result;
-            string val;
-            if (!cfgreader.TryReadValue(section, key, out val))
-                return TimeSpan.MaxValue;
-            if (!TimeSpan.TryParse(val, out result))
-                return TimeSpan.MaxValue;
-            return result;
-        }
+        /// <param name="section">The section name.</param>
+        /// <returns>A new instance of ConfigSectionReaderBase class.</returns>
+        protected abstract ConfigSectionReaderBase GetSectionReader(string section);
 
         /// <summary>
         /// Determines whether current instance is valid.
         /// </summary>
         /// <returns>True whether is valid; otherwise false.</returns>
-        public abstract bool IsValid();
+        public virtual bool IsValid()
+        {
+            foreach (ConfigSectionReaderBase item in sections) {
+                if (!item.IsValid())
+                    return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Reads configuration file and populates current instance.
         /// </summary>
-        protected void LoadFile()
+        protected virtual void LoadFile()
         {
             if (cfgreader == null)
                 cfgreader = new SklLib.IO.ConfigFileReader(filename);
 
             cfgreader.ReloadFile();
-            sections = cfgreader.ReadSectionsName();
+            string[] sectionsName = cfgreader.ReadSectionsName();
+            sections = new ConfigSectionReaderBase[sectionsName.Length];
+
+            for (int i = 0; i < sectionsName.Length; i++) {
+                sections[i] = GetSectionReader(sectionsName[i]);
+            }
         }
 
         #endregion

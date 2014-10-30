@@ -99,6 +99,8 @@
     <Compile Include="EnumClass.cs" />
     <Compile Include="ExceptionExtension.cs" />
     <Compile Include="IO\ConfigReaderBase.cs" />
+    <Compile Include="IO\ConfigSectionReaderBase.cs" />
+    <Compile Include="IO\FileInfoExtension.cs" />
     <Compile Include="IO\IValidatable.cs" />
     <Compile Include="IO\KeyNotFoundException.cs" />
     <Compile Include="IO\SectionNotFoundException.cs" />
