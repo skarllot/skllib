@@ -1,4 +1,4 @@
-﻿// ConfigDynamicReaderBase.cs
+﻿// DynamicIniReaderBase.cs
 //
 // Copyright (C) 2014 Fabrício Godoy
 //
@@ -19,18 +19,18 @@
 using System;
 using System.Collections.Generic;
 
-namespace SklLib.IO
+namespace SklLib.Configuration
 {
     /// <summary>
     /// Provides base methods to implement a class to represent a configuration file reader
     /// that has dynamic named sections.
     /// </summary>
-    public abstract class ConfigDynamicReaderBase : ConfigReaderBase
+    public abstract class DynamicIniReaderBase : IniReaderBase
     {
         #region Fields
 
-        protected ConfigSectionReaderBase[] dynSections;
-        protected ConfigSectionReaderBase[] staticSections;
+        protected IniSectionReaderBase[] dynSections;
+        protected IniSectionReaderBase[] staticSections;
 
         #endregion
 
@@ -49,8 +49,9 @@ namespace SklLib.IO
         /// Gets a section instance based on its index.
         /// </summary>
         /// <param name="index">The index.</param>
-        /// <returns>A instance of ConfigSectionReaderBase class.</returns>
-        protected ConfigSectionReaderBase GetDynamicSection(int index)
+        /// <returns>A instance of IniSectionReaderBase class.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The parameter index is less than zero or is out of array bounds.</exception>
+        protected IniSectionReaderBase GetDynamicSection(int index)
         {
             if (index < 0)
                 throw new ArgumentOutOfRangeException("Parameter index cannot be less than zero.");
@@ -63,14 +64,17 @@ namespace SklLib.IO
         /// <summary>
         /// Reads configuration file and populates current instance.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
+        /// <exception cref="System.IO.FileNotFoundException">The specifield file was not found.</exception>
+        /// <exception cref="System.IO.FileLoadException">The current file is invalid.</exception>
         public override void LoadFile()
         {
             base.LoadFile();
 
             string[] sNames = StaticNamedSections;
-            List<ConfigSectionReaderBase> dSections = new List<ConfigSectionReaderBase>(sections.Length);
-            List<ConfigSectionReaderBase> sSections = new List<ConfigSectionReaderBase>(sections.Length);
-            foreach (ConfigSectionReaderBase item in sections) {
+            List<IniSectionReaderBase> dSections = new List<IniSectionReaderBase>(sections.Length);
+            List<IniSectionReaderBase> sSections = new List<IniSectionReaderBase>(sections.Length);
+            foreach (IniSectionReaderBase item in sections) {
                 if (Array.IndexOf<string>(sNames, item.SectionName) != -1)
                     sSections.Add(item);
                 else

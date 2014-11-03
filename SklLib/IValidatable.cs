@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SklLib.IO
+namespace SklLib
 {
     /// <summary>
     /// Defines a object that can be validated.

@@ -1,4 +1,4 @@
-﻿// ConfigSectionReaderBase.cs
+﻿// IniSectionReaderBase.cs
 //
 // Copyright (C) 2014 Fabrício Godoy
 //
@@ -16,15 +16,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using SklLib.IO;
 using System;
 using System.Text.RegularExpressions;
 
-namespace SklLib.IO
+namespace SklLib.Configuration
 {
     /// <summary>
-    /// Provides base methods to implement a class to represent a section reader from configuration file.
+    /// Provides base methods to implement a class to represent a section reader from INI file.
     /// </summary>
-    public abstract class ConfigSectionReaderBase : IValidatable
+    public abstract class IniSectionReaderBase : IValidatable
     {
         #region Fields
 
@@ -33,7 +34,7 @@ namespace SklLib.IO
         /// </summary>
         public const char DEFAULT_CSV_SEPARATOR = ';';
 
-        protected ConfigFileReader cfgreader;
+        protected IniFileReader cfgreader;
         protected string section;
 
         #endregion
@@ -41,11 +42,11 @@ namespace SklLib.IO
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of ConfigSectionReaderBase class.
+        /// Initializes a new instance of IniSectionReaderBase class.
         /// </summary>
         /// <param name="reader">The configuration file reader.</param>
         /// <param name="section">The section name for this instance.</param>
-        public ConfigSectionReaderBase(ConfigFileReader reader, string section)
+        public IniSectionReaderBase(IniFileReader reader, string section)
         {
             this.cfgreader = reader;
             this.section = section;

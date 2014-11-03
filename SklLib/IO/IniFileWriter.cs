@@ -1,4 +1,4 @@
-// ConfigFileWriter.cs
+// IniFileWriter.cs
 //
 //  Copyright (C) 2008-2014 Fabrício Godoy
 //
@@ -24,29 +24,29 @@ using SIO = System.IO;
 namespace SklLib.IO
 {
     /// <summary>
-    /// Provides methods to write into configuration files.
+    /// Provides methods to write INI files.
     /// </summary>
-    public class ConfigFileWriter : ConfigFileBase
+    public class IniFileWriter : IniFileBase
     {
         #region Constructors
 
         /// <summary>
-        /// Initilizes a new ConfigFileWriter object pointed to specified file name.
+        /// Initilizes a new IniFileWriter object pointed to specified file name.
         /// </summary>
-        /// <param name="fileName">The file name to writes configurations.</param>
+        /// <param name="fileName">The INI file name.</param>
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
         /// <exception cref="SIO.DirectoryNotFoundException">The specifield directory was not found.</exception>
-        public ConfigFileWriter(string fileName)
-            : this(fileName, ConfigFileBase.DefaultEncoding)
+        public IniFileWriter(string fileName)
+            : this(fileName, IniFileBase.DefaultEncoding)
         {
         }
 
         /// <summary>
-        /// Initilizes a new ConfigFileWriter object pointed to specified file name and encoding.
+        /// Initilizes a new IniFileWriter object pointed to specified file name and encoding.
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="encoding"></param>
-        public ConfigFileWriter(string fileName, System.Text.Encoding encoding)
+        /// <param name="fileName">The INI file name.</param>
+        /// <param name="encoding">Encoding of INI file.</param>
+        public IniFileWriter(string fileName, System.Text.Encoding encoding)
             : base(fileName, encoding)
         {
             if (SIO.File.Exists(_fileName))
@@ -54,33 +54,34 @@ namespace SklLib.IO
         }
         
         /// <summary>
-        /// Initilizes a new ConfigFileWriter object pointed to specified file name.
+        /// Initilizes a new IniFileWriter object pointed to specified file name.
         /// </summary>
-        /// <param name="fileName">The file name to writes configurations.</param>
+        /// <param name="fileName">The INI file name.</param>
         /// <param name="mode">Specifies how the specified file should be open.</param>
         /// <exception cref="ArgumentNullException">fileName is a null reference.</exception>
         /// <exception cref="SIO.DirectoryNotFoundException">The specifield directory was not found.</exception>
-        /// <exception cref="SIO.IOException">Was specifield <see cref="FileMode.CreateNew"/> flag and the
+        /// <exception cref="SIO.IOException">Was specifield <see cref="SIO.FileMode.CreateNew"/> flag and the
         /// specifield file already exists.</exception>
-        /// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="FileMode.Open"/> flag and the
+        /// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="SIO.FileMode.Open"/> flag and the
         /// specifield file already was not found.</exception>
-        public ConfigFileWriter(string fileName, SIO.FileMode mode)
-            : this(fileName, mode, ConfigFileBase.DefaultEncoding)
+        public IniFileWriter(string fileName, SIO.FileMode mode)
+            : this(fileName, mode, IniFileBase.DefaultEncoding)
         {
         }
         
         /// <summary>
-        /// Initilizes a new ConfigFileWriter object pointed to specified file name.
+        /// Initilizes a new IniFileWriter object pointed to specified file name.
         /// </summary>
         /// <param name="fileName">The file name to writes configurations.</param>
         /// <param name="mode">Specifies how the specified file should be open.</param>
+        /// <param name="encoding">Encoding of INI file.</param>
         /// <exception cref="ArgumentNullException">fileName is a null reference.</exception>
         /// <exception cref="SIO.DirectoryNotFoundException">The specifield directory was not found.</exception>
-        /// <exception cref="SIO.IOException">Was specifield <see cref="FileMode.CreateNew"/> flag and the
+        /// <exception cref="SIO.IOException">Was specifield <see cref="SIO.FileMode.CreateNew"/> flag and the
         /// specifield file already exists.</exception>
-        /// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="FileMode.Open"/> flag and the
+        /// <exception cref="SIO.FileNotFoundException">Was specifield <see cref="SIO.FileMode.Open"/> flag and the
         /// specifield file already was not found.</exception>
-        public ConfigFileWriter(string fileName, SIO.FileMode mode, System.Text.Encoding encoding)
+        public IniFileWriter(string fileName, SIO.FileMode mode, System.Text.Encoding encoding)
             : base(fileName, encoding)
         {
             bool exists = SIO.File.Exists(_fileName);
@@ -192,7 +193,7 @@ namespace SklLib.IO
         }
 
         /// <summary>
-        /// Writes a value into specifield key.
+        /// Writes a value to specifield key.
         /// </summary>
         /// <param name="section">The section where key is found.</param>
         /// <param name="key">The key name.</param>

@@ -1,4 +1,4 @@
-﻿// ExceptionExtension.cs
+﻿// Exceptions.cs
 //
 //  Copyright (C) 2014 Fabrício Godoy
 //
@@ -27,7 +27,7 @@ namespace SklLib
     /// <summary>
     /// Provides methods to <see cref="System.Exception"/> class.
     /// </summary>
-    public static class ExceptionExtension
+    public static class Exceptions
     {
         /// <summary>
         /// Creates a complete Exception dump to text.

@@ -1,4 +1,4 @@
-// ConfigFileReader.cs
+// IniFileReader.cs
 //
 //  Copyright (C) 2008-2013 Fabrício Godoy
 //
@@ -25,31 +25,31 @@ using SIO = System.IO;
 namespace SklLib.IO
 {
     /// <summary>
-    /// Provides methods to read configuration files.
+    /// Provides methods to read INI files.
     /// </summary>
-    public class ConfigFileReader : ConfigFileBase
+    public class IniFileReader : IniFileBase
     {
         #region Constructors
         
         /// <summary>
-        /// Initilizes a new ConfigFileReader object pointed to specified file name.
+        /// Initilizes a new IniFileReader object pointed to specified file name.
         /// </summary>
-        /// <param name="fileName">The file name to reads configurations.</param>
+        /// <param name="fileName">The INI file name.</param>
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
         /// <exception cref="SIO.FileNotFoundException">The specifield file was not found.</exception>
-        public ConfigFileReader(string fileName)
-            : this(fileName, ConfigFileBase.DefaultEncoding)
+        public IniFileReader(string fileName)
+            : this(fileName, IniFileBase.DefaultEncoding)
         {
         }
 
         /// <summary>
-        /// Initilizes a new ConfigFileReader object pointed to specified file name and encoding.
+        /// Initilizes a new IniFileReader object pointed to specified file name and encoding.
         /// </summary>
-        /// <param name="fileName">The file name to reads configurations.</param>
-        /// <param name="encoding">Encoding of configuration file.</param>
+        /// <param name="fileName">The INI file name.</param>
+        /// <param name="encoding">Encoding of INI file.</param>
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
         /// <exception cref="SIO.FileNotFoundException">The specifield file was not found.</exception>
-        public ConfigFileReader(string fileName, System.Text.Encoding encoding)
+        public IniFileReader(string fileName, System.Text.Encoding encoding)
             : base(fileName, encoding)
         {
             if (!SIO.File.Exists(fileName))
@@ -63,7 +63,7 @@ namespace SklLib.IO
         #region Methods
         
         /// <summary>
-        /// Reads the value into specifield key.
+        /// Reads the value of specifield key.
         /// </summary>
         /// <param name="section">The section where key is found.</param>
         /// <param name="key">The key name.</param>
@@ -88,7 +88,7 @@ namespace SklLib.IO
         /// <summary>
         /// Reads all sections name.
         /// </summary>
-        /// <returns>All sections name read.</returns>
+        /// <returns>All sections name that was read.</returns>
         public string[] ReadSectionsName()
         {
             int len = _sectionBuffer.Count;
@@ -104,7 +104,7 @@ namespace SklLib.IO
         /// Reads all keys and values into specifield section.
         /// </summary>
         /// <param name="section">The section where keys are found.</param>
-        /// <returns>All keys and values stored into section.</returns>
+        /// <returns>All keys and values stored on that section.</returns>
         /// <exception cref="ArgumentNullException">section parameter is a null reference.</exception>
         /// <exception cref="SectionNotFoundException">section was not found.</exception>
         public Generics.KeyValuePair<string, string>[] ReadKeysValues(string section)
@@ -134,13 +134,15 @@ namespace SklLib.IO
         /// <summary>
         /// Clears any buffered data and reloads them again.
         /// </summary>
+        /// <exception cref="SIO.FileLoadException">The current file is invalid.</exception>
+        /// <exception cref="SIO.FileNotFoundException">The indicated file was not found.</exception>
         public void ReloadFile()
         {
             base.ReadFile();
         }
 
         /// <summary>
-        /// Read the value into specifield key.
+        /// Read the value of specifield key.
         /// </summary>
         /// <param name="section">The section where key is found.</param>
         /// <param name="key">The key name.</param>

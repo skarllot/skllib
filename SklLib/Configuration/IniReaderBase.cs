@@ -1,4 +1,4 @@
-﻿// ConfigReaderBase.cs
+﻿// IniReaderBase.cs
 //
 // Copyright (C) 2014 Fabrício Godoy
 //
@@ -16,20 +16,21 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using SklLib.IO;
 using System;
 
-namespace SklLib.IO
+namespace SklLib.Configuration
 {
     /// <summary>
-    /// Provides base methods to implement a class to represent a configuration file reader.
+    /// Provides base methods to implement a class to represent a INI file reader.
     /// </summary>
-    public abstract class ConfigReaderBase : IValidatable
+    public abstract class IniReaderBase : IValidatable
     {
         #region Fields
 
-        protected SklLib.IO.ConfigFileReader cfgreader;
+        protected IniFileReader cfgreader;
         protected string filename;
-        protected ConfigSectionReaderBase[] sections;
+        protected IniSectionReaderBase[] sections;
 
         #endregion
 
@@ -41,7 +42,7 @@ namespace SklLib.IO
         public string FileName { get { return filename; } }
 
         /// <summary>
-        /// Gets a list of sections name that is mandatory.
+        /// Gets a list of mandatory sections.
         /// </summary>
         protected virtual string[] MandatorySections
         {
@@ -55,11 +56,11 @@ namespace SklLib.IO
         /// <summary>
         /// Gets a section reader instance from its name.
         /// </summary>
-        /// <param name="section">The sectio name.</param>
-        /// <returns>A ConfigSectionReaderBase instance.</returns>
-        protected ConfigSectionReaderBase GetSectionByName(string section)
+        /// <param name="section">The section name.</param>
+        /// <returns>A IniSectionReaderBase instance whether section was found; otherwise, null.</returns>
+        protected IniSectionReaderBase GetSectionByName(string section)
         {
-            foreach (ConfigSectionReaderBase item in sections) {
+            foreach (IniSectionReaderBase item in sections) {
                 if (item.SectionName == section)
                     return item;
             }
@@ -68,11 +69,11 @@ namespace SklLib.IO
         }
 
         /// <summary>
-        /// Gets a new instance ConfigSectionReaderBase class based on section name.
+        /// Gets a new instance IniSectionReaderBase class based on section name.
         /// </summary>
         /// <param name="section">The section name.</param>
-        /// <returns>A new instance of ConfigSectionReaderBase class.</returns>
-        protected abstract ConfigSectionReaderBase GetSectionReader(string section);
+        /// <returns>A new instance of IniSectionReaderBase class.</returns>
+        protected abstract IniSectionReaderBase GetSectionInstance(string section);
 
         /// <summary>
         /// Determines whether specified section name exists into current configuration.
@@ -98,7 +99,7 @@ namespace SklLib.IO
                 }
             }
 
-            foreach (ConfigSectionReaderBase item in sections) {
+            foreach (IniSectionReaderBase item in sections) {
                 if (!item.IsValid())
                     return false;
             }
@@ -109,17 +110,20 @@ namespace SklLib.IO
         /// <summary>
         /// Reads configuration file and populates current instance.
         /// </summary>
+        /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
+        /// <exception cref="System.IO.FileNotFoundException">The specifield file was not found.</exception>
+        /// <exception cref="System.IO.FileLoadException">The current file is invalid.</exception>
         public virtual void LoadFile()
         {
             if (cfgreader == null)
-                cfgreader = new SklLib.IO.ConfigFileReader(filename);
+                cfgreader = new SklLib.IO.IniFileReader(filename);
 
             cfgreader.ReloadFile();
             string[] sectionsName = cfgreader.ReadSectionsName();
-            sections = new ConfigSectionReaderBase[sectionsName.Length];
+            sections = new IniSectionReaderBase[sectionsName.Length];
 
             for (int i = 0; i < sectionsName.Length; i++) {
-                sections[i] = GetSectionReader(sectionsName[i]);
+                sections[i] = GetSectionInstance(sectionsName[i]);
             }
         }
 

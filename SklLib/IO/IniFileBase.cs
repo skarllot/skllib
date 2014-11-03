@@ -1,4 +1,4 @@
-// ConfigFileBase.cs
+// IniFileBase.cs
 //
 //  Copyright (C) 2008-2013 Fabrício Godoy
 //
@@ -28,13 +28,13 @@ using System.Text.RegularExpressions;
 namespace SklLib.IO
 {
     /// <summary>
-    /// Provides base methods to work with configuration files.
+    /// Provides base methods to work with INI files.
     /// </summary>
     /// <remarks>
-    /// The configuration files are by default treated as INI files.
-    /// See http://en.wikipedia.org/wiki/INI_file for more details.
+    /// See http://en.wikipedia.org/wiki/INI_file and
+    /// https://code.google.com/p/minini/wiki/INI_File_Syntax for more details.
     /// </remarks>
-    public abstract class ConfigFileBase
+    public abstract class IniFileBase : IValidatable
     {
         #region Fields
 
@@ -117,30 +117,30 @@ namespace SklLib.IO
         /// <summary>
         /// Initializes static fields.
         /// </summary>
-        static ConfigFileBase()
+        static IniFileBase()
         {
             DefaultEncoding = System.Text.Encoding.UTF8;
             idMatcher = new Regex(DEFAULT_ID_RULE, RegexOptions.Compiled);
         }
         
         /// <summary>
-        /// Initializes a new ConfigFileBase.
+        /// Initializes a new IniFileBase.
         /// </summary>
-        /// <param name="fileName">The file name to handle configurations.</param>
+        /// <param name="fileName">The INI file name.</param>
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
-        protected ConfigFileBase(string fileName)
+        protected IniFileBase(string fileName)
             : this(fileName, DefaultEncoding)
         {
         }
         
         /// <summary>
-        /// Initializes a new ConfigFileBase.
+        /// Initializes a new IniFileBase.
         /// </summary>
-        /// <param name="fileName">The file name to handle configurations.</param>
-        /// <param name="encoding">Encoding of configuration file.</param>
+        /// <param name="fileName">The INI file name.</param>
+        /// <param name="encoding">Encoding of INI file.</param>
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
-        /// <exception cref="DirectoryNotFoundException">Directory defined to file was not found.</exception>
-        protected ConfigFileBase(string fileName, System.Text.Encoding encoding)
+        /// <exception cref="SIO.DirectoryNotFoundException">Directory defined to file was not found.</exception>
+        protected IniFileBase(string fileName, System.Text.Encoding encoding)
         {
             if (fileName == null)
                 throw new ArgumentNullException("fileName", resExceptions.ArgumentNull.Replace("%var", "fileName"));
@@ -184,11 +184,11 @@ namespace SklLib.IO
         #region Methods
 
         /// <summary>
-        /// Check whether current file is valid configuration file.
+        /// Check whether current file is valid INI file.
         /// </summary>
-        /// <returns>True if current file is a valid cofiguration file; otherwise, false.</returns>
-        /// <exception cref="System.IO.FileNotFoundException">The indicated file was not found.</exception>
-        public bool IsValidFile()
+        /// <returns>True if current file is a valid INI file; otherwise, false.</returns>
+        /// <exception cref="SIO.FileNotFoundException">The indicated file was not found.</exception>
+        public bool IsValid()
         {
             return FillBuffer();
         }
@@ -196,8 +196,8 @@ namespace SklLib.IO
         /// <summary>
         /// Reads the file, validate and fills all buffers.
         /// </summary>
-        /// <returns>True if current file is a valid cofiguration file; otherwise, false.</returns>
-        /// <exception cref="System.IO.FileNotFoundException">The indicated file was not found.</exception>
+        /// <returns>True if current file is a valid INI file; otherwise, false.</returns>
+        /// <exception cref="SIO.FileNotFoundException">The indicated file was not found.</exception>
         protected bool FillBuffer()
         {
             SIO.FileStream fs = new System.IO.FileStream(_fileName,
@@ -281,7 +281,7 @@ namespace SklLib.IO
         }
 
         /// <summary>
-        /// Search a key in current config file.
+        /// Search a key in the current file.
         /// </summary>
         /// <param name="key">Key name to search.</param>
         /// <param name="start">Item index to start search.</param>
@@ -301,12 +301,12 @@ namespace SklLib.IO
         }
 
         /// <summary>
-        /// Search a key in current config file.
+        /// Search a key in the current file.
         /// </summary>
         /// <param name="section">Section name to search.</param>
         /// <param name="key">Key name to search.</param>
         /// <returns>Line number where key is found; otherwise returns -1.</returns>
-        /// <exception cref="SectionNotFoundException">section was not found.</exception>
+        /// <exception cref="SectionNotFoundException">Section was not found.</exception>
         protected int FindKey(string section, string key)
         {
             int index, count;
@@ -317,7 +317,7 @@ namespace SklLib.IO
         }
 
         /// <summary>
-        /// Search a section in current config file.
+        /// Search a section in the current file.
         /// </summary>
         /// <param name="section">Section name to search.</param>
         /// <param name="index">Line number where is found section.</param>
@@ -347,7 +347,8 @@ namespace SklLib.IO
         /// <summary>
         /// Reads the file and fills all buffers.
         /// </summary>
-        /// <exception cref="FileLoadException">The current file is invalid.</exception>
+        /// <exception cref="SIO.FileLoadException">The current file is invalid.</exception>
+        /// <exception cref="SIO.FileNotFoundException">The indicated file was not found.</exception>
         protected void ReadFile()
         {
             if (!FillBuffer())
