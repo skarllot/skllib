@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Collections\Enumerable.cs" />
     <Compile Include="Diagnostics\EventId.cs" />
     <Compile Include="Diagnostics\LogEventArgs.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
