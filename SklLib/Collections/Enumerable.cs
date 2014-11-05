@@ -44,8 +44,7 @@ namespace SklLib.Collections
         /// A <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/> of the target type containing the converted
         /// elements from the current <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentNullException">converter is null</exception>
+        /// <exception cref="ArgumentNullException">source or converter is null</exception>
         public static IEnumerable<TResult> ConvertAll<TSource, TResult>(
             this IEnumerable<TSource> source,
             System.Converter<TSource, TResult> converter)
@@ -73,8 +72,7 @@ namespace SklLib.Collections
         /// <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
         /// </param>
         /// <returns>The reference of especified source.</returns>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentNullException">action is null</exception>
+        /// <exception cref="ArgumentNullException">source or action is null</exception>
         public static IEnumerable<TSource> ForEach<TSource>(
             this IEnumerable<TSource> source,
             Action<TSource> action)
@@ -101,8 +99,7 @@ namespace SklLib.Collections
         /// <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
         /// </param>
         /// <returns>The reference of especified source.</returns>
-        /// <exception cref="ArgumentNullException">source is null</exception>
-        /// <exception cref="ArgumentNullException">action is null</exception>
+        /// <exception cref="ArgumentNullException">source or action is null</exception>
         public static IEnumerable<TSource> ForEach<TSource>(
             this IEnumerable<TSource> source,
             Action<TSource, int> action)
@@ -120,5 +117,35 @@ namespace SklLib.Collections
 
             return source;
         }
+
+        /// <summary>
+        /// Invokes a transform function on each element of a generic sequence and returns the maximum resulting value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the elements of source.</typeparam>
+        /// <param name="source">An <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/> to determine the maximum value of.</param>
+        /// <param name="selector">A transform function to apply to each element.</param>
+        /// <returns>The maximum value in the sequence.</returns>
+        public static TSource Max<TSource>(
+            this IEnumerable<TSource> source,
+            Func<TSource, IComparable> selector)
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (selector == null)
+                throw new ArgumentNullException("selector");
+
+            TSource max = default(TSource);
+            IComparable maxVal = null;
+            foreach (TSource item in source) {
+                IComparable itemVal = selector(item);
+                if (itemVal.CompareTo(maxVal) > 0) {
+                    max = item;
+                    maxVal = itemVal;
+                }
+            }
+
+            return max;
+        }
+
     }
 }
