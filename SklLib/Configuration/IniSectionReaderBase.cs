@@ -175,11 +175,16 @@ namespace SklLib.Configuration
             return result;
         }
 
+        #endregion
+
+        #region IValidatable
+
         /// <summary>
-        /// Determines whether current instance is valid.
+        /// Validates each property from current instance and executes a action.
         /// </summary>
-        /// <returns>True whether is valid; otherwise false.</returns>
-        public abstract bool IsValid();
+        /// <param name="action">Action to execute after each validation.</param>
+        /// <returns>True whether all properties are valid; otherwise, false.</returns>
+        public abstract bool Validate(Action<ValidationEventArgs> action);
 
         #endregion
     }

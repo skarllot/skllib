@@ -31,7 +31,7 @@ namespace SklLib
     /// <para>The Strings class is the additional class to assist in the following operations with <see cref="String"/>:</para>
     /// <para>- Manipulating, <see cref="EliminateAccents"/> and <see cref="RepeatString"/> methods;</para>
     /// <para>- Searching, <see cref="AdditionalChars"/> method;</para>
-    /// <para>- Validating, <see cref="IsAlphabetic"/>, <see cref="IsLetterOnly"/> and <see cref="IsNumeric"/> methods.</para>
+    /// <para>- Validating, <see cref="IsAlphabetic"/>, <see cref="IsLetterOnly"/> and <see cref="IsNumeric(string)"/> methods.</para>
     /// <para>Also provides the <see cref="IndexedChar"/> struct, that represents <see cref="Char"/> of a
     /// <see cref="String"/> and a index (<see cref="Char"/> position in a <see cref="String"/>).</para>
     /// </remarks>

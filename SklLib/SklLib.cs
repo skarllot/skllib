@@ -27,23 +27,6 @@ using stringb = System.Text.StringBuilder;
 namespace SklLib
 {
     /// <summary>
-    /// Represents a generic function that returns a type-specific.
-    /// </summary>
-    /// <typeparam name="T">Any type-specific.</typeparam>
-    /// <returns>Specified type-specific.</returns>
-    public delegate T GetType<T>();
-
-    /// <summary>
-    /// Represents a generic function that returns a type-specific and receives
-    /// another type-specific.
-    /// </summary>
-    /// <typeparam name="Ret">Any type-specific to return.</typeparam>
-    /// <typeparam name="P1">Any type-specific to receive.</typeparam>
-    /// <param name="param1">First parameter.</param>
-    /// <returns>Specified type-specific.</returns>
-    public delegate Ret GetType<Ret, P1>(P1 param1);
-
-    /// <summary>
     /// Byte multiples.
     /// </summary>
     public enum ByteMeasure : long

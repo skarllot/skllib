@@ -1,6 +1,6 @@
 // IniFileBase.cs
 //
-//  Copyright (C) 2008-2013 Fabrício Godoy
+//  Copyright (C) 2008-2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -203,7 +203,7 @@ namespace SklLib.IO
             SIO.FileStream fs = new System.IO.FileStream(_fileName,
                 SIO.FileMode.Open, SIO.FileAccess.Read, SIO.FileShare.Read);
             SIO.StreamReader reader = new SIO.StreamReader(fs, this._encoding, true);
-            GetType<bool, bool> finalize = delegate(bool res)
+            Func<bool, bool> finalize = delegate(bool res)
             {
                 reader.Close();
                 reader.Dispose();
@@ -366,6 +366,29 @@ namespace SklLib.IO
             string dir = SIO.Path.GetDirectoryName(_fileName);
             if (!SIO.Directory.Exists(dir))
                 throw new SIO.DirectoryNotFoundException(dir);
+        }
+
+        #endregion
+
+        #region IValidatable
+
+        /// <summary>
+        /// Validates current file as a valid INI file and executes a action.
+        /// </summary>
+        /// <param name="action">Action to execute after each validation.</param>
+        /// <returns>True if current file is a valid INI file; otherwise, false.</returns>
+        public bool Validate(Action<ValidationEventArgs> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            bool result = FillBuffer();
+            string msg = null;
+            if (!result)
+                msg = string.Format("The INI file {0} is invalid", _fileName);
+
+            action(new ValidationEventArgs(result, msg, "FileName", _fileName));
+            return result;
         }
 
         #endregion

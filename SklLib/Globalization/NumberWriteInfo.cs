@@ -1,6 +1,6 @@
 // NumberWriteInfo.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -32,10 +32,10 @@ namespace SklLib.Globalization
         #region Fields
 
         /// <summary>
-        /// Stores a <see cref="Dictionary<TKey, TValue>"/>, where key is a culture name and value
+        /// Stores a <see cref="Dictionary&lt;TKey, TValue&gt;"/>, where key is a culture name and value
         /// is a delegate to get type- and culture-specific.
         /// </summary>
-        private static Dictionary<string, GetType<NumberWriteInfo>> storedCultureInfo;
+        private static Dictionary<string, Func<NumberWriteInfo>> storedCultureInfo;
         private string[] uValues;
         private string[] dValues;
         private string[] hValues;
@@ -256,7 +256,7 @@ namespace SklLib.Globalization
         /// </summary>
         static NumberWriteInfo()
         {
-            storedCultureInfo = new Dictionary<string, GetType<NumberWriteInfo>>(3);
+            storedCultureInfo = new Dictionary<string, Func<NumberWriteInfo>>(3);
             storedCultureInfo.Add("en-US", Get_enUS);
             storedCultureInfo.Add("fr-FR", Get_frFR);
             storedCultureInfo.Add("pt-BR", Get_ptBR);

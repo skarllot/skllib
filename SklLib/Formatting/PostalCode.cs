@@ -1,6 +1,6 @@
 // PostalCodes.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -67,10 +67,10 @@ namespace SklLib.Formatting
         #region Field
 
         /// <summary>
-        /// Stores a <see cref="Dictionary"/>, where key is a culture name and value
+        /// Stores a <see cref="Dictionary&lt;TKey, TValue&gt;"/>, where key is a culture name and value
         /// is a delegate to get type- and culture-specific.
         /// </summary>
-        private static Dictionary<string, GetType<PostalCode>> storedCultureInfo;
+        private static Dictionary<string, Func<PostalCode>> storedCultureInfo;
 
         #endregion
 
@@ -86,7 +86,7 @@ namespace SklLib.Formatting
 
         static PostalCode()
         {
-            storedCultureInfo = new Dictionary<string, GetType<PostalCode>>(7);
+            storedCultureInfo = new Dictionary<string, Func<PostalCode>>(7);
             storedCultureInfo.Add("de-DE", Get_deDE);
             storedCultureInfo.Add("en-CA", Get_enCA);
             storedCultureInfo.Add("en-US", Get_enUS);

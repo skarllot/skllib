@@ -1,6 +1,6 @@
 // GrammarRules.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ namespace SklLib.Formatting
     {
         #region Fields
 
-        private static Dictionary<string, GetType<GrammarRules>> _storedCultureInfo;
+        private static Dictionary<string, Func<GrammarRules>> _storedCultureInfo;
         private Dictionary<string, string> _accentedSuffix;
         private List<string> _loweredWords;
         private Dictionary<string, string> _tcExcepts;
@@ -72,7 +72,7 @@ namespace SklLib.Formatting
 
         static GrammarRules()
         {
-            _storedCultureInfo = new Dictionary<string, GetType<GrammarRules>>(1);
+            _storedCultureInfo = new Dictionary<string, Func<GrammarRules>>(1);
             _storedCultureInfo.Add("pt-BR", Get_ptBR);
         }
 
@@ -96,14 +96,14 @@ namespace SklLib.Formatting
         /// <summary>
         /// Gets or sets Rules to accented suffixes.
         /// </summary>
-        /// <value>A <see cref="Dictionary"/> as suffixes rule.</value>
+        /// <value>A <see cref="Dictionary&lt;TKey, TValue&gt;"/> as suffixes rule.</value>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
         /// <exception cref="ArgumentNullException">The AccentedSuffixes property is being
         /// set to a null reference.</exception>
         /// <remarks>
         /// Defines word-suffixes that is accented. This property is used in all cases that
-        /// <see cref="ApplyRules"/> function is used.
+        /// <see cref="ApplyRules(string, bool, TextInfo)"/> function is used.
         /// </remarks>
         public Dictionary<string, string> AccentedSuffixes
         {
@@ -122,14 +122,14 @@ namespace SklLib.Formatting
         /// <summary>
         /// Gets or sets Rules to fully lower cases words.
         /// </summary>
-        /// <value>A <see cref="List"/> as words rule.</value>
+        /// <value>A <see cref="List&lt;T&gt;"/> as words rule.</value>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
         /// <exception cref="ArgumentNullException">The LoweredWords property is being set
         /// to a null reference.</exception>
         /// <remarks>
         /// Defines words that never apply title case. Of course, this property only is used
-        /// if titleCase parameter of <see cref="ApplyRules"/> function have a true value.
+        /// if titleCase parameter of <see cref="ApplyRules(string, bool, TextInfo)"/> function have a true value.
         /// </remarks>
         public List<string> LoweredWords
         {
@@ -148,14 +148,14 @@ namespace SklLib.Formatting
         /// <summary>
         /// Gets or Sets rules exceptions, when this rule is applied other rules is ignored.
         /// </summary>
-        /// <value>A <see cref="Dictionary"/> as words rule.</value>
+        /// <value>A <see cref="Dictionary&lt;TKey, TValue&gt;"/> as words rule.</value>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
         /// <exception cref="ArgumentNullException">The Exceptions property is being
         /// set to a null reference.</exception>
         /// <remarks>
         /// Defines words that other rules not is applied. This property is used in all cases
-        /// that <see cref="ApplyRules"/> function is used.
+        /// that <see cref="ApplyRules(string, bool, TextInfo)"/> function is used.
         /// </remarks>
         public Dictionary<string, string> Exceptions
         {
@@ -175,14 +175,14 @@ namespace SklLib.Formatting
         /// Gets or sets rules exceptions, only to Title case words, when this rule is applied
         /// other rules is ignored.
         /// </summary>
-        /// <value>A <see cref="Dictionary"/> as words rule.</value>
+        /// <value>A <see cref="Dictionary&lt;TKey, TValue&gt;"/> as words rule.</value>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
         /// <exception cref="ArgumentNullException">The TitleCaseExceptions property is being
         /// set to a null reference.</exception>
         /// <remarks>
         /// Defines words that other rules not is applied, when titleCase parameter of
-        /// <see cref="ApplyRules"/> function have a true value.
+        /// <see cref="ApplyRules(string, bool, TextInfo)"/> function have a true value.
         /// </remarks>
         public Dictionary<string, string> TitleCaseExceptions
         {
@@ -199,7 +199,7 @@ namespace SklLib.Formatting
         }
 
         /// <summary>
-        /// Gets or sets characters that will be ignored by <see cref="ApplyRules"/> method.
+        /// Gets or sets characters that will be ignored by <see cref="ApplyRules(string, bool, TextInfo)"/> method.
         /// </summary>
         /// <value>A <see cref="String"/> as rule to ignored characters.</value>
         /// <exception cref="InvalidOperationException">The property is being set and this

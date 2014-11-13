@@ -28,6 +28,7 @@ namespace SklLib.Configuration
     {
         #region Fields
 
+        private const string MESSAGE_SECTION_MANDATORY_MISSING = "The mandatory section {0} was not found";
         protected IniFileReader cfgreader;
         protected string filename;
         protected IniSectionReaderBase[] sections;
@@ -86,28 +87,6 @@ namespace SklLib.Configuration
         }
 
         /// <summary>
-        /// Determines whether current instance is valid.
-        /// </summary>
-        /// <returns>True whether is valid; otherwise false.</returns>
-        public virtual bool IsValid()
-        {
-            if (MandatorySections != null
-                && MandatorySections.Length > 0) {
-                foreach (string item in MandatorySections) {
-                    if (!HasSection(item))
-                        return false;
-                }
-            }
-
-            foreach (IniSectionReaderBase item in sections) {
-                if (!item.IsValid())
-                    return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Reads configuration file and populates current instance.
         /// </summary>
         /// <exception cref="ArgumentNullException"><c>fileName</c> is a null reference.</exception>
@@ -125,6 +104,41 @@ namespace SklLib.Configuration
             for (int i = 0; i < sectionsName.Length; i++) {
                 sections[i] = GetSectionInstance(sectionsName[i]);
             }
+        }
+
+        #endregion
+
+        #region IValidatable
+
+        /// <summary>
+        /// Validates each section from current instance and executes a action.
+        /// </summary>
+        /// <param name="action">Action to execute after each validation.</param>
+        /// <returns>True whether all sections are valid; otherwise, false.</returns>
+        public virtual bool Validate(Action<ValidationEventArgs> action)
+        {
+            if (action == null)
+                throw new ArgumentNullException("action");
+
+            bool result = true;
+            if (MandatorySections != null
+                && MandatorySections.Length > 0) {
+                foreach (string item in MandatorySections) {
+                    if (!HasSection(item)) {
+                        result = false;
+                        action(new ValidationEventArgs(false,
+                            string.Format(MESSAGE_SECTION_MANDATORY_MISSING, item),
+                            "MandatorySections", item));
+                    }
+                }
+            }
+
+            foreach (IniSectionReaderBase item in sections) {
+                if (!item.Validate(action))
+                    result = false;
+            }
+
+            return result;
         }
 
         #endregion

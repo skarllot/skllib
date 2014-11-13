@@ -32,10 +32,10 @@ namespace SklLib.Formatting
         #region Fields
 
         /// <summary>
-        /// Stores a <see cref="Dictionary"/>, where key is a culture name and value
+        /// Stores a <see cref="Dictionary&lt;TKey, TValue&gt;"/>, where key is a culture name and value
         /// is a delegate to get type- and culture-specific.
         /// </summary>
-        private static Dictionary<string, GetType<Telephones>> storedCultureInfo;
+        private static Dictionary<string, Func<Telephones>> storedCultureInfo;
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace SklLib.Formatting
 
         static Telephones()
         {
-            storedCultureInfo = new Dictionary<string, GetType<Telephones>>(2);
+            storedCultureInfo = new Dictionary<string, Func<Telephones>>(2);
             storedCultureInfo.Add("pt-BR", Get_ptBR);
             storedCultureInfo.Add("en-US", Get_enUS);
         }

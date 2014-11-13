@@ -114,6 +114,8 @@
     </Compile>
     <Compile Include="SklLib.cs" />
     <Compile Include="Strings.cs" />
+    <Compile Include="Validatable.cs" />
+    <Compile Include="ValidationEventArgs.cs" />
     <EmbeddedResource Include="resExceptions.pt.resx">
     </EmbeddedResource>
     <EmbeddedResource Include="resExceptions.resx">
