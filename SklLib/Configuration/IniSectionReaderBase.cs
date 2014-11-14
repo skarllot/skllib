@@ -184,7 +184,7 @@ namespace SklLib.Configuration
         /// </summary>
         /// <param name="action">Action to execute after each validation.</param>
         /// <returns>True whether all properties are valid; otherwise, false.</returns>
-        public abstract bool Validate(Action<ValidationEventArgs> action);
+        public abstract bool Validate(Action<InvalidEventArgs> action);
 
         #endregion
     }

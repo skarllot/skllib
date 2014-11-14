@@ -115,7 +115,7 @@ namespace SklLib.Configuration
         /// </summary>
         /// <param name="action">Action to execute after each validation.</param>
         /// <returns>True whether all sections are valid; otherwise, false.</returns>
-        public virtual bool Validate(Action<ValidationEventArgs> action)
+        public virtual bool Validate(Action<InvalidEventArgs> action)
         {
             if (action == null)
                 throw new ArgumentNullException("action");
@@ -126,7 +126,7 @@ namespace SklLib.Configuration
                 foreach (string item in MandatorySections) {
                     if (!HasSection(item)) {
                         result = false;
-                        action(new ValidationEventArgs(false,
+                        action(new InvalidEventArgs(
                             string.Format(MESSAGE_SECTION_MANDATORY_MISSING, item),
                             "MandatorySections", item));
                     }

@@ -32,6 +32,6 @@ namespace SklLib
         /// </summary>
         /// <param name="action">Action to execute after each validation.</param>
         /// <returns>True whether all properties are valid; otherwise, false.</returns>
-        bool Validate(Action<ValidationEventArgs> action);
+        bool Validate(Action<InvalidEventArgs> action);
     }
 }

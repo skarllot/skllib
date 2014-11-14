@@ -31,7 +31,7 @@ namespace SklLib
         /// <returns>True whether is valid; otherwise false.</returns>
         public static bool IsValid(this IValidatable obj)
         {
-            return obj.Validate(delegate(ValidationEventArgs vea) { });
+            return obj.Validate(delegate(InvalidEventArgs vea) { });
         }
     }
 }

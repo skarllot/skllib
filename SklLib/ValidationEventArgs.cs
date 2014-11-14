@@ -1,4 +1,4 @@
-﻿// ValidationEventArgs.cs
+﻿// InvalidEventArgs.cs
 //
 //  Copyright (C) 2014 Fabrício Godoy
 //
@@ -23,24 +23,23 @@ using System;
 namespace SklLib
 {
     /// <summary>
-    /// Provides event data to item validation.
+    /// Provides event data when a validated item is invalid.
     /// </summary>
-    public class ValidationEventArgs : EventArgs
+    public class InvalidEventArgs : EventArgs
     {
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of ValidationEventArgs.
+        /// Initializes a new instance of InvalidEventArgs.
         /// </summary>
-        /// <param name="isValid">Defines validation status of validated item.</param>
-        /// <param name="message">Defines a error message, if any.</param>
+        /// <param name="message">Defines a error message.</param>
         /// <param name="itemName">Defines the name of validated item.</param>
         /// <param name="itemValue">Defines the value of validated item.</param>
-        public ValidationEventArgs(
-            bool isValid, string message,
-            string itemName, object itemValue)
+        public InvalidEventArgs(
+            string message,
+            string itemName,
+            object itemValue)
         {
-            IsValid = isValid;
             Message = message;
             ItemName = itemName;
             ItemValue = itemValue;
@@ -51,12 +50,7 @@ namespace SklLib
         #region Properties
 
         /// <summary>
-        /// Gets current property validity status.
-        /// </summary>
-        public bool IsValid { get; private set; }
-
-        /// <summary>
-        /// Gets the error message, if any.
+        /// Gets the error message.
         /// </summary>
         public string Message { get; private set; }
 

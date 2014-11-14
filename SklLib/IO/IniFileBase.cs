@@ -377,17 +377,18 @@ namespace SklLib.IO
         /// </summary>
         /// <param name="action">Action to execute after each validation.</param>
         /// <returns>True if current file is a valid INI file; otherwise, false.</returns>
-        public bool Validate(Action<ValidationEventArgs> action)
+        public bool Validate(Action<InvalidEventArgs> action)
         {
             if (action == null)
                 throw new ArgumentNullException("action");
 
             bool result = FillBuffer();
-            string msg = null;
-            if (!result)
-                msg = string.Format("The INI file {0} is invalid", _fileName);
+            if (!result) {
+                action(new InvalidEventArgs(
+                    string.Format("The INI file '{0}' is invalid", _fileName),
+                    "FileName", _fileName ?? string.Empty));
+            }
 
-            action(new ValidationEventArgs(result, msg, "FileName", _fileName));
             return result;
         }
 
