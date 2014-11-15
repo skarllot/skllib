@@ -54,12 +54,9 @@ namespace SklLib.Collections
             if (converter == null)
                 throw new ArgumentNullException("converter");
 
-            List<TResult> result = new List<TResult>(source.Count());
             foreach (TSource item in source) {
-                result.Add(converter(item));
+                yield return converter(item);
             }
-
-            return result;
         }
 
         /// <summary>
@@ -71,9 +68,8 @@ namespace SklLib.Collections
         /// The <see cref="System.Action&lt;T&gt;"/> delegate to perform on each element of the
         /// <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
         /// </param>
-        /// <returns>The reference of especified source.</returns>
-        /// <exception cref="ArgumentNullException">source or action is null</exception>
-        public static IEnumerable<TSource> ForEach<TSource>(
+        /// <exception cref="ArgumentNullException"><c>source</c> or <c>action</c> is null</exception>
+        public static void ForEach<TSource>(
             this IEnumerable<TSource> source,
             Action<TSource> action)
         {
@@ -82,11 +78,9 @@ namespace SklLib.Collections
             if (action == null)
                 throw new ArgumentNullException("action");
 
-            foreach (TSource item in source) {
+            foreach (TSource item in source.ToArray()) {
                 action(item);
             }
-
-            return source;
         }
 
         /// <summary>
@@ -98,9 +92,8 @@ namespace SklLib.Collections
         /// The <see cref="System.Action&lt;T&gt;"/> delegate to perform on each element of the
         /// <see cref="System.Collections.Generic.IEnumerable&lt;T&gt;"/>.
         /// </param>
-        /// <returns>The reference of especified source.</returns>
         /// <exception cref="ArgumentNullException">source or action is null</exception>
-        public static IEnumerable<TSource> ForEach<TSource>(
+        public static void ForEach<TSource>(
             this IEnumerable<TSource> source,
             Action<TSource, int> action)
         {
@@ -114,8 +107,6 @@ namespace SklLib.Collections
                 action(item, index);
                 index++;
             }
-
-            return source;
         }
 
         /// <summary>
