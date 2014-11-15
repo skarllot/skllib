@@ -128,7 +128,7 @@
     <Compile Include="Measurement\LengthSize.cs" />
     <Compile Include="IMaskeable.cs" />
     <Compile Include="IWriteProtected.cs" />
-    <Compile Include="Measurement\DataSize.cs" />
+    <Compile Include="Measurement\InformationSize.cs" />
     <Compile Include="Security\Cryptography\Simple.cs" />
     <Compile Include="Formatting\FormatStringBase.cs" />
     <Compile Include="Formatting\GrammarRules.cs" />

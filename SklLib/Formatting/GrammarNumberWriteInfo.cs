@@ -41,6 +41,17 @@ namespace SklLib.Formatting
 
         /// <summary>
         /// Initializes a new instance of <see cref="GrammarNumberWriteInfo"/> and
+        /// sets an invariable text to singular and plural.
+        /// </summary>
+        /// <param name="common"></param>
+        public GrammarNumberWriteInfo(string common)
+        {
+            _singular = common;
+            _plural = common;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="GrammarNumberWriteInfo"/> and
         /// sets the singular and plural text.
         /// </summary>
         /// <param name="singular">The singular text.</param>

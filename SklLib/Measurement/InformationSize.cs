@@ -21,6 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Serialization = System.Runtime.Serialization;
 
 namespace SklLib.Measurement
@@ -29,12 +30,19 @@ namespace SklLib.Measurement
     /// Represents a information size.
     /// </summary>
     [Serializable]
-    public struct InformationSize : IComparable, IComparable<InformationSize>, IEquatable<InformationSize>, Serialization.ISerializable
+    public struct InformationSize
+        : IComparable, IComparable<InformationSize>, IEquatable<InformationSize>, Serialization.ISerializable
     {
         #region Fields
 
+        // List of singular and plural forms to byte IEC multiples.
         private static readonly Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo> fullWriteList;
+        // List of singular and plural forms to contracted byte IEC multiples.
         private static readonly Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo> contractedWriteList;
+        // ToString formatting characters to each byte IEC multiple.
+        private static readonly Dictionary<char, ByteIEC> formattingList;
+        // List of values in bytes of each byte IEC multiple.
+        private static readonly IEnumerable<ulong> byteIecList;
         private ulong _bValue;
 
         #endregion
@@ -43,8 +51,35 @@ namespace SklLib.Measurement
 
         static InformationSize()
         {
-            fullWriteList = new Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo>();
+            fullWriteList = new Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo>(7);
             fullWriteList.Add(ByteIEC.Byte, new Formatting.GrammarNumberWriteInfo("Byte", "Bytes"));
+            fullWriteList.Add(ByteIEC.Kibibyte, new Formatting.GrammarNumberWriteInfo("Kibibyte", "Kibibytes"));
+            fullWriteList.Add(ByteIEC.Mebibyte, new Formatting.GrammarNumberWriteInfo("Mebibyte", "Mebibytes"));
+            fullWriteList.Add(ByteIEC.Gibibyte, new Formatting.GrammarNumberWriteInfo("Gibibyte", "Gibibytes"));
+            fullWriteList.Add(ByteIEC.Tebibyte, new Formatting.GrammarNumberWriteInfo("Tebibyte", "Tebibytes"));
+            fullWriteList.Add(ByteIEC.Pebibyte, new Formatting.GrammarNumberWriteInfo("Pebibyte", "Pebibytes"));
+            fullWriteList.Add(ByteIEC.Exbibyte, new Formatting.GrammarNumberWriteInfo("Exbibyte", "Exbibytes"));
+
+            contractedWriteList = new Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo>(7);
+            contractedWriteList.Add(ByteIEC.Byte, new Formatting.GrammarNumberWriteInfo("B"));
+            contractedWriteList.Add(ByteIEC.Kibibyte, new Formatting.GrammarNumberWriteInfo("KiB"));
+            contractedWriteList.Add(ByteIEC.Mebibyte, new Formatting.GrammarNumberWriteInfo("MiB"));
+            contractedWriteList.Add(ByteIEC.Gibibyte, new Formatting.GrammarNumberWriteInfo("GiB"));
+            contractedWriteList.Add(ByteIEC.Tebibyte, new Formatting.GrammarNumberWriteInfo("TiB"));
+            contractedWriteList.Add(ByteIEC.Pebibyte, new Formatting.GrammarNumberWriteInfo("PiB"));
+            contractedWriteList.Add(ByteIEC.Exbibyte, new Formatting.GrammarNumberWriteInfo("EiB"));
+
+            formattingList = new Dictionary<char, ByteIEC>(7);
+            formattingList.Add('B', ByteIEC.Byte);
+            formattingList.Add('K', ByteIEC.Kibibyte);
+            formattingList.Add('M', ByteIEC.Mebibyte);
+            formattingList.Add('G', ByteIEC.Gibibyte);
+            formattingList.Add('T', ByteIEC.Tebibyte);
+            formattingList.Add('P', ByteIEC.Pebibyte);
+            formattingList.Add('E', ByteIEC.Exbibyte);
+
+            byteIecList = ((ulong[])Enum.GetValues(typeof(ByteIEC)))
+                .Reverse();
         }
 
         /// <summary>
@@ -460,61 +495,40 @@ namespace SklLib.Measurement
             if (fmtBinM.Length != 2)
                 throw new FormatException(resExceptions.Format_InvalidString);
 
-            string primaryChars = "BKMGTPE>0";    // allowed chars on first index
-            string secondaryChars = "-+";        // allowed chars on second index
-
-            int pIdx = primaryChars.IndexOf(fmtBinM[0]);    // stores index of first format-char on primaryChars
-            int sIdx = secondaryChars.IndexOf(fmtBinM[1]);    // stores index of second format-char on secondaryChars
-
-            if (pIdx == -1 || sIdx == -1)        // Verify whether has a invalid chars
-                throw new FormatException(resExceptions.Format_InvalidString);
+            char fmtMult = fmtBinM[0];      // allowed chars to multiple resolve: BKMGTPE>0
+            char fmtSpell = fmtBinM[1];     // allowed chars to multiple spell: -+
 
             ByteIEC toBMult;        // Verify selected option
-            if (pIdx < 7)
-                toBMult = GetMultByDefined(primaryChars[pIdx]);
-            else if (pIdx == 7)
-                toBMult = GetMultByGreat();
-            else
-                toBMult = GetMultByZeroable();
+            if (!formattingList.TryGetValue(fmtMult, out toBMult)) {
+                if (fmtMult == '>')
+                    toBMult = GetMultByGreat();
+                else if (fmtMult == '0')
+                    toBMult = GetMultByZeroable();
+                else
+                    throw new FormatException(resExceptions.Format_InvalidString);
+            }
 
             value = (decimal)this._bValue / (ulong)toBMult;    // stores the value in specified multiple
 
             // Define the multiple spell
-            strMult = Enum.GetName(typeof(ByteIEC), toBMult);
-            if (sIdx == 0)
-                strMult = strMult[0] == 'B' ? "B" : strMult[0] + "B";
+            if (fmtSpell == '-')
+                strMult = (value > 1 ? contractedWriteList[toBMult].Plural : contractedWriteList[toBMult].Singular);
+            else if (fmtSpell == '+')
+                strMult = (value > 1 ? fullWriteList[toBMult].Plural : fullWriteList[toBMult].Singular);
+            else
+                throw new FormatException(resExceptions.Format_InvalidString);
             // -------------------------------------------
 
             return value.ToString(fmtNumber, nfi) + " " + strMult;
         }
 
-        private ByteIEC GetMultByDefined(char greatness)
-        {
-            string multiples = "BKMGTPE";
-
-            int idx = multiples.IndexOf(greatness);
-
-            if (idx == -1)
-                return ByteIEC.Byte;
-            else
-            {
-                ulong[] val = (ulong[])Enum.GetValues(typeof(ByteIEC));
-                return (ByteIEC)val[idx];
-            }
-        }
-
         private ByteIEC GetMultByGreat()
         {
-            ulong[] values = (ulong[])Enum.GetValues(typeof(ByteIEC));
-            ulong bytes = this._bValue;
+            ulong bValue = this._bValue;
+            ulong result = byteIecList
+                .FirstOrDefault(v => bValue >= v);
 
-            for (int i = values.Length - 1; i >= 0; i--)
-            {
-                if (bytes >= values[i])
-                    return (ByteIEC)values[i];
-            }
-
-            return ByteIEC.Byte;
+            return (result == 0 ? ByteIEC.Byte : (ByteIEC)result);
         }
 
         private ByteIEC GetMultByZeroable()
@@ -523,16 +537,13 @@ namespace SklLib.Measurement
                 return ByteIEC.Byte;
 
             ulong[] values = (ulong[])Enum.GetValues(typeof(ByteIEC));
-            ulong bytes = this._bValue;
+            ulong bValue = this._bValue;
+            ulong result = byteIecList
+                .Select(v => new { Mult = v, ValueByMult = (decimal)bValue / v })
+                .FirstOrDefault(v => (ulong)v.ValueByMult == v.ValueByMult)
+                .Mult;
 
-            for (int i = values.Length - 1; i > 0; i--)
-            {
-                decimal val = (decimal)this._bValue / values[i];
-                if ((long)val == val)
-                    return (ByteIEC)values[i];
-            }
-
-            return GetMultByGreat();
+            return (result == 0 ? GetMultByGreat() : (ByteIEC)result);
         }
 
         #endregion

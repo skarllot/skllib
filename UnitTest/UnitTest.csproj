@@ -52,6 +52,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="ExceptionExtension.cs" />
+    <Compile Include="Measurement\InformationSizeTest.cs" />
     <Compile Include="Performance\Strings.cs" />
     <Compile Include="resText.Designer.cs">
       <AutoGen>True</AutoGen>
