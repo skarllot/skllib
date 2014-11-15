@@ -86,7 +86,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Formatting\GrammarNumberWriteInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Measurement\ByteIEC.cs" />
     <Compile Include="Collections\Enumerable.cs" />
     <Compile Include="Diagnostics\EventId.cs" />
     <Compile Include="Diagnostics\LogEventArgs.cs" />
@@ -112,20 +114,21 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="SklLib.cs" />
+    <Compile Include="Measurement\SILengthUnit.cs" />
+    <Compile Include="Measurement\ImperialLegthUnit.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Validatable.cs" />
-    <Compile Include="ValidationEventArgs.cs" />
+    <Compile Include="InvalidEventArgs.cs" />
     <EmbeddedResource Include="resExceptions.pt.resx">
     </EmbeddedResource>
     <EmbeddedResource Include="resExceptions.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>resExceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="LengthSize.cs" />
+    <Compile Include="Measurement\LengthSize.cs" />
     <Compile Include="IMaskeable.cs" />
     <Compile Include="IWriteProtected.cs" />
-    <Compile Include="DataSize.cs" />
+    <Compile Include="Measurement\DataSize.cs" />
     <Compile Include="Security\Cryptography\Simple.cs" />
     <Compile Include="Formatting\FormatStringBase.cs" />
     <Compile Include="Formatting\GrammarRules.cs" />
