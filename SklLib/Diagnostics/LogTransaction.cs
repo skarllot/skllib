@@ -19,6 +19,7 @@
 //
 
 using System;
+using System.Diagnostics;
 using stringb = System.Text.StringBuilder;
 
 namespace SklLib.Diagnostics
@@ -26,9 +27,19 @@ namespace SklLib.Diagnostics
     /// <summary>
     /// Provides methods to handle multiple messages to single log entry.
     /// </summary>
-    public class LogTransaction : ITransaction<LogEventArgs>
+    public class LogTransaction : ITransaction
     {
         #region Fields
+
+        /// <summary>
+        /// Default EventLog type to new <see cref="LogTransaction"/> instances.
+        /// </summary>
+        public const EventLogEntryType DEFAULT_LOG_TYPE = EventLogEntryType.Error;
+
+        /// <summary>
+        /// Default EventLog event ID to new <see cref="LogTransaction"/> instances.
+        /// </summary>
+        public static readonly EventId DEFAULT_LOG_ID = EventId.UnexpectedError;
 
         /// <summary>
         /// Default header for each message.
@@ -45,6 +56,8 @@ namespace SklLib.Diagnostics
         string fmtLineHeader = DEFAULT_LINE_HEADER;
         string fmtTimestamp = DEFAULT_TIMESTAMP_FORMAT;
         bool headerHasTimestamp = true;
+        EventLogEntryType type;
+        EventId eventId;
 
         #endregion
 
@@ -57,6 +70,8 @@ namespace SklLib.Diagnostics
         public LogTransaction(Logger logger)
         {
             this.logger = logger;
+            this.type = DEFAULT_LOG_TYPE;
+            this.eventId = DEFAULT_LOG_ID;
         }
 
         #endregion
@@ -98,8 +113,12 @@ namespace SklLib.Diagnostics
         /// Appends a line to log message.
         /// </summary>
         /// <param name="message">The line to append.</param>
+        /// <exception cref="ObjectDisposedException">Current instance is already disposed.</exception>
         public void AppendLine(string message)
         {
+            if (logger == null)
+                throw new ObjectDisposedException("LogTransaction");
+
             if (headerHasTimestamp)
                 log.Append(string.Format("[{0}] ", GetTimestamp()));
             log.AppendLine(message);
@@ -110,8 +129,12 @@ namespace SklLib.Diagnostics
         /// </summary>
         /// <param name="message">The line to append.</param>
         /// <param name="args">Parameters to replace placeholders from line header.</param>
+        /// <exception cref="ObjectDisposedException">Current instance is already disposed.</exception>
         public void AppendLine(string message, params object[] args)
         {
+            if (logger == null)
+                throw new ObjectDisposedException("LogTransaction");
+
             object[] list;
             if (headerHasTimestamp) {
                 list = new object[args.Length + 1];
@@ -129,13 +152,17 @@ namespace SklLib.Diagnostics
         /// <summary>
         /// Commits this transaction to a new log entry.
         /// </summary>
-        /// <param name="eventArgs">The event log information data.</param>
-        public void Commit(LogEventArgs eventArgs)
+        /// <exception cref="ObjectDisposedException">Current instance is already disposed.</exception>
+        /// <exception cref="InvalidOperationException">Cannot commit empty log message.</exception>
+        public void Commit()
         {
+            if (logger == null)
+                throw new ObjectDisposedException("LogTransaction");
             if (log.Length == 0)
-                throw new InvalidOperationException("The log message is empty");
+                throw new InvalidOperationException(resExceptions.EventLogMessageEmpty);
 
-            logger.WriteEntry(log.ToString(), eventArgs);
+            logger.WriteEntry(log.ToString(), this.type, this.eventId);
+            this.Dispose();
         }
 
         /// <summary>
@@ -144,6 +171,7 @@ namespace SklLib.Diagnostics
         public void Dispose()
         {
             log.Remove(0, log.Length);
+            logger = null;
         }
 
         private string GetTimestamp()
@@ -154,9 +182,13 @@ namespace SklLib.Diagnostics
         /// <summary>
         /// Discards this transaction to not add any entry to event log.
         /// </summary>
+        /// <exception cref="ObjectDisposedException">Current instance is already disposed.</exception>
         public void Rollback()
         {
-            log.Length = 0;
+            if (logger == null)
+                throw new ObjectDisposedException("LogTransaction");
+
+            this.Dispose();
         }
 
         #endregion

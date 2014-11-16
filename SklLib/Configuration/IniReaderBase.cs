@@ -29,8 +29,20 @@ namespace SklLib.Configuration
         #region Fields
 
         private const string MESSAGE_SECTION_MANDATORY_MISSING = "The mandatory section {0} was not found";
+
+        /// <summary>
+        /// The INI file reader.
+        /// </summary>
         protected IniFileReader cfgreader;
+
+        /// <summary>
+        /// The INI file name.
+        /// </summary>
         protected string filename;
+
+        /// <summary>
+        /// Stores found sections into target INI file.
+        /// </summary>
         protected IniSectionReaderBase[] sections;
 
         #endregion

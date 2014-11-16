@@ -20,10 +20,9 @@
 
 using System;
 using System.Globalization;
+using System.Linq;
 
-/// <summary>
-/// Namespace where are located formatting classes.
-/// </summary>
+// Namespace where are located formatting classes.
 namespace SklLib.Formatting
 {
     /// <summary>
@@ -31,6 +30,9 @@ namespace SklLib.Formatting
     /// </summary>
     public static class Numbers
     {
+        // All numeric characters who are not zero.
+        private static readonly char[] NON_ZERO_CHARS = "123456789".ToCharArray();
+
         /// <summary>
         /// Writes a number in a spelling mode (example: "fifty-two").
         /// </summary>
@@ -80,22 +82,9 @@ namespace SklLib.Formatting
             return SpellNumber(sNumber, currency, numWInfo, numFInfo);
         }
 
-        private static string GetStringInSignedStrings(string str, int pos)
-        {
-            int signIdx = str.IndexOf('&');
-            if (signIdx != -1)
-            {
-                if (pos == 1)
-                    str = str.Substring(signIdx + 1);
-                else
-                    str = str.Substring(0, signIdx);
-            }
-
-            return str;
-        }
-
         private static string SpellNumber(string number, bool currency, Globalization.NumberWriteInfo numWInfo, NumberFormatInfo numFInfo)
         {
+            decimal valNumber = Convert.ToDecimal(number);
             string GroupSeparator;
             string DecimalSeparator;
             int[] GroupSizes;
@@ -131,17 +120,18 @@ namespace SklLib.Formatting
                 throw new OverflowException(resExceptions.UnsupportedNumber_byNumberWriteInfo);
 
             string fullWrite;
-            string intWrited = SpellNumber_int(intGroups, numWInfo);
+            string intWrited = string.Empty;
+            if (!(Math.Floor(valNumber) == 0 && valNumber > 0))
+                intWrited = SpellNumber_int(intGroups, numWInfo);
 
             string decWrited;
             if (currency)
             {
                 long value = (long)Math.Floor(Convert.ToDecimal(number));
-                string cur = numWInfo.CurrencyIntegerName;
-                if (value > 1)
-                    cur = GetStringInSignedStrings(cur, 1);
-                else
-                    cur = GetStringInSignedStrings(cur, 0);
+                string cur = (value > 1 ?
+                    numWInfo.CurrencyIntegerName.Plural :
+                    numWInfo.CurrencyIntegerName.Singular
+                    );
                 intWrited += " " + cur;
 
                 value = Convert.ToInt64(decPart);
@@ -153,122 +143,130 @@ namespace SklLib.Formatting
                     decWrited += SpellNumber_int(SpellNumber_divideGroups(decPart), numWInfo);
 
 
-                    cur = numWInfo.CurrencyDecimalName;
-                    if (value > 1)
-                        cur = GetStringInSignedStrings(cur, 1);
-                    else
-                        cur = GetStringInSignedStrings(cur, 0);
+                    cur = (value > 1 ?
+                        numWInfo.CurrencyDecimalName.Plural :
+                        numWInfo.CurrencyDecimalName.Singular
+                        );
                     decWrited += " " + cur;
                 }
             }
             else
             {
                 decWrited = SpellNumber_dec(decPart, numWInfo);
-                if (decWrited.Length != 0)
+                if (decWrited.Length > 0
+                    && intWrited.Length > 0) {
                     decWrited = numWInfo.IntegerDecimalSeparator + decWrited;
+                }
             }
 
             fullWrite = intWrited + decWrited;
             return fullWrite;
         }
 
+        // Process hundred chunk from number (e.g: '45' and '433' from '45,433.77')
         private static string SpellNumber_base(string part, Globalization.NumberWriteInfo numWInfo)
         {
-            for (int i = 0; i < numWInfo.SpecialCases.Length; i++)
-            {
-                if (Convert.ToInt64(part) == numWInfo.SpecialCases[i].value)
-                    return numWInfo.SpecialCases[i].write;
-            }
+            string special = (
+                from a in numWInfo.SpecialCases
+                let valPart = Convert.ToInt64(part)
+                where valPart == a.Value
+                select a.Spell)
+                .FirstOrDefault();
+            if (special != null)
+                return special;
 
             if (part.Length < 3)
-                part = new string('0', 3 - part.Length) + part;
+                part = part.PadLeft(3, '0');
 
-            string wnumber = "";
-            byte hvalue = Convert.ToByte(part.Substring(0, 1));
-            byte dvalue = Convert.ToByte(part.Substring(1, 1));
-            byte uvalue = Convert.ToByte(part.Substring(2, 1));
+            string wnumber = string.Empty;
+            byte hvalue = (byte)(part[0] - '0');
+            byte dvalue = (byte)(part[1] - '0');
+            byte uvalue = (byte)(part[2] - '0');
 
+            if (hvalue == 0 && dvalue == 0 && uvalue == 0)
+                return string.Empty;
+
+            // Spelling to hundred, dozen and unit
+            string wHValue = null, wDValue = null, wUValue = null;
+
+            // === hundred ===
+            // (e.g: for '123' if has 12th element in DozenValues)
+            if (hvalue > 0 && dvalue > 0)
+            wDValue = numWInfo.DozenValues
+                .ElementAtOrDefault(hvalue * 10 + dvalue);
+
+            if (wDValue == null)
+                wHValue = numWInfo.HundredValues[hvalue];
+
+            // === dozen ===
+            // (e.g: for '123' if has the value 23 in SpecialCases)
+            wUValue = (
+                from a in numWInfo.SpecialCases
+                let valDU = dvalue * 10 + uvalue
+                where valDU == a.Value
+                select a.Spell)
+                .FirstOrDefault();
+            // (e.g: for '123' if has 23th element in UnityValues)
+            if (dvalue > 0 && uvalue > 0) {
+                wUValue = numWInfo.UnityValues
+                    .ElementAtOrDefault(dvalue * 10 + uvalue);
+            }
+
+            if (wUValue == null)
+                wDValue = numWInfo.DozenValues[dvalue];
+
+            // === unity ===
+            if (uvalue != 0 && wUValue == null)
+                wUValue = numWInfo.UnityValues[uvalue];
+
+            // === Joining all together ===
             string hd = numWInfo.HundredDozenSeparator;
             if (hvalue == 0 || (dvalue == 0 && uvalue == 0))
-                hd = "";
+                hd = string.Empty;
 
             string du = numWInfo.DozenUnitSeparator;
             if (dvalue == 0 || uvalue == 0)
-                du = "";
+                du = string.Empty;
 
-            // hundred
-            if ((hvalue * 10) + dvalue < numWInfo.DozenValues.Length && hvalue != 0)
-            {
-                dvalue += 10;
-                goto dozen;
-            }
-            wnumber += numWInfo.HundredValues[hvalue] + hd;
-
-            // dozen
-        dozen:
-            for (int i = 0; i < numWInfo.SpecialCases.Length; i++)
-            {
-                if (numWInfo.SpecialCases[i].value.ToString().Length == 2)
-                    if (dvalue * 10 + uvalue == numWInfo.SpecialCases[i].value)
-                        return wnumber + numWInfo.SpecialCases[i].write;
-            }
-
-            if ((dvalue * 10) + uvalue < numWInfo.UnityValues.Length && dvalue != 0)
-            {
-                uvalue += 10;
-                goto unity;
-            }
-            wnumber += numWInfo.DozenValues[dvalue] + du;
-
-            // unity
-        unity:
-            for (int i = 0; i < numWInfo.SpecialCases.Length; i++)
-            {
-                if (numWInfo.SpecialCases[i].value.ToString().Length == 1)
-                    if (uvalue == numWInfo.SpecialCases[i].value)
-                        return wnumber + numWInfo.SpecialCases[i].write;
-            }
-            if (uvalue != 0)
-                wnumber += numWInfo.UnityValues[uvalue];
+            if (wHValue != null)
+                wnumber += wHValue + hd;
+            if (wDValue != null)
+                wnumber += wDValue + du;
+            if (wUValue != null)
+                wnumber += wUValue;
 
             return wnumber;
         }
 
+        // Process decimal part from number (e.g: '768' from '7,843.768')
         private static string SpellNumber_dec(string part, Globalization.NumberWriteInfo numWInfo)
         {
-            for (int i = part.Length - 1; i >= 0; i--)
-            {
-                if (part.Substring(part.Length - 1) == "0")
-                    part = part.Substring(0, part.Length - 1);
-                else
-                    break;
-            }
+            part = part.TrimEnd('0');
 
             int len = part.Length;
             if (len == 0)
-                return "";
-
-            long partValue = Convert.ToInt64(part);
-            if (partValue == 0)
-                return "";
-
-            string numb = SpellNumber_int(SpellNumber_divideGroups(part), numWInfo);
+                return string.Empty;
             if (len >= numWInfo.DecimalValues.Length)
                 throw new OverflowException(resExceptions.UnsupportedNumber_byNumberWriteInfo);
 
-            string decValue = numWInfo.DecimalValues[len];
-            if (partValue > 1)
-                decValue = GetStringInSignedStrings(decValue, 1);
-            else
-                decValue = GetStringInSignedStrings(decValue, 0);
+            ulong partValue = Convert.ToUInt64(part);
+            if (partValue == 0)
+                return string.Empty;
 
-            numb += " " + decValue;
+            string numb = SpellNumber_int(SpellNumber_divideGroups(part), numWInfo);
+
+            numb += " " + (partValue > 1 ?
+                numWInfo.DecimalValues[len].Plural :
+                numWInfo.DecimalValues[len].Singular
+                );
+
             return numb;
         }
 
+        // Splits a number in parts (e.g: ('75', '433') and '93' from '75,433.93')
         private static void SpellNumber_divide(string number, out string[] intPart, out string decPart, string decSeparator)
         {
-            decPart = "";
+            decPart = string.Empty;
             string[] intDec = number.Split(new string[] { decSeparator },
                 StringSplitOptions.RemoveEmptyEntries);
             if (intDec.Length == 2)
@@ -277,57 +275,54 @@ namespace SklLib.Formatting
             intPart = SpellNumber_divideGroups(intDec[0]);
         }
 
+        // Splits the integer part of a number (e.g: ('3', '943') from '3943')
         private static string[] SpellNumber_divideGroups(string integer)
         {
             integer = Convert.ToInt64(integer).ToString();
-            string[] intPart = new string[(int)Math.Ceiling(integer.Length / 3M)];
-            for (int i = 0; i < intPart.Length; i++)
-            {
-                int len = integer.Length;
-                if (len <= 3)
-                {
-                    intPart[i] = integer;
-                    break;
-                }
-                intPart[i] = integer.Substring(len - 3);
-                integer = integer.Substring(0, len - 3);
-            }
-            return intPart;
+            return integer.Split(3).Reverse().ToArray();
         }
 
+        // Gets spelling of integer number
         private static string SpellNumber_int(string[] intGroups, Globalization.NumberWriteInfo numWInfo)
         {
-            string intWrite = "";
+            string intWrite = string.Empty;
 
-            if (intGroups.Length == 1)
+            if (intGroups.Length == 1) {
                 if (Convert.ToInt64(intGroups[0]) == 0)
                     return numWInfo.UnityValues[0];
+            }
 
-            for (int i = intGroups.Length - 1; i >= 0; i--)
-            {
-                intWrite += SpellNumber_base(intGroups[i], numWInfo);
+            if (intGroups.Length > numWInfo.ThousandValues.Length)
+                throw new OverflowException(resExceptions.UnsupportedNumber_byNumberWriteInfo);
 
-                string thVal = numWInfo.ThousandValues[i];
+            var va = intGroups
+                .Select((a, i) => {
+                    int aValue = Convert.ToInt32(a);
 
-                int currValue = Convert.ToInt32(intGroups[i]);
-                if (currValue > 1)
-                    thVal = GetStringInSignedStrings(thVal, 1);
-                else
-                    thVal = GetStringInSignedStrings(thVal, 0);
+                    // Is next groups zeroes?
+                    bool isAllNextZero = intGroups
+                        .Take(i)
+                        .Where(s => s.IndexOfAny(NON_ZERO_CHARS) != -1)
+                        .Count() == 0;
 
-                // verifica se nas próximas casas é "00...00" ou não.
-                string bValues = "";
-                for (int v = i - 1; v >= 0; v--)
-                    bValues += intGroups[v];
+                    return new {
+                        NumberValue = aValue,
+                        NumberWrite = SpellNumber_base(a, numWInfo),
+                        ThousandValue = (aValue > 1 ?
+                        numWInfo.ThousandValues[i].Plural :
+                        numWInfo.ThousandValues[i].Singular),
+                        IsAllNextZero = isAllNextZero
+                    };
+                })
+                .Reverse();
 
-                string th_Sep = "";
-                if (bValues.Length > 0)
-                    if (Convert.ToInt64(bValues) > 0)
-                        th_Sep = numWInfo.ThousandsSeparator;
-                // -------------------------------------------------
+            foreach (var item in va) {
+                if (item.NumberValue == 0)
+                    continue;
 
-                if (currValue > 0)
-                    intWrite += " " + thVal + th_Sep;
+                intWrite += item.NumberWrite + " " + item.ThousandValue;
+                if (!item.IsAllNextZero)
+                    intWrite += numWInfo.ThousandsSeparator;
             }
 
             return intWrite.Trim();

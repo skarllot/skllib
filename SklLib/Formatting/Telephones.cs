@@ -27,6 +27,7 @@ namespace SklLib.Formatting
     /// <summary>
     /// Provides methods to format Telephones.
     /// </summary>
+    [Obsolete("The type Telephones was not implemented yet", true)]
     public sealed class Telephones : FormatStringBase
     {
         #region Fields

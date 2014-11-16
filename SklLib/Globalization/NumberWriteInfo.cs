@@ -35,20 +35,55 @@ namespace SklLib.Globalization
         /// Stores a <see cref="Dictionary&lt;TKey, TValue&gt;"/>, where key is a culture name and value
         /// is a delegate to get type- and culture-specific.
         /// </summary>
-        private static Dictionary<string, Func<NumberWriteInfo>> storedCultureInfo;
+        private static Dictionary<string, NumberWriteInfo> storedCultureInfo;
         private string[] uValues;
         private string[] dValues;
         private string[] hValues;
-        private string[] tValues;
-        private string[] decValues;
+        private GrammarNumberWriteInfo[] tValues;
+        private GrammarNumberWriteInfo[] decValues;
         private string du_Sep;
         private string hd_Sep;
         private string th_Sep;
         private string intdec_Sep;
-        private string curInt;
-        private string curDec;
+        private GrammarNumberWriteInfo curInt;
+        private GrammarNumberWriteInfo curDec;
         private bool isReadOnly;
-        private WriteNumber[] special;
+        private SpeltNumber[] special;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializes static fields of NumberWriteInfo.
+        /// </summary>
+        static NumberWriteInfo()
+        {
+            storedCultureInfo = new Dictionary<string, NumberWriteInfo>(3);
+            storedCultureInfo.Add("en-US", Get_enUS());
+            storedCultureInfo.Add("fr-FR", Get_frFR());
+            storedCultureInfo.Add("pt-BR", Get_ptBR());
+        }
+
+        /// <summary>
+        /// Initializes an empty instance of <see cref="NumberWriteInfo"/>.
+        /// </summary>
+        public NumberWriteInfo()
+        {
+            uValues = new string[0];
+            dValues = new string[0];
+            hValues = new string[0];
+            tValues = new GrammarNumberWriteInfo[0];
+            decValues = new GrammarNumberWriteInfo[0];
+            du_Sep = string.Empty;
+            hd_Sep = string.Empty;
+            th_Sep = string.Empty;
+            intdec_Sep = string.Empty;
+            curInt = new GrammarNumberWriteInfo(string.Empty);
+            curDec = new GrammarNumberWriteInfo(string.Empty);
+            isReadOnly = false;
+            special = new SpeltNumber[0];
+        }
 
         #endregion
 
@@ -117,7 +152,7 @@ namespace SklLib.Globalization
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
-        public string[] ThousandValues
+        public GrammarNumberWriteInfo[] ThousandValues
         {
             get { return tValues; }
             set
@@ -132,7 +167,7 @@ namespace SklLib.Globalization
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
-        public string[] DecimalValues
+        public GrammarNumberWriteInfo[] DecimalValues
         {
             get { return decValues; }
             set
@@ -143,7 +178,7 @@ namespace SklLib.Globalization
         }
 
         /// <summary>
-        /// Gets or sets a String to separates Dozen numbers of the Units numbers (example: "-").
+        /// Gets or sets a String to separates Dozen numbers of the Units numbers (e.g: The '-' from 'twenty-one').
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
@@ -158,7 +193,7 @@ namespace SklLib.Globalization
         }
 
         /// <summary>
-        /// Gets or sets a String to separates Hundred numbers of the Dozen numbers (example: " and ").
+        /// Gets or sets a String to separates Hundred numbers of the Dozen numbers (e.g: The ' and ' from 'one hundred and one').
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
@@ -203,11 +238,11 @@ namespace SklLib.Globalization
         }
 
         /// <summary>
-        /// Gets or sets how currency integer name is written (example: "dollar&amp;dollars").
+        /// Gets or sets how currency integer name is written (example: "dollar and dollars").
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
-        public string CurrencyIntegerName
+        public GrammarNumberWriteInfo CurrencyIntegerName
         {
             get { return curInt; }
             set
@@ -218,11 +253,11 @@ namespace SklLib.Globalization
         }
 
         /// <summary>
-        /// Gets or sets how currency decimal name is written (example: "cent&amp;cents").
+        /// Gets or sets how currency decimal name is written (example: "cent and cents").
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
-        public string CurrencyDecimalName
+        public GrammarNumberWriteInfo CurrencyDecimalName
         {
             get { return curDec; }
             set
@@ -237,7 +272,7 @@ namespace SklLib.Globalization
         /// </summary>
         /// <exception cref="InvalidOperationException">The property is being set and this
         /// instance is read-only.</exception>
-        public WriteNumber[] SpecialCases
+        public SpeltNumber[] SpecialCases
         {
             get { return special; }
             set
@@ -245,21 +280,6 @@ namespace SklLib.Globalization
                 VerifyWritable();
                 special = value;
             }
-        }
-
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializes static fields of NumberWriteInfo.
-        /// </summary>
-        static NumberWriteInfo()
-        {
-            storedCultureInfo = new Dictionary<string, Func<NumberWriteInfo>>(3);
-            storedCultureInfo.Add("en-US", Get_enUS);
-            storedCultureInfo.Add("fr-FR", Get_frFR);
-            storedCultureInfo.Add("pt-BR", Get_ptBR);
         }
 
         #endregion
@@ -278,19 +298,17 @@ namespace SklLib.Globalization
             if (!storedCultureInfo.ContainsKey(name))
                 throw new ArgumentException(resExceptions.UnsupportedCulture);
 
-            return storedCultureInfo[name]();
+            return storedCultureInfo[name];
         }
 
         /// <summary>
         /// Gets the list of names of supported cultures by NumberWriteInfo.
         /// </summary>
-        /// <returns>An <see cref="Array"/> of type <see cref="String"/> that contains the cultures names.
+        /// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of type <see cref="String"/> that contains the cultures names.
         /// The <see cref="Array"/> of cultures is sorted.</returns>
-        public static string[] GetDisponibleCultures()
+        public static IEnumerable<string> GetDisponibleCultures()
         {
-            string[] cultureNames = new string[storedCultureInfo.Keys.Count];
-            storedCultureInfo.Keys.CopyTo(cultureNames, 0);
-            return cultureNames;
+            return storedCultureInfo.Keys;
         }
 
 
@@ -298,43 +316,69 @@ namespace SklLib.Globalization
         {
             NumberWriteInfo nwi = new NumberWriteInfo();
 
-            string[] uv = new string[] { "zero", "one", "two", "three", "four", "five", "six",
-                    "seven", "eight", "nine", "ten", "eleven", "twelve", "threeteen", "fourteen", "fiveteen",
-                    "sixteen", "seventeen", "eighteen", "nineteen" };
-            nwi.UnityValues = uv;
+            nwi.UnityValues = new string[] {
+                "zero", "one", "two", "three", "four", "five", "six", "seven",
+                "eight", "nine", "ten", "eleven", "twelve", "threeteen",
+                "fourteen", "fiveteen", "sixteen", "seventeen", "eighteen",
+                "nineteen"
+            };
 
-            string[] dv = new string[] { "", "ten", "twenty", "thirty", "forty", "fifty",
-                    "sixty", "seventy", "eighty", "ninety" };
-            nwi.DozenValues = dv;
+            nwi.DozenValues = new string[] {
+                "", "ten", "twenty", "thirty", "forty", "fifty", "sixty",
+                "seventy", "eighty", "ninety"
+            };
 
-            string[] hv = new string[] { "", "one hundred", "two hundred", "three hundred",
-                    "four hundred", "five hundred", "six hundred", "seven hundred", "eight hundred",
-                    "nine hundred" };
-            nwi.HundredValues = hv;
+            nwi.HundredValues = new string[] {
+                "", "one hundred", "two hundred", "three hundred",
+                "four hundred", "five hundred", "six hundred", "seven hundred",
+                "eight hundred", "nine hundred"
+            };
 
-            string[] tv = new string[] { "", "thousand", "million", "billion", "trillion",
-                    "quadrillion", "quintillion", "sextillion", "septillion", "octillion", "nonillion",
-                    "decillion", "undecillion", "duodecillion" };
-            nwi.ThousandValues = tv;
+            nwi.ThousandValues = new GrammarNumberWriteInfo[] {
+                new GrammarNumberWriteInfo(string.Empty),
+                new GrammarNumberWriteInfo("thousand"),
+                new GrammarNumberWriteInfo("million"),
+                new GrammarNumberWriteInfo("billion"),
+                new GrammarNumberWriteInfo("trillion"),
+                new GrammarNumberWriteInfo("quadrillion"),
+                new GrammarNumberWriteInfo("quintillion"),
+                new GrammarNumberWriteInfo("sextillion"),
+                new GrammarNumberWriteInfo("septillion"),
+                new GrammarNumberWriteInfo("octillion"),
+                new GrammarNumberWriteInfo("nonillion"),
+                new GrammarNumberWriteInfo("decillion"),
+                new GrammarNumberWriteInfo("undecillion"),
+                new GrammarNumberWriteInfo("duodecillion")
+            };
 
-            string[] decv = new string[] { "", "tenth&tenths", "hundredth&hundredth",
-                    "thousandth&thousandths", "ten-thousandth&ten-thousandths",
-                    "hundred-thousandth&hundred-thousandths", "millionth&millionths",
-                    "ten-millionth&ten-millionths", "hundred-millionth&hundred-millionths",
-                    "billionth&billionths", "ten-billionth&ten-billionths",
-                    "hundred-billionth&hundred-billionths", "trillionth&trillionths",
-                    "ten-trillionth&ten-trillionths", "hundred-trillionth&hundred-trillionths" };
-            nwi.DecimalValues = decv;
+            nwi.DecimalValues = new GrammarNumberWriteInfo[] {
+                new GrammarNumberWriteInfo(string.Empty),
+                new GrammarNumberWriteInfo("tenth", "tenths"),
+                new GrammarNumberWriteInfo("hundredth", "hundredths"),
+                new GrammarNumberWriteInfo("thousandth", "thousandths"),
+                new GrammarNumberWriteInfo("ten-thousandth", "ten-thousandths"),
+                new GrammarNumberWriteInfo("hundred-thousandth", "hundred-thousandths"),
+                new GrammarNumberWriteInfo("millionth", "millionths"),
+                new GrammarNumberWriteInfo("ten-millionth", "ten-millionths"),
+                new GrammarNumberWriteInfo("hundred-millionth", "hundred-millionths"),
+                new GrammarNumberWriteInfo("billionth", "billionths"),
+                new GrammarNumberWriteInfo("ten-billionth", "ten-billionths"),
+                new GrammarNumberWriteInfo("hundred-billionth", "hundred-billionths"),
+                new GrammarNumberWriteInfo("trillionth", "trillionths"),
+                new GrammarNumberWriteInfo("ten-trillionth", "ten-trillionths"),
+                new GrammarNumberWriteInfo("hundred-trillionth", "hundred-trillionths")
+            };
 
-            WriteNumber[] wn = new WriteNumber[0];
+            SpeltNumber[] wn = new SpeltNumber[0];
             nwi.SpecialCases = wn;
 
             nwi.DozenUnitSeparator = "-";
             nwi.HundredDozenSeparator = " and ";
             nwi.ThousandsSeparator = ", ";
             nwi.IntegerDecimalSeparator = " and ";
-            nwi.CurrencyIntegerName = "Dollar&Dollars";
-            nwi.CurrencyDecimalName = "Cent&Cents";
+            nwi.CurrencyIntegerName = new GrammarNumberWriteInfo("Dollar", "Dollars");
+            nwi.CurrencyDecimalName = new GrammarNumberWriteInfo("Cent", "Cents");
+            nwi.isReadOnly = true;
 
             return nwi;
         }
@@ -343,53 +387,61 @@ namespace SklLib.Globalization
         {
             NumberWriteInfo nwi = new NumberWriteInfo();
 
-            string[] uv = new string[] { "zéro", "un", "deux", "trois", "quatre", "cinq", "six",
-                    "sept", "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze", "quinze",
-                    "seize", "dix-sept", "dix-huit", "dix-neuf" };
-            nwi.UnityValues = uv;
+            nwi.UnityValues = new string[] {
+                "zéro", "un", "deux", "trois", "quatre", "cinq", "six", "sept",
+                "huit", "neuf", "dix", "onze", "douze", "treize", "quatorze",
+                "quinze", "seize", "dix-sept", "dix-huit", "dix-neuf"
+            };
 
-            string[] dv = new string[] { "", "dix", "vingt", "trente", "quarante", "cinquante",
-                    "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix" };
-            nwi.DozenValues = dv;
+            nwi.DozenValues = new string[] {
+                "", "dix", "vingt", "trente", "quarante", "cinquante",
+                "soixante", "soixante-dix", "quatre-vingt", "quatre-vingt-dix"
+            };
 
-            string[] hv = new string[] { "", "cent", "deux cents", "trois cents",
-                    "quatre cents", "cinq cents", "six cents", "sept cents", "huit cents",
-                    "neuf cents" };
-            nwi.HundredValues = hv;
+            nwi.HundredValues = new string[] {
+                "", "cent", "deux cents", "trois cents", "quatre cents",
+                "cinq cents", "six cents", "sept cents", "huit cents",
+                "neuf cents"
+            };
 
-            string[] tv = new string[] { "", "mille", "million", "milliard", "billion" };
-            nwi.ThousandValues = tv;
+            nwi.ThousandValues = new GrammarNumberWriteInfo[] {
+                new GrammarNumberWriteInfo(string.Empty),
+                new GrammarNumberWriteInfo("mille"),
+                new GrammarNumberWriteInfo("million"),
+                new GrammarNumberWriteInfo("milliard"),
+                new GrammarNumberWriteInfo("billion")
+            };
 
-            string[] decv = new string[] { };
-            nwi.DecimalValues = decv;
+            nwi.DecimalValues = new GrammarNumberWriteInfo[] { };
 
-            WriteNumber[] wn = new WriteNumber[18];
-            wn[0] = new WriteNumber(21, "vingt et un");
-            wn[1] = new WriteNumber(31, "trente et un");
-            wn[2] = new WriteNumber(41, "quarante et un");
-            wn[3] = new WriteNumber(51, "cinquante et un");
-            wn[4] = new WriteNumber(61, "soixante et un");
-            wn[5] = new WriteNumber(71, "soixante et onze");
-            wn[6] = new WriteNumber(72, "soixante et douze");
-            wn[7] = new WriteNumber(73, "soixante et treize");
-            wn[8] = new WriteNumber(74, "soixante et quatorze");
-            wn[9] = new WriteNumber(75, "soixante et quinze");
-            wn[10] = new WriteNumber(76, "soixante et seize");
-            wn[11] = new WriteNumber(80, "quatre-vingts");
-            wn[12] = new WriteNumber(91, "quatre-vingt-onze");
-            wn[13] = new WriteNumber(92, "quatre-vingt-douze");
-            wn[14] = new WriteNumber(93, "quatre-vingt-treize");
-            wn[15] = new WriteNumber(94, "quatre-vingt-quatorze");
-            wn[16] = new WriteNumber(95, "quatre-vingt-quinze");
-            wn[17] = new WriteNumber(96, "quatre-vingt-seize");
-            nwi.SpecialCases = wn;
+            nwi.SpecialCases = new SpeltNumber[] {
+                new SpeltNumber(21, "vingt et un"),
+                new SpeltNumber(31, "trente et un"),
+                new SpeltNumber(41, "quarante et un"),
+                new SpeltNumber(51, "cinquante et un"),
+                new SpeltNumber(61, "soixante et un"),
+                new SpeltNumber(71, "soixante et onze"),
+                new SpeltNumber(72, "soixante et douze"),
+                new SpeltNumber(73, "soixante et treize"),
+                new SpeltNumber(74, "soixante et quatorze"),
+                new SpeltNumber(75, "soixante et quinze"),
+                new SpeltNumber(76, "soixante et seize"),
+                new SpeltNumber(80, "quatre-vingts"),
+                new SpeltNumber(91, "quatre-vingt-onze"),
+                new SpeltNumber(92, "quatre-vingt-douze"),
+                new SpeltNumber(93, "quatre-vingt-treize"),
+                new SpeltNumber(94, "quatre-vingt-quatorze"),
+                new SpeltNumber(95, "quatre-vingt-quinze"),
+                new SpeltNumber(96, "quatre-vingt-seize")
+            };
 
             nwi.DozenUnitSeparator = "-";
             nwi.HundredDozenSeparator = " ";
             nwi.ThousandsSeparator = " ";
             nwi.IntegerDecimalSeparator = " ";
-            nwi.CurrencyIntegerName = "Euro&Euros";
-            nwi.CurrencyDecimalName = "Cent&Cents";
+            nwi.CurrencyIntegerName = new GrammarNumberWriteInfo("Euro", "Euros");
+            nwi.CurrencyDecimalName = new GrammarNumberWriteInfo("Cent", "Cents");
+            nwi.isReadOnly = true;
 
             return nwi;
         }
@@ -398,44 +450,66 @@ namespace SklLib.Globalization
         {
             NumberWriteInfo nwi = new NumberWriteInfo();
 
-            string[] uv = new string[] { "zero", "um", "dois", "três", "quatro", "cinco", "seis",
-                    "sete", "oito", "nove", "dez", "onze", "doze", "treze", "quatorze", "quinze",
-                    "dezesseis", "dezessete", "dezoito", "dezenove" };
-            nwi.UnityValues = uv;
+            nwi.UnityValues = new string[] {
+                "zero", "um", "dois", "três", "quatro", "cinco", "seis",
+                "sete", "oito", "nove", "dez", "onze", "doze", "treze",
+                "quatorze", "quinze", "dezesseis", "dezessete", "dezoito",
+                "dezenove"
+            };
 
-            string[] dv = new string[] { "", "dez", "vinte", "trinta", "quarenta", "cinquenta",
-                    "sessenta", "setenta", "oitenta", "noventa" };
-            nwi.DozenValues = dv;
+            nwi.DozenValues = new string[] {
+                "", "dez", "vinte", "trinta", "quarenta", "cinquenta",
+                "sessenta", "setenta", "oitenta", "noventa"
+            };
 
-            string[] hv = new string[] { "", "cento", "duzentos", "trezentos", "quatrocentos",
-                    "quinhentos", "seissentos", "setecentos", "oitocentos", "novecentos" };
-            nwi.HundredValues = hv;
+            nwi.HundredValues = new string[] {
+                "", "cento", "duzentos", "trezentos", "quatrocentos",
+                "quinhentos", "seissentos", "setecentos", "oitocentos",
+                "novecentos"
+            };
 
-            string[] tv = new string[] { "", "mil", "milhão&milhões", "bilhão&bilhões", "trilhão&trilhões",
-                    "quatrilhão&quatrilhões", "quintilhão&quintilhões", "sextilhão&sextilhões",
-                    "setilhão&setilhões", "octilhão&octilhões" };
-            nwi.ThousandValues = tv;
+            nwi.ThousandValues = new GrammarNumberWriteInfo[] {
+                new GrammarNumberWriteInfo(string.Empty),
+                new GrammarNumberWriteInfo("mil"),
+                new GrammarNumberWriteInfo("milhão", "milhões"),
+                new GrammarNumberWriteInfo("bilhão", "bilhões"),
+                new GrammarNumberWriteInfo("trilhão", "trilhões"),
+                new GrammarNumberWriteInfo("quatrilhão", "quatrilhões"),
+                new GrammarNumberWriteInfo("quintilhão", "quintilhões"),
+                new GrammarNumberWriteInfo("sextilhão", "sextilhões"),
+                new GrammarNumberWriteInfo("setilhão", "setilhões"),
+                new GrammarNumberWriteInfo("octilhão", "octilhões")
+            };
 
-            string[] decv = new string[] { "", "décimo&décimos", "centésimo&centésimos",
-                    "milésimo&milésimos", "décimo-milésimo&décimos-milésimos",
-                    "centésimo-milésimo&centésimos-milésimos", "milionésimo&milionésimos",
-                    "décimo-milionésimo&décimos-milionésimos", "centésimo-milionésimo&centésimos-milionésimos",
-                    "bilionésimo&bilionésimos", "décimo-bilionésimo&décimos-bilionésimos",
-                    "centésimo-bilionésimo&centésimos-bilionésimos", "trilionésimo&trilionésimos",
-                    "décimo-trilionésimo&décimos-trilionésimos",
-                    "centésimo-trilionésimo&centésimos-trilionésimos" };
-            nwi.DecimalValues = decv;
+            nwi.DecimalValues = new GrammarNumberWriteInfo[] {
+                new GrammarNumberWriteInfo(string.Empty),
+                new GrammarNumberWriteInfo("décimo", "décimos"),
+                new GrammarNumberWriteInfo("centésimo", "centésimos"),
+                new GrammarNumberWriteInfo("milésimo", "milésimos"),
+                new GrammarNumberWriteInfo("décimo-milésimo", "décimos-milésimos"),
+                new GrammarNumberWriteInfo("centésimo-milésimo", "centésimos-milésimos"),
+                new GrammarNumberWriteInfo("milionésimo", "milionésimos"),
+                new GrammarNumberWriteInfo("décimo-milionésimo", "décimos-milionésimos"),
+                new GrammarNumberWriteInfo("centésimo-milionésimo", "centésimos-milionésimos"),
+                new GrammarNumberWriteInfo("bilionésimo", "bilionésimos"),
+                new GrammarNumberWriteInfo("décimo-bilionésimo", "décimos-bilionésimos"),
+                new GrammarNumberWriteInfo("centésimo-bilionésimo", "centésimos-bilionésimos"),
+                new GrammarNumberWriteInfo("trilionésimo", "trilionésimos"),
+                new GrammarNumberWriteInfo("décimo-trilionésimo", "décimos-trilionésimos"),
+                new GrammarNumberWriteInfo("centésimo-trilionésimo", "centésimos-trilionésimos")
+            };
 
-            WriteNumber[] wn = new WriteNumber[1];
-            wn[0] = new WriteNumber(100, "cem");
-            nwi.SpecialCases = wn;
+            nwi.SpecialCases = new SpeltNumber[] {
+                new SpeltNumber(100, "cem")
+            };
 
             nwi.DozenUnitSeparator = " e ";
             nwi.HundredDozenSeparator = " e ";
             nwi.ThousandsSeparator = " e ";
             nwi.IntegerDecimalSeparator = " e ";
-            nwi.CurrencyIntegerName = "Real&Reais";
-            nwi.CurrencyDecimalName = "Centavo&Centavos";
+            nwi.CurrencyIntegerName = new GrammarNumberWriteInfo("Real", "Reais");
+            nwi.CurrencyDecimalName = new GrammarNumberWriteInfo("Centavo", "Centavos");
+            nwi.isReadOnly = true;
 
             return nwi;
         }

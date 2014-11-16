@@ -20,12 +20,13 @@
 
 using System;
 
-namespace SklLib
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Stores a complete telephone number; includes country code, area code and
     /// subscriber number.
     /// </summary>
+    [Obsolete("The type Telephone was not implemented yet", true)]
     public struct Telephone: IEquatable<Telephone>
     {
         #region Fields
@@ -41,6 +42,13 @@ namespace SklLib
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="Telephone"/> and defines country code,
+        /// area code and subscriber number.
+        /// </summary>
+        /// <param name="countryCode">The country code.</param>
+        /// <param name="areaCode">The area code.</param>
+        /// <param name="subscriberNumber">The subscriber number.</param>
         public Telephone(short countryCode, short areaCode, int subscriberNumber)
         {
             if (countryCode > 999)
@@ -122,6 +130,11 @@ namespace SklLib
 
         #region Methods
 
+        /// <summary>
+        /// Converts the numeric value of this instance to its equivalent <see cref="T:System.String"/> representation.
+        /// </summary>
+        /// <param name="format">The formatting string.</param>
+        /// <returns>This <see cref="Telephone"/> instance formatted as indicated into format string.</returns>
         public string ToString(string format)
         {
             if (string.IsNullOrEmpty(format))
@@ -132,24 +145,42 @@ namespace SklLib
             return format;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string ToBasicTelephoneString()
         {
-            return string.Empty;
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string ToLocalTelephoneString()
         {
-            return string.Empty;
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string ToCompleteTelephoneString()
         {
-            return string.Empty;
+            throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tel"></param>
+        /// <param name="mask"></param>
+        /// <returns></returns>
         public static Telephone FromString(string tel, string mask)
         {
-            return new Telephone();
+            throw new NotImplementedException();
         }
 
         #endregion

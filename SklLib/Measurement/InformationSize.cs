@@ -36,9 +36,9 @@ namespace SklLib.Measurement
         #region Fields
 
         // List of singular and plural forms to byte IEC multiples.
-        private static readonly Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo> fullWriteList;
+        private static readonly Dictionary<ByteIEC, Globalization.GrammarNumberWriteInfo> fullWriteList;
         // List of singular and plural forms to contracted byte IEC multiples.
-        private static readonly Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo> contractedWriteList;
+        private static readonly Dictionary<ByteIEC, Globalization.GrammarNumberWriteInfo> contractedWriteList;
         // ToString formatting characters to each byte IEC multiple.
         private static readonly Dictionary<char, ByteIEC> formattingList;
         // List of values in bytes of each byte IEC multiple.
@@ -51,23 +51,23 @@ namespace SklLib.Measurement
 
         static InformationSize()
         {
-            fullWriteList = new Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo>(7);
-            fullWriteList.Add(ByteIEC.Byte, new Formatting.GrammarNumberWriteInfo("Byte", "Bytes"));
-            fullWriteList.Add(ByteIEC.Kibibyte, new Formatting.GrammarNumberWriteInfo("Kibibyte", "Kibibytes"));
-            fullWriteList.Add(ByteIEC.Mebibyte, new Formatting.GrammarNumberWriteInfo("Mebibyte", "Mebibytes"));
-            fullWriteList.Add(ByteIEC.Gibibyte, new Formatting.GrammarNumberWriteInfo("Gibibyte", "Gibibytes"));
-            fullWriteList.Add(ByteIEC.Tebibyte, new Formatting.GrammarNumberWriteInfo("Tebibyte", "Tebibytes"));
-            fullWriteList.Add(ByteIEC.Pebibyte, new Formatting.GrammarNumberWriteInfo("Pebibyte", "Pebibytes"));
-            fullWriteList.Add(ByteIEC.Exbibyte, new Formatting.GrammarNumberWriteInfo("Exbibyte", "Exbibytes"));
+            fullWriteList = new Dictionary<ByteIEC, Globalization.GrammarNumberWriteInfo>(7);
+            fullWriteList.Add(ByteIEC.Byte, new Globalization.GrammarNumberWriteInfo("Byte", "Bytes"));
+            fullWriteList.Add(ByteIEC.Kibibyte, new Globalization.GrammarNumberWriteInfo("Kibibyte", "Kibibytes"));
+            fullWriteList.Add(ByteIEC.Mebibyte, new Globalization.GrammarNumberWriteInfo("Mebibyte", "Mebibytes"));
+            fullWriteList.Add(ByteIEC.Gibibyte, new Globalization.GrammarNumberWriteInfo("Gibibyte", "Gibibytes"));
+            fullWriteList.Add(ByteIEC.Tebibyte, new Globalization.GrammarNumberWriteInfo("Tebibyte", "Tebibytes"));
+            fullWriteList.Add(ByteIEC.Pebibyte, new Globalization.GrammarNumberWriteInfo("Pebibyte", "Pebibytes"));
+            fullWriteList.Add(ByteIEC.Exbibyte, new Globalization.GrammarNumberWriteInfo("Exbibyte", "Exbibytes"));
 
-            contractedWriteList = new Dictionary<ByteIEC, Formatting.GrammarNumberWriteInfo>(7);
-            contractedWriteList.Add(ByteIEC.Byte, new Formatting.GrammarNumberWriteInfo("B"));
-            contractedWriteList.Add(ByteIEC.Kibibyte, new Formatting.GrammarNumberWriteInfo("KiB"));
-            contractedWriteList.Add(ByteIEC.Mebibyte, new Formatting.GrammarNumberWriteInfo("MiB"));
-            contractedWriteList.Add(ByteIEC.Gibibyte, new Formatting.GrammarNumberWriteInfo("GiB"));
-            contractedWriteList.Add(ByteIEC.Tebibyte, new Formatting.GrammarNumberWriteInfo("TiB"));
-            contractedWriteList.Add(ByteIEC.Pebibyte, new Formatting.GrammarNumberWriteInfo("PiB"));
-            contractedWriteList.Add(ByteIEC.Exbibyte, new Formatting.GrammarNumberWriteInfo("EiB"));
+            contractedWriteList = new Dictionary<ByteIEC, Globalization.GrammarNumberWriteInfo>(7);
+            contractedWriteList.Add(ByteIEC.Byte, new Globalization.GrammarNumberWriteInfo("B"));
+            contractedWriteList.Add(ByteIEC.Kibibyte, new Globalization.GrammarNumberWriteInfo("KiB"));
+            contractedWriteList.Add(ByteIEC.Mebibyte, new Globalization.GrammarNumberWriteInfo("MiB"));
+            contractedWriteList.Add(ByteIEC.Gibibyte, new Globalization.GrammarNumberWriteInfo("GiB"));
+            contractedWriteList.Add(ByteIEC.Tebibyte, new Globalization.GrammarNumberWriteInfo("TiB"));
+            contractedWriteList.Add(ByteIEC.Pebibyte, new Globalization.GrammarNumberWriteInfo("PiB"));
+            contractedWriteList.Add(ByteIEC.Exbibyte, new Globalization.GrammarNumberWriteInfo("EiB"));
 
             formattingList = new Dictionary<char, ByteIEC>(7);
             formattingList.Add('B', ByteIEC.Byte);

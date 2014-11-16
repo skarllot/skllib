@@ -207,4 +207,7 @@
   <data name="NeedWin2000OrBetter" xml:space="preserve">
     <value>The method {0} only works on Microsoft Windows 2000 or better.</value>
   </data>
+  <data name="EventLogMessageEmpty" xml:space="preserve">
+    <value>The log message is empty.</value>
+  </data>
 </root>

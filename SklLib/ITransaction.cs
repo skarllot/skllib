@@ -25,14 +25,12 @@ namespace SklLib
     /// <summary>
     /// Represents a generic transaction.
     /// </summary>
-    public interface ITransaction<T> : IDisposable
-        where T: EventArgs
+    public interface ITransaction : IDisposable
     {
         /// <summary>
         /// Commits this transaction.
         /// </summary>
-        /// <param name="eventArgs">The additional commit data.</param>
-        void Commit(T eventArgs);
+        void Commit();
 
         /// <summary>
         /// Rolls back a this transaction.

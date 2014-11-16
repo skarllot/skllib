@@ -1,6 +1,6 @@
 // LockedMultiAccess.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -19,8 +19,9 @@
 //
 
 using System;
+using System.Threading;
 
-namespace SklLib
+namespace SklLib.Threading
 {
     /// <summary>
     /// Stores a object protected by multiaccess.
@@ -31,7 +32,7 @@ namespace SklLib
         #region Fields
 
         private T userVar;
-        private object isLocked;
+        private AutoResetEvent evLocked;
 
         #endregion
 
@@ -41,18 +42,18 @@ namespace SklLib
         /// Initializes LockedMultiAccess.
         /// </summary>
         public LockedMultiAccess()
+            : this(default(T))
         {
-            isLocked = (object)false;
         }
 
         /// <summary>
         /// Initializes LockedMultiAccess and stores a initial value.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="value">The value.</param>
         public LockedMultiAccess(T value)
         {
             userVar = value;
-            isLocked = (object)false;
+            evLocked = new AutoResetEvent(true);
         }
 
         #endregion
@@ -76,16 +77,16 @@ namespace SklLib
         {
             get
             {
-                LockObject();
-                T obj = userVar;
-                UnLockObject();
-                return obj;
+                evLocked.WaitOne();
+                T result = userVar;
+                evLocked.Set();
+                return result;
             }
             set
             {
-                LockObject();
+                evLocked.WaitOne();
                 userVar = value;
-                UnLockObject();
+                evLocked.Set();
             }
         }
 
@@ -96,13 +97,12 @@ namespace SklLib
         {
             get
             {
-                if (!System.Threading.Monitor.TryEnter(isLocked))
-                    return true;
-                System.Threading.Monitor.Exit(isLocked);
-                return false;
-                //System.Threading.Thread.Sleep(1);
-                //bool b1 = (bool)isLocked;
-                //return b1;
+                if (evLocked.WaitOne(0)) {
+                    evLocked.Set();
+                    return false;
+                }
+
+                return true;
             }
         }
 
@@ -116,14 +116,7 @@ namespace SklLib
         /// </summary>
         public void LockObject()
         {
-            System.Threading.Monitor.Enter(this.isLocked);
-        //inicio:
-        //    while ((bool)isLocked)
-        //    {
-        //        System.Threading.Thread.Sleep(1);
-        //    }
-        //    if (!internalIsLocked(true))
-        //        goto inicio;
+            evLocked.WaitOne();
         }
 
         /// <summary>
@@ -131,22 +124,8 @@ namespace SklLib
         /// </summary>
         public void UnLockObject()
         {
-            System.Threading.Monitor.Exit(this.isLocked);
-            //internalIsLocked(false);
-            //System.Threading.Thread.Sleep(1);
+            evLocked.Set();
         }
-
-        //private bool internalIsLocked(bool value)
-        //{
-        //    lock (isLocked)
-        //    {
-        //        if ((bool)isLocked && value)
-        //            return false;
-
-        //        isLocked = (object)value;
-        //        return true;
-        //    }
-        //}
 
         #endregion
     }

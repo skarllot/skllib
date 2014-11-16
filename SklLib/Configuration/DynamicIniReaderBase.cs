@@ -29,7 +29,14 @@ namespace SklLib.Configuration
     {
         #region Fields
 
+        /// <summary>
+        /// Stores found dynamic named sections.
+        /// </summary>
         protected IniSectionReaderBase[] dynSections;
+
+        /// <summary>
+        /// Stores found static named sections.
+        /// </summary>
         protected IniSectionReaderBase[] staticSections;
 
         #endregion

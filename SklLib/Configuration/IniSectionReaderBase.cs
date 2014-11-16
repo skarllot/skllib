@@ -34,7 +34,14 @@ namespace SklLib.Configuration
         /// </summary>
         public const char DEFAULT_CSV_SEPARATOR = ';';
 
+        /// <summary>
+        /// The INI file reader.
+        /// </summary>
         protected IniFileReader cfgreader;
+
+        /// <summary>
+        /// The section name represented by this instance.
+        /// </summary>
         protected string section;
 
         #endregion

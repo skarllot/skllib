@@ -23,20 +23,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SklLib.Formatting
+namespace SklLib.Globalization
 {
     /// <summary>
     /// Defines how to writes grammatical number of any type.
     /// </summary>
     public struct GrammarNumberWriteInfo
     {
-        #region Fields
-
-        private string _singular;
-        private string _plural;
-
-        #endregion
-
         #region Constructors
 
         /// <summary>
@@ -45,9 +38,10 @@ namespace SklLib.Formatting
         /// </summary>
         /// <param name="common"></param>
         public GrammarNumberWriteInfo(string common)
+            : this()
         {
-            _singular = common;
-            _plural = common;
+            Singular = common;
+            Plural = common;
         }
 
         /// <summary>
@@ -57,9 +51,10 @@ namespace SklLib.Formatting
         /// <param name="singular">The singular text.</param>
         /// <param name="plural">The plural text.</param>
         public GrammarNumberWriteInfo(string singular, string plural)
+            : this()
         {
-            _singular = singular;
-            _plural = plural;
+            Singular = singular;
+            Plural = plural;
         }
 
         #endregion
@@ -69,12 +64,12 @@ namespace SklLib.Formatting
         /// <summary>
         /// Gets how to writes the singular of type.
         /// </summary>
-        public string Plural { get { return _plural; } }
+        public string Plural { get; private set; }
 
         /// <summary>
         /// Gets how to writes the plural of type.
         /// </summary>
-        public string Singular { get { return _singular; } }
+        public string Singular { get; private set; }
 
         #endregion
     }

@@ -1,4 +1,4 @@
-// WriteNumber.cs
+// SpeltNumber.cs
 //
 //  Copyright (C) 2008 Fabrício Godoy
 //
@@ -23,29 +23,38 @@ using System;
 namespace SklLib.Globalization
 {
     /// <summary>
-    /// Stores how writes a number.
+    /// Stores how to write a specific number.
     /// </summary>
-    public struct WriteNumber
+    public struct SpeltNumber
     {
-        /// <summary>
-        /// A value.
-        /// </summary>
-        public long value;
+        #region Constructor
 
         /// <summary>
-        /// How <c>value</c> is written.
-        /// </summary>
-        public string write;
-
-        /// <summary>
-        /// Initializes the WriteNumber struct with loaded values.
+        /// Initializes the SpeltNumber struct with loaded values.
         /// </summary>
         /// <param name="v">A value.</param>
         /// <param name="w">How <c>v</c> is written.</param>
-        public WriteNumber(long v, string w)
+        public SpeltNumber(long v, string w)
+            : this()
         {
-            value = v;
-            write = w;
+            Value = v;
+            Spell = w;
         }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The number that this instance represents.
+        /// </summary>
+        public long Value { get; private set; }
+
+        /// <summary>
+        /// How the number represented by this instance is spelt.
+        /// </summary>
+        public string Spell { get; private set; }
+
+        #endregion
     }
 }

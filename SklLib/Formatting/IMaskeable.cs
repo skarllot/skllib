@@ -20,7 +20,7 @@
 
 using System;
 
-namespace SklLib
+namespace SklLib.Formatting
 {
     /// <summary>
     /// Defines methods to masking support.

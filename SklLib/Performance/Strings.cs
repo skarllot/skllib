@@ -20,10 +20,8 @@
 
 using System;
 
-/// <summary>
-/// Namespace where are located classes to high performance,
-/// but can be dangerous.
-/// </summary>
+// Namespace where are located classes to high performance,
+// but can be dangerous.
 namespace SklLib.Performance
 {
     /// <summary>

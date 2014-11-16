@@ -88,6 +88,15 @@ namespace SklLib {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The log message is empty..
+        /// </summary>
+        public static string EventLogMessageEmpty {
+            get {
+                return ResourceManager.GetString("EventLogMessageEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Was specifield FileMode.CreateNew flag and the file &quot;%var&quot; already exists..
         /// </summary>
         public static string FileExists {

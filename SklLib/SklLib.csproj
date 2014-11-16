@@ -86,12 +86,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Formatting\GrammarNumberWriteInfo.cs" />
+    <Compile Include="Globalization\GrammarNumberWriteInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Measurement\ByteIEC.cs" />
     <Compile Include="Collections\Enumerable.cs" />
     <Compile Include="Diagnostics\EventId.cs" />
-    <Compile Include="Diagnostics\LogEventArgs.cs" />
     <Compile Include="Diagnostics\Logger.cs" />
     <Compile Include="Diagnostics\LogTransaction.cs" />
     <Compile Include="Environment\AssemblyInfo.cs" />
@@ -126,7 +125,7 @@
       <LastGenOutput>resExceptions.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Measurement\LengthSize.cs" />
-    <Compile Include="IMaskeable.cs" />
+    <Compile Include="Formatting\IMaskeable.cs" />
     <Compile Include="IWriteProtected.cs" />
     <Compile Include="Measurement\InformationSize.cs" />
     <Compile Include="Security\Cryptography\Simple.cs" />
@@ -141,9 +140,9 @@
     <Compile Include="IO\IniFileReader.cs" />
     <Compile Include="Formatting\Numbers.cs" />
     <Compile Include="Performance\Strings.cs" />
-    <Compile Include="LockedMultiAccess.cs" />
+    <Compile Include="Threading\LockedMultiAccess.cs" />
     <Compile Include="Environment\OSInformation.cs" />
-    <Compile Include="Telephone.cs" />
+    <Compile Include="Formatting\Telephone.cs" />
     <Compile Include="Performance\Process.cs" />
     <Compile Include="Swap.cs" />
   </ItemGroup>
