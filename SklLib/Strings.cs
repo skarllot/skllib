@@ -847,6 +847,48 @@ namespace SklLib
             return result;
         }
 
+        /// <summary>
+        /// Splits a String into reversed chunks of specified size.
+        /// </summary>
+        /// <param name="s">A <see cref="String"/>.</param>
+        /// <param name="chunkSize">The chunk size.</param>
+        /// <returns>An String array from specified String.</returns>
+        /// <example>
+        /// <para>The following simple code example demonstrates how you can
+        /// use the SplitReverse method.</para>
+        /// <code>
+        /// String str = "93493726324";
+        /// String[] chunks = str.SplitReverse(3);
+        /// // The result will be: { [0]="324", [1]="726", [2]="493", [3]="93" }.
+        /// </code>
+        /// </example>
+        /// <exception cref="ArgumentNullException"><c>s</c> is a null reference.</exception>
+        /// <exception cref="ArgumentOutOfRangeException"><c>chunkSize</c> is less than zero.</exception>
+        public static string[] SplitReverse(this string s, int chunkSize)
+        {
+            if (s == null)
+                throw new ArgumentNullException(resExceptions.ArgumentNull.Replace("%var", "s"));
+            if (chunkSize < 0)
+                throw new ArgumentOutOfRangeException(resExceptions.LessThanZero.Replace("%var", "chunkSize"));
+
+            if (chunkSize == 0 || chunkSize >= s.Length)
+                return new string[] { s };
+
+            string[] result = new string[(int)Math.Ceiling(s.Length / (double)chunkSize)];
+            int sLen = s.Length;
+            for (int i = 0; i < result.Length; i++) {
+                int sIndex = sLen - ((i + 1) * chunkSize);
+                if (sIndex < 0) {
+                    chunkSize += sIndex;
+                    sIndex = 0;
+                }
+
+                result[i] = s.Substring(sIndex, chunkSize);
+            }
+
+            return result;
+        }
+
         // Eliminates accent of a byte character.
         // aByte = A Byte character (Unicode).
         private static void ChangeByte(ref byte aByte)

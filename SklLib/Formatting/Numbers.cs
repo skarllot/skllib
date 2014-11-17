@@ -1,6 +1,6 @@
 // Numbers.cs
 //
-//  Copyright (C) 2008 Fabrício Godoy
+//  Copyright (C) 2008, 2014 Fabrício Godoy
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -84,7 +84,6 @@ namespace SklLib.Formatting
 
         private static string SpellNumber(string number, bool currency, Globalization.NumberWriteInfo numWInfo, NumberFormatInfo numFInfo)
         {
-            decimal valNumber = Convert.ToDecimal(number);
             string GroupSeparator;
             string DecimalSeparator;
             int[] GroupSizes;
@@ -94,7 +93,7 @@ namespace SklLib.Formatting
                 GroupSeparator = numFInfo.CurrencyGroupSeparator;
                 DecimalSeparator = numFInfo.CurrencyDecimalSeparator;
                 GroupSizes = numFInfo.CurrencyGroupSizes;
-                number = number.Replace(numFInfo.CurrencySymbol, "");
+                number = number.Replace(numFInfo.CurrencySymbol, string.Empty);
                 number = number.Trim();
             }
             else
@@ -109,10 +108,11 @@ namespace SklLib.Formatting
             if (GroupSizes[0] != 3)
                 throw new ArgumentException(resExceptions.Unsupported_GroupSize, "numFInfo");
 
+            decimal valNumber = Convert.ToDecimal(number);
             string[] intGroups;
             string decPart;
 
-            number = number.Replace(GroupSeparator, "");
+            number = number.Replace(GroupSeparator, string.Empty);
 
             SpellNumber_divide(number, out intGroups, out decPart, DecimalSeparator);
 
@@ -127,7 +127,7 @@ namespace SklLib.Formatting
             string decWrited;
             if (currency)
             {
-                long value = (long)Math.Floor(Convert.ToDecimal(number));
+                long value = (long)Math.Floor(valNumber);
                 string cur = (value > 1 ?
                     numWInfo.CurrencyIntegerName.Plural :
                     numWInfo.CurrencyIntegerName.Singular
@@ -279,7 +279,7 @@ namespace SklLib.Formatting
         private static string[] SpellNumber_divideGroups(string integer)
         {
             integer = Convert.ToInt64(integer).ToString();
-            return integer.Split(3).Reverse().ToArray();
+            return integer.SplitReverse(3);
         }
 
         // Gets spelling of integer number

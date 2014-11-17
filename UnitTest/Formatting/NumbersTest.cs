@@ -42,8 +42,8 @@ namespace UnitTest.Formatting
         [TestMethod]
         public void SpellNumber4()
         {
-            string result = Numbers.SpellNumber(400000000.1M, false, format2PtBr, formatPtBr);
-            string expected = "quatrocentos milhões e um décimo";
+            string result = Numbers.SpellNumber(40000000.1M, false, format2PtBr, formatPtBr);
+            string expected = "quarenta milhões e um décimo";
             Assert.AreEqual<string>(expected, result);
         }
 
@@ -68,6 +68,38 @@ namespace UnitTest.Formatting
         {
             string result = Numbers.SpellNumber(.042M, false, format2PtBr, formatPtBr);
             string expected = "quarenta e dois milésimos";
+            Assert.AreEqual<string>(expected, result);
+        }
+
+        [TestMethod]
+        public void SpellNumber8()
+        {
+            string result = Numbers.SpellNumber(0M, false, format2PtBr, formatPtBr);
+            string expected = "zero";
+            Assert.AreEqual<string>(expected, result);
+        }
+
+        [TestMethod]
+        public void SpellNumber9()
+        {
+            string result = Numbers.SpellNumber(3M, true, format2PtBr, formatPtBr);
+            string expected = "três Reais";
+            Assert.AreEqual<string>(expected, result);
+        }
+
+        [TestMethod]
+        public void SpellNumber10()
+        {
+            string result = Numbers.SpellNumber(173.41M, true, format2PtBr, formatPtBr);
+            string expected = "cento e setenta e três Reais e quarenta e um Centavos";
+            Assert.AreEqual<string>(expected, result);
+        }
+
+        [TestMethod]
+        public void SpellNumber11()
+        {
+            string result = Numbers.SpellNumber(7300.013M, true, format2PtBr, formatPtBr);
+            string expected = "sete mil e trezentos Reais e um Centavo";
             Assert.AreEqual<string>(expected, result);
         }
     }
