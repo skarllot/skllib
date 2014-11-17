@@ -78,7 +78,7 @@ namespace SklLib.Collections
             if (action == null)
                 throw new ArgumentNullException("action");
 
-            foreach (TSource item in source.ToArray()) {
+            foreach (TSource item in source) {
                 action(item);
             }
         }

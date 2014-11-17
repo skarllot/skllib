@@ -18,6 +18,7 @@
 //
 //
 
+using SklLib.Performance;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,7 +34,7 @@ namespace SklLib.Formatting
     {
         #region Fields
 
-        private static Dictionary<string, Func<GrammarRules>> _storedCultureInfo;
+        private static Dictionary<string, LazyLoaded<GrammarRules>> _storedCultureInfo;
         private Dictionary<string, string> _accentedSuffix;
         private List<string> _loweredWords;
         private Dictionary<string, string> _tcExcepts;
@@ -44,6 +45,12 @@ namespace SklLib.Formatting
         #endregion
 
         #region Constructors
+
+        static GrammarRules()
+        {
+            _storedCultureInfo = new Dictionary<string, LazyLoaded<GrammarRules>>(1);
+            _storedCultureInfo.Add("pt-BR", new LazyLoaded<GrammarRules>(Get_ptBR));
+        }
 
         /// <summary>
         /// Initializes an empty instance of GrammarRules class.
@@ -68,12 +75,6 @@ namespace SklLib.Formatting
             _excepts = (Dictionary<string, string>)info.GetValue("_excepts", typeof(Dictionary<string, string>));
             _ignoredChars = info.GetString("_ignoredChars");
             _isReadOnly = true;
-        }
-
-        static GrammarRules()
-        {
-            _storedCultureInfo = new Dictionary<string, Func<GrammarRules>>(1);
-            _storedCultureInfo.Add("pt-BR", Get_ptBR);
         }
 
         #endregion
@@ -371,12 +372,10 @@ namespace SklLib.Formatting
         /// <returns>A GrammarRules object.</returns>
         public static GrammarRules GetCultureBasedInfo(string name)
         {
-            if (name.IndexOf('-') == -1)
-                name = name.Insert(2, "-");
-            name = name.Remove(3) + name.Substring(3).ToUpper();
             if (!_storedCultureInfo.ContainsKey(name))
                 throw new ArgumentException(resExceptions.UnsupportedCulture);
-            return _storedCultureInfo[name]();
+
+            return _storedCultureInfo[name];
         }
 
         /// <summary>

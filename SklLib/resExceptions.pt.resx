@@ -210,4 +210,7 @@
   <data name="EventLogMessageEmpty" xml:space="preserve">
     <value>A mensagem de log está vazia.</value>
   </data>
+  <data name="TypeNotImplementInterface" xml:space="preserve">
+    <value>O tipo {0} não implementa a interface {1}.</value>
+  </data>
 </root>

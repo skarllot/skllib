@@ -79,6 +79,24 @@ namespace SklLib.Diagnostics
         #region Properties
 
         /// <summary>
+        /// Gets or sets the entry type of current log transaction.
+        /// </summary>
+        public EventLogEntryType EntryType
+        {
+            get { return type; }
+            set { type = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the event ID of current log transaction.
+        /// </summary>
+        public EventId EventLogId
+        {
+            get { return eventId; }
+            set { eventId = value; }
+        }
+
+        /// <summary>
         /// Gets or sets whether the line header has a timestamp placeholder.
         /// </summary>
         public bool HeaderHasTimestamp

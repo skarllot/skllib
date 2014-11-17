@@ -21,6 +21,7 @@
 using System;
 using System.Globalization;
 using System.Collections.Generic;
+using SklLib.Performance;
 
 namespace SklLib.Globalization
 {
@@ -33,9 +34,9 @@ namespace SklLib.Globalization
 
         /// <summary>
         /// Stores a <see cref="Dictionary&lt;TKey, TValue&gt;"/>, where key is a culture name and value
-        /// is a delegate to get type- and culture-specific.
+        /// is a lazy-loaded instance of <see cref="NumberWriteInfo"/>.
         /// </summary>
-        private static Dictionary<string, NumberWriteInfo> storedCultureInfo;
+        private static Dictionary<string, LazyLoaded<NumberWriteInfo>> storedCultureInfo;
         private string[] uValues;
         private string[] dValues;
         private string[] hValues;
@@ -59,10 +60,10 @@ namespace SklLib.Globalization
         /// </summary>
         static NumberWriteInfo()
         {
-            storedCultureInfo = new Dictionary<string, NumberWriteInfo>(3);
-            storedCultureInfo.Add("en-US", Get_enUS());
-            storedCultureInfo.Add("fr-FR", Get_frFR());
-            storedCultureInfo.Add("pt-BR", Get_ptBR());
+            storedCultureInfo = new Dictionary<string, LazyLoaded<NumberWriteInfo>>(3);
+            storedCultureInfo.Add("en-US", new LazyLoaded<NumberWriteInfo>(Get_enUS));
+            storedCultureInfo.Add("fr-FR", new LazyLoaded<NumberWriteInfo>(Get_frFR));
+            storedCultureInfo.Add("pt-BR", new LazyLoaded<NumberWriteInfo>(Get_ptBR));
         }
 
         /// <summary>
@@ -305,12 +306,11 @@ namespace SklLib.Globalization
         /// Gets the list of names of supported cultures by NumberWriteInfo.
         /// </summary>
         /// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of type <see cref="String"/> that contains the cultures names.
-        /// The <see cref="Array"/> of cultures is sorted.</returns>
+        /// The list of cultures is sorted.</returns>
         public static IEnumerable<string> GetDisponibleCultures()
         {
             return storedCultureInfo.Keys;
         }
-
 
         private static NumberWriteInfo Get_enUS()
         {

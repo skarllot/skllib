@@ -18,6 +18,7 @@
 //
 //
 
+using SklLib.Performance;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -47,7 +48,7 @@ namespace SklLib.Formatting
     /// {
     ///     static void Main()
     ///     {
-    ///         PostalCode pCode = PostalCode.GetCulturePostalCodeInfo("en-US");
+    ///         PostalCode pCode = PostalCode.GetCultureBasedInfo("en-US");
     ///            string userPCode = "12345-6789";
     ///         Console.WriteLine("Compacted Postal Code: {0}", pCode.GetCompactPostalCode(userPCode));
     ///         string internalPCode = "987654321";
@@ -68,13 +69,25 @@ namespace SklLib.Formatting
 
         /// <summary>
         /// Stores a <see cref="Dictionary&lt;TKey, TValue&gt;"/>, where key is a culture name and value
-        /// is a delegate to get type- and culture-specific.
+        /// is a lazy-loaded instance of <see cref="PostalCode"/>.
         /// </summary>
-        private static Dictionary<string, Func<PostalCode>> storedCultureInfo;
+        private static Dictionary<string, LazyLoaded<PostalCode>> storedCultureInfo;
 
         #endregion
 
         #region Constructor
+
+        static PostalCode()
+        {
+            storedCultureInfo = new Dictionary<string, LazyLoaded<PostalCode>>(7);
+            storedCultureInfo.Add("de-DE", new LazyLoaded<PostalCode>(Get_deDE));
+            storedCultureInfo.Add("en-CA", new LazyLoaded<PostalCode>(Get_enCA));
+            storedCultureInfo.Add("en-US", new LazyLoaded<PostalCode>(Get_enUS));
+            storedCultureInfo.Add("fr-FR", new LazyLoaded<PostalCode>(Get_frFR));
+            storedCultureInfo.Add("nl-NL", new LazyLoaded<PostalCode>(Get_nlNL));
+            storedCultureInfo.Add("pt-BR", new LazyLoaded<PostalCode>(Get_ptBR));
+            storedCultureInfo.Add("pt-PT", new LazyLoaded<PostalCode>(Get_ptPT));
+        }
 
         /// <summary>
         /// Initializes a new writable instance of the <see cref="PostalCode"/> class.
@@ -83,18 +96,6 @@ namespace SklLib.Formatting
         /// The properties of the new instance can be modified if you want user-defined formatting.
         /// </remarks>
         public PostalCode() : base() { }
-
-        static PostalCode()
-        {
-            storedCultureInfo = new Dictionary<string, Func<PostalCode>>(7);
-            storedCultureInfo.Add("de-DE", Get_deDE);
-            storedCultureInfo.Add("en-CA", Get_enCA);
-            storedCultureInfo.Add("en-US", Get_enUS);
-            storedCultureInfo.Add("fr-FR", Get_frFR);
-            storedCultureInfo.Add("nl-NL", Get_nlNL);
-            storedCultureInfo.Add("pt-BR", Get_ptBR);
-            storedCultureInfo.Add("pt-PT", Get_ptPT);
-        }
 
         #endregion
 
@@ -126,24 +127,20 @@ namespace SklLib.Formatting
         /// <exception cref="ArgumentException">name specifies a culture that is not supported.</exception>
         public static PostalCode GetCultureBasedInfo(string name)
         {
-            if (name.IndexOf('-') == -1)
-                name = name.Insert(2, "-");
-            name = name.Remove(3) + name.Substring(3).ToUpper();
             if (!storedCultureInfo.ContainsKey(name))
                 throw new ArgumentException(resExceptions.UnsupportedCulture);
-            return storedCultureInfo[name]();
+
+            return storedCultureInfo[name];
         }
 
         /// <summary>
         /// Gets the list of names of supported cultures by <see cref="PostalCode"/>.
         /// </summary>
-        /// <returns>An <see cref="Array"/> of type <see cref="String"/> that contains the cultures names.
-        /// The <see cref="Array"/> of cultures is sorted.</returns>
-        public static string[] GetDisponibleCultures()
+        /// <returns>An <see cref="IEnumerable&lt;T&gt;"/> of type <see cref="String"/> that contains the cultures names.
+        /// The list of cultures is sorted.</returns>
+        public static IEnumerable<string> GetDisponibleCultures()
         {
-            string[] cultureNames = new string[storedCultureInfo.Keys.Count];
-            storedCultureInfo.Keys.CopyTo(cultureNames, 0);
-            return cultureNames;
+            return storedCultureInfo.Keys;
         }
 
         private static PostalCode Get_deDE()
